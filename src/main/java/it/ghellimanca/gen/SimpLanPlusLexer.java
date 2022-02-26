@@ -1,4 +1,4 @@
-// Generated from /home/melania/Documents/UNI-BOH/1 ANNO/CI/progetto/SimpLanPlus/src/SimpLanPlus.g4 by ANTLR 4.9.2
+package it.ghellimanca.gen;// Generated from /home/melania/Documents/UNI-BOH/1 ANNO/CI/progetto/SimpLanPlus/src/SimpLanPlus.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -98,7 +98,7 @@ public class SimpLanPlusLexer extends Lexer {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "SimpLanPlus.g4"; }
+	public String getGrammarFileName() { return "src/main/antlr/SimpLanPlus.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
