@@ -9,6 +9,9 @@ package it.ghellimanca;
  *
  */
 
+import java.util.List;
+import java.util.Map;
+
 public class Environment {
 
     /*
@@ -18,6 +21,9 @@ public class Environment {
      * with the table via Environment class methods.
      *
      */
-    final private  symbolTable
+    final private List<Map<String, STentry>> symbolTable;
 
+    public Environment(List<Map<String, STentry>> symbolTable) {
+        this.symbolTable = symbolTable;
+    }
 }
