@@ -36,6 +36,13 @@ public class Environment {
         this.nestingLevel = nestingLevel;
     }
 
+    /**
+     * @return the current active scope.
+     */
+    private Map<String, STEntry> currentScope() {
+        return symbolTable.get(nestingLevel);
+    }
+
 
     /**
      * Extends the symbolTable with a new empty scope
@@ -58,7 +65,7 @@ public class Environment {
 
     /*
      * if there is no clash of names, adds id ⟼ t to st
-     * if it find a collision needs to throw an exception
+     * if it finds a collision needs to throw an exception
      */
     public List<Map<String,STEntry>> addDecl(String id, Type t)
 
@@ -66,13 +73,14 @@ public class Environment {
     /*
      looks for the type of id in st, if any
      */
-    Type lookup(String id)
+    Type lookup(String id) throws
 
 
     /**
      * Exits the current scope
+     * TODO: la funzione del prof ritorna la sym table; ha senso cambiare il codice?
      */
-    public List<Map<String,STEntry>> exitScope() {
+    public void exitScope() {
         symbolTable.remove(nestingLevel);
         nestingLevel--;
     }
