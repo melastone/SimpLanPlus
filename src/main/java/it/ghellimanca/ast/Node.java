@@ -5,14 +5,22 @@ import it.ghellimanca.SemanticError;
 
 import java.util.ArrayList;
 
-//generic node of the ast
+/**
+ * A generic node of the AST
+ */
 public interface Node {
 
-    // check for errors in the node
+    /**
+     * Check for errors in the node.
+     * */
     ArrayList<SemanticError> checkSemantics(Environment env);
 
-    // check effects analysis errors
-
-    // type checking
+    /**
+     * Type checking.
+     * */
     Node typeCheck();
+
+    /**
+     * Check effects analysis errors.
+     */
 }

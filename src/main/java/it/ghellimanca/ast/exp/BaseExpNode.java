@@ -1,20 +1,26 @@
-package it.ghellimanca.ast;
+package it.ghellimanca.ast.exp;
 
 import it.ghellimanca.Environment;
 import it.ghellimanca.SemanticError;
+import it.ghellimanca.ast.Node;
 
 import java.util.ArrayList;
 
-// generic type node of the ast
-public class TypeNode implements Node {
+/**
+ * Represents a base expression '(' + expr + ')' node  in the AST.
+ */
+public class BaseExpNode extends ExpNode {
+    final ExpNode exp;
 
-    //TODO da implementare checkSemantics di TypeNode
+    public BaseExpNode(ExpNode exp) {
+        this.exp = exp;
+    }
+
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         return null;
     }
 
-    //TODO da implementare typeCheck di TypeNode
     @Override
     public Node typeCheck() {
         return null;

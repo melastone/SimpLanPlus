@@ -1,6 +1,6 @@
 package it.ghellimanca;
 
-import it.ghellimanca.ast.TypeNode;
+import it.ghellimanca.ast.type.TypeNode;
 
 // represents an entry of the symbol table
 public class STentry {
