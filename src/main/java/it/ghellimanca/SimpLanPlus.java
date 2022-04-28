@@ -66,8 +66,8 @@ public class SimpLanPlus {
         // Creating the parser
         SimpLanPlusParser slpParser = new SimpLanPlusParser(slpLexerTokens);
 
-        slpParser.removeErrorListeners();
-        slpParser.addErrorListener(new VerboseListener());
+//        slpParser.removeErrorListeners();
+//        slpParser.addErrorListener(new VerboseListener());
 
         // Creating the tree visitor
         SimpLanPlusVisitorImpl slpVisitor = new SimpLanPlusVisitorImpl();
