@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * Represents an argument of a function node in the AST.
  */
 public class ArgNode implements Node {
+
     final TypeNode type;
     final int idNodeid; //TODO: cambiare ID ArgNode quando abbiamo eventuale ID node
 
