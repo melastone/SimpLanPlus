@@ -2,6 +2,7 @@ package it.ghellimanca;
 
 import it.ghellimanca.gen.SimpLanPlusLexer;
 import it.ghellimanca.gen.SimpLanPlusParser;
+import it.ghellimanca.SimpLanPlusPTVisitor
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
@@ -70,10 +71,10 @@ public class SimpLanPlus {
 //        slpParser.addErrorListener(new VerboseListener());
 
         // Creating the tree visitor
-        SimpLanPlusVisitorImpl slpVisitor = new SimpLanPlusVisitorImpl();
+        SimpLanPlusPTVisitor parseTreeVisitor = new SimpLanPlusPTVisitor();
 
         // Visiting the tree and generating the AST
-        BlockNode AST = slpVisitor.visitBlock(slpParser.block());
+        BlockNode AST = parseTreeVisitor.visitBlock(slpParser.block());
         AST.setMainBlock(); // The main block is special therefore just here a flag is set to signal this
         // (it's important for the code generation).
 
