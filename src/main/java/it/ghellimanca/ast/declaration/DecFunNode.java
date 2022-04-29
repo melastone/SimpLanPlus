@@ -1,18 +1,16 @@
-package it.ghellimanca.ast;
+package it.ghellimanca.ast.declaration;
 
 import it.ghellimanca.Environment;
+import it.ghellimanca.SemanticError;
 import it.ghellimanca.ast.Node;
+import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
 
 /**
- * Represents a block in the Abstract Syntax Tree (AST)
- *
- * @todo: add list of decl and list of stats after defining them
- * @todo: implement the class
+ * Node of the AST for a function declaration.
  */
-public class BlockNode implements Node{
-
+public class DecFunNode implements Node {
 
 
     @Override

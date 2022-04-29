@@ -1,7 +1,9 @@
 package it.ghellimanca.ast.declaration;
 
 import it.ghellimanca.Environment;
+import it.ghellimanca.SemanticError;
 import it.ghellimanca.ast.Node;
+import it.ghellimanca.ast.exp.ExpNode;
 import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
@@ -18,7 +20,21 @@ import java.util.ArrayList;
 public class DecVarNode implements Node {
 
     final private TypeNode type;
-    final private
+    final private int id;
+    final private ExpNode exp;
+
+
+    public DecVarNode(TypeNode type, int id) {
+        this.type = type;
+        this.id = id;
+        this.exp = null;
+    }
+
+    public DecVarNode(TypeNode type, int id, ExpNode exp) {
+        this.type = type;
+        this.id = id;
+        this.exp = exp;
+    }
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
