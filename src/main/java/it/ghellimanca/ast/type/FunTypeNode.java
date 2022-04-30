@@ -9,6 +9,7 @@ public class FunTypeNode extends TypeNode {
     final List<TypeNode> argTypes;
     final TypeNode returnType;
 
+
     public FunTypeNode(List<TypeNode> argTypes, TypeNode returnType) {
         this.argTypes = argTypes;
         this.returnType = returnType;

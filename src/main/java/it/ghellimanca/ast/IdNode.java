@@ -2,19 +2,16 @@ package it.ghellimanca.ast;
 
 import it.ghellimanca.Environment;
 import it.ghellimanca.SemanticError;
-import it.ghellimanca.ast.Node;
 
 import java.util.ArrayList;
 
-/**
- * Represents a block in the Abstract Syntax Tree (AST)
- *
- * @todo: add list of decl and list of stats after defining them
- * @todo: implement the class
- */
-public class BlockNode implements Node{
+public class IdNode implements Node{
 
+    final private String id;
 
+    public IdNode(String id) {
+        this.id = id;
+    }
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {

@@ -3,7 +3,7 @@ package it.ghellimanca;
 import it.ghellimanca.ast.BlockNode;
 import it.ghellimanca.gen.SimpLanPlusLexer;
 import it.ghellimanca.gen.SimpLanPlusParser;
-import it.ghellimanca.SimpLanPlusPTVisitor
+import it.ghellimanca.SimpLanPlusPTVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
@@ -52,7 +52,7 @@ public class SimpLanPlus {
         CommonTokenStream slpLexerTokens = new CommonTokenStream(slpLexer);
 
         slpLexer.removeErrorListeners();
-        slpLexer.addErrorListener(new VerboseListener());
+//        slpLexer.addErrorListener(new VerboseListener());
         
         // Checking for lexical errors
         // @todo: understand Antlr Lexer error management, then implement errorCount()
@@ -76,7 +76,7 @@ public class SimpLanPlus {
 
         // Visiting the tree and generating the AST
         BlockNode AST = (BlockNode) parseTreeVisitor.visitBlock(slpParser.block());
-        AST.setMainBlock(); // The main block is special therefore just here a flag is set to signal this
+//        AST.setMainBlock(); // The main block is special therefore just here a flag is set to signal this
         // (it's important for the code generation).
 
         // Checking for syntactical errors
@@ -104,6 +104,8 @@ public class SimpLanPlus {
 
 
         /* CODE GENERATION */
+
+        return null;
     }
 
     /**
