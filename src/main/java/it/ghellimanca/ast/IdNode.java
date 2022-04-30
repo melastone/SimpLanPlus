@@ -5,6 +5,10 @@ import it.ghellimanca.SemanticError;
 
 import java.util.ArrayList;
 
+/**
+ * Node of the AST for an identifier
+ *
+ */
 public class IdNode implements Node{
 
     final private String id;

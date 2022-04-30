@@ -1,20 +1,27 @@
-package it.ghellimanca.ast;
+package it.ghellimanca.ast.statement;
 
 import it.ghellimanca.Environment;
 import it.ghellimanca.SemanticError;
+import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.ast.Node;
 
 import java.util.ArrayList;
 
 /**
- * Node of the AST for a block
+ * Node of the AST for the deletion statement
  *
- * @todo: add list of decl and list of stats after defining them
- * @todo: implement the class
+ * A deletion has the form:
+ * 'delete' ID
+ *
  */
-public class BlockNode implements Node{
+public class DeletionNode implements Node {
+
+    final private IdNode id;
 
 
+    public DeletionNode(IdNode id) {
+        this.id = id;
+    }
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {

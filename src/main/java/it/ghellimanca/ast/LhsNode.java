@@ -10,11 +10,11 @@ import java.util.ArrayList;
  */
 public class LhsNode implements Node {
 
-    final int idNodeid; //TODO: cambiare ID LhsNode quando abbiamo capito impl ID node
+    final private IdNode id;
     final LhsNode lhs;
 
-    public LhsNode(int idNodeid, LhsNode lhs) {
-        this.idNodeid = idNodeid;
+    public LhsNode(IdNode id, LhsNode lhs) {
+        this.id = id;
         this.lhs = lhs;
     }
 

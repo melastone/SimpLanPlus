@@ -1,20 +1,27 @@
-package it.ghellimanca.ast;
+package it.ghellimanca.ast.statement;
 
 import it.ghellimanca.Environment;
 import it.ghellimanca.SemanticError;
 import it.ghellimanca.ast.Node;
+import it.ghellimanca.ast.exp.ExpNode;
 
 import java.util.ArrayList;
 
 /**
- * Node of the AST for a block
+ * Node of the AST for a print statement
  *
- * @todo: add list of decl and list of stats after defining them
- * @todo: implement the class
+ * A print statement has the form:
+ * 'print' exp
+ *
  */
-public class BlockNode implements Node{
+public class PrintNode implements Node {
+
+    final private ExpNode exp;
 
 
+    public PrintNode(ExpNode exp) {
+        this.exp = exp;
+    }
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {

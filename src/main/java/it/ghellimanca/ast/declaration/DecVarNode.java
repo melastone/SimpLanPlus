@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 
 /**
- * Represents a variable declaration in the AST.
+ * Node of the AST for a variable declaration
  *
  * A variable has to be declared as follows:
  * type ID; OR type ID = exp;
