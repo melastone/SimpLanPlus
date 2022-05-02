@@ -20,9 +20,6 @@ public class STentry {
     public STentry(int nestingLevel, TypeNode type, int offset) {
         this(nestingLevel, offset);
         this.type = type;
-
-        //TODO gestire in modo particolare tipo FunTypeNode
-        //type instanceof FunTypeNode
     }
 
     public int getNestingLevel() {
@@ -50,6 +47,6 @@ public class STentry {
                 '}';
     }
 
-    //TODO implementare equals
+    //todo implementare equals
 }
 

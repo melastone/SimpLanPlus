@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * Represents a integer expression node in the AST.
  */
 public class ValExpNode extends ExpNode {
+
     final int number;
 
     public ValExpNode(int number) {
@@ -27,4 +28,5 @@ public class ValExpNode extends ExpNode {
     public Node typeCheck() {
         return new IntTypeNode();
     }
+
 }

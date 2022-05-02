@@ -9,12 +9,20 @@ import java.util.ArrayList;
  * Represents a left-hand side expression node in the AST.
  */
 public class LhsNode implements Node {
-    final int idNodeid; //TODO: cambiare ID LhsNode quando abbiamo capito impl ID node
-    final LhsNode lhs;
+    final IdNode id;
+    final LhsNode lhs; //could be null
 
-    public LhsNode(int idNodeid, LhsNode lhs) {
-        this.idNodeid = idNodeid;
+    public LhsNode(IdNode id, LhsNode lhs) {
+        this.id = id;
         this.lhs = lhs;
+    }
+
+    public IdNode getId() {
+        return id;
+    }
+
+    public LhsNode getLhs() {
+        return lhs;
     }
 
     //TODO da implementare checkSemantics di LhsNode

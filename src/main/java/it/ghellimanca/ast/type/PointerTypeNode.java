@@ -4,6 +4,7 @@ package it.ghellimanca.ast.type;
  * Represents a pointer type node in the AST.
  */
 public class PointerTypeNode extends TypeNode {
+
     final TypeNode pointedType;
 
     public PointerTypeNode(TypeNode pointedType) {
