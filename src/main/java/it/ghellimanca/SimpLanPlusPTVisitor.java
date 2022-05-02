@@ -1,19 +1,44 @@
 package it.ghellimanca;
 
+import it.ghellimanca.ast.declaration.DecVarNode;
+import it.ghellimanca.ast.declaration.DeclarationNode;
+import it.ghellimanca.ast.exp.ExpNode;
+import it.ghellimanca.ast.statement.DeletionNode;
+import it.ghellimanca.ast.statement.StatementNode;
+import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.gen.*;
 import it.ghellimanca.ast.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * Parse Tree Visitor.
+ *
  * Extends SimpLanPlusBaseVisitor, empty implementation of SimpLanPlusVisitor Interface
+ * @todo: manage ctx -> Node conversion
+ * @todo: manage terminalNode -> IdNode conversion
  *
  */
 public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
+
     @Override
-    public Node visitBlock(SimpLanPlusParser.BlockContext ctx) {
-        return super.visitBlock(ctx);
+    public BlockNode visitBlock(SimpLanPlusParser.BlockContext ctx) {
+
+        List<DeclarationNode> declarations = new ArrayList<>();
+        List<StatementNode> statements = new ArrayList<>();
+
+        for (SimpLanPlusParser.DeclarationContext declCtx : ctx.declaration()) {
+//            declarations.add((DeclarationNode) declCtx.toNode())
+        }
+
+        for (SimpLanPlusParser.StatementContext stmCtx : ctx.statement()){
+//            statements.add((StatementNode) stmCtx.toNode())
+        }
+
+        return new BlockNode(declarations,statements);
     }
 
     @Override
@@ -32,8 +57,13 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitDecVar(SimpLanPlusParser.DecVarContext ctx) {
-        return super.visitDecVar(ctx);
+    public DecVarNode visitDecVar(SimpLanPlusParser.DecVarContext ctx) {
+
+//        TypeNode type = ctx.type().toNode()
+//        IdNode id = ctx.ID().fromTerminalNodeToIdNode()
+//        ExpNode = ctx.exp().toNode()
+
+        return new DecVarNode(null,null);
     }
 
     @Override
@@ -57,8 +87,11 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitDeletion(SimpLanPlusParser.DeletionContext ctx) {
-        return super.visitDeletion(ctx);
+    public DeletionNode visitDeletion(SimpLanPlusParser.DeletionContext ctx) {
+
+        IdNode id = new IdNode(ctx.ID().toString());
+
+        return new DeletionNode(id);
     }
 
     @Override

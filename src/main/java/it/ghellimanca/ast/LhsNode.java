@@ -7,6 +7,10 @@ import java.util.ArrayList;
 
 /**
  * Represents a left-hand side expression node in the AST.
+ *
+ * An lhs has the form:
+ * ID | lhs '^'
+ *
  */
 public class LhsNode implements Node {
 
