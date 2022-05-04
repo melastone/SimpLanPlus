@@ -22,17 +22,6 @@ public class CallNode implements Node {
     final private List<ExpNode> params;
 
 
-    /*
-    Constructor for a nullary function (i.e. takes no args) call
-     */
-    public CallNode(IdNode id) {
-        this.id = id;
-        this.params = null;
-    }
-
-    /*
-    Constuctor for a function call with parameters
-     */
     public CallNode(IdNode id, List<ExpNode> params) {
         this.id = id;
         this.params = params;

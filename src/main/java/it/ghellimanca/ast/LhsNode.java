@@ -22,6 +22,14 @@ public class LhsNode implements Node {
         this.lhs = lhs;
     }
 
+    public IdNode getId() {
+        return id;
+    }
+
+    public LhsNode getLhs() {
+        return lhs;
+    }
+
     //TODO da implementare checkSemantics di LhsNode
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {

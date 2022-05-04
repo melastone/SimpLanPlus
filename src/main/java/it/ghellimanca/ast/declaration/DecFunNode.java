@@ -31,6 +31,7 @@ public class DecFunNode implements Node {
     Constructor for int/bool functions
      */
     public DecFunNode(TypeNode type, IdNode id, List<ArgNode> arguments, BlockNode body) {
+
         this.type = type;
         this.voidType = null;
         this.id = id;

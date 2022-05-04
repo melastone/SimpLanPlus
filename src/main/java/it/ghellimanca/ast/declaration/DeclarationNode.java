@@ -8,4 +8,5 @@ import it.ghellimanca.ast.Node;
  *
  */
 public abstract class DeclarationNode implements Node {
+
 }

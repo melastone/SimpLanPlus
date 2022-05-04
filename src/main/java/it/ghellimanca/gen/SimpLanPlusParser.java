@@ -379,6 +379,7 @@ public class SimpLanPlusParser extends Parser {
 	}
 
 	public static class DecFunContext extends ParserRuleContext {
+
 		public TerminalNode ID() { return getToken(SimpLanPlusParser.ID, 0); }
 		public BlockContext block() {
 			return getRuleContext(BlockContext.class,0);
@@ -392,6 +393,7 @@ public class SimpLanPlusParser extends Parser {
 		public ArgContext arg(int i) {
 			return getRuleContext(ArgContext.class,i);
 		}
+
 		public DecFunContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -552,9 +554,11 @@ public class SimpLanPlusParser extends Parser {
 	}
 
 	public static class TypeContext extends ParserRuleContext {
+
 		public TypeContext type() {
 			return getRuleContext(TypeContext.class,0);
 		}
+
 		public TypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}

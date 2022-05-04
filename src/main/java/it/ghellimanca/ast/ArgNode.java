@@ -12,11 +12,11 @@ import java.util.ArrayList;
 public class ArgNode implements Node {
 
     final TypeNode type;
-    final int idNodeid; //TODO: cambiare ID ArgNode quando abbiamo eventuale ID node
+    final IdNode id;
 
-    public ArgNode(TypeNode type, int idNodeid) {
+    public ArgNode(TypeNode type, IdNode id) {
         this.type = type;
-        this.idNodeid = idNodeid;
+        this.id = id;
     }
 
     @Override

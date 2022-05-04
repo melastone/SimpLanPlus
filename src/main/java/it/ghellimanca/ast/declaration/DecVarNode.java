@@ -25,12 +25,6 @@ public class DecVarNode implements Node {
     final private ExpNode exp;
 
 
-    public DecVarNode(TypeNode type, IdNode id) {
-        this.type = type;
-        this.id = id;
-        this.exp = null;
-    }
-
     public DecVarNode(TypeNode type, IdNode id, ExpNode exp) {
         this.type = type;
         this.id = id;

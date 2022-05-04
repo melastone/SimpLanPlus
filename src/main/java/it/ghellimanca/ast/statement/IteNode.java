@@ -21,18 +21,6 @@ public class IteNode implements Node {
     final private StatementNode stm2;
 
 
-    /*
-    Constructor for if-then statement
-     */
-    public IteNode(ExpNode exp, StatementNode stm1) {
-        this.exp = exp;
-        this.stm1 = stm1;
-        this.stm2 = null;
-    }
-
-    /*
-    Constructor for if-then-else statement
-     */
     public IteNode(ExpNode exp, StatementNode stm1, StatementNode stm2) {
         this.exp = exp;
         this.stm1 = stm1;
