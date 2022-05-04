@@ -45,13 +45,13 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitStatement(SimpLanPlusParser.StatementContext ctx) {
-        return super.visitStatement(ctx);
+    public StatementNode visitStatement(SimpLanPlusParser.StatementContext ctx) {
+        return (StatementNode) visit(ctx);
     }
 
     @Override
-    public Node visitDeclaration(SimpLanPlusParser.DeclarationContext ctx) {
-        return super.visitDeclaration(ctx);
+    public DeclarationNode visitDeclaration(SimpLanPlusParser.DeclarationContext ctx) {
+        return (DeclarationNode) visit(ctx);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         return new DecVarNode(type, id, exp);
     }
 
-    /**
+    /*
      * Creates a node in the AST that represents a 'type', by visiting the parse tree.
      */
     @Override
