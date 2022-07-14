@@ -28,6 +28,11 @@ public class IteNode implements Node {
     }
 
     @Override
+    public String toPrint(String indent) {
+        return indent + "If:\t" + exp.toPrint(indent) + "\nThen:" + stm1.toPrint(indent) + ;
+    }
+
+    @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         return null;
     }

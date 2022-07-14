@@ -22,7 +22,6 @@ import java.util.List;
  * Parse Tree Visitor.
  *
  * Extends SimpLanPlusBaseVisitor, empty implementation of SimpLanPlusVisitor Interface
- * @todo: ragionare sul significato della visitDeclaration e della visitStatement
  *
  */
 public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
@@ -84,7 +83,7 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         return new DecVarNode(type, id, exp);
     }
 
-    /*
+    /**
      * Creates a node in the AST that represents a 'type', by visiting the parse tree.
      */
     @Override

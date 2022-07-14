@@ -24,6 +24,11 @@ public class PrintNode implements Node {
     }
 
     @Override
+    public String toPrint(String indent) {
+        return indent + "Print:\t" +exp.toPrint(indent) ;
+    }
+
+    @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         return null;
     }

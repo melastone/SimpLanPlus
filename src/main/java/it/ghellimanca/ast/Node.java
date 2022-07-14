@@ -11,6 +11,14 @@ import java.util.ArrayList;
 public interface Node {
 
     /**
+     * Returns a text representation of the AST node.
+     *
+     * @param indent: characters to prepend to the string which represents the current node
+     * @return the current node string representation
+     */
+    String toPrint(String indent);
+
+    /**
      * Check for errors in the node.
      * */
     ArrayList<SemanticError> checkSemantics(Environment env);

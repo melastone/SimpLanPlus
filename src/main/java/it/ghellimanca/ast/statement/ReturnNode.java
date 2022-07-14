@@ -28,6 +28,11 @@ public class ReturnNode implements Node {
     }
 
     @Override
+    public String toPrint(String indent) {
+        return indent + "Return:\t" + (exp == null? "void" : exp.toPrint(indent));
+    }
+
+    @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         return null;
     }
