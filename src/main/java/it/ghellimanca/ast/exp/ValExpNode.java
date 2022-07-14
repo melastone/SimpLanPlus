@@ -27,4 +27,9 @@ public class ValExpNode extends ExpNode {
     public Node typeCheck() {
         return new IntTypeNode();
     }
+
+    @Override
+    public String toPrint(String indent) {
+        return "\n" + indent + "VAL_EXP: " + number;
+    }
 }

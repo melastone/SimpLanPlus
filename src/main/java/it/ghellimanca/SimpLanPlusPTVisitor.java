@@ -5,6 +5,7 @@ import it.ghellimanca.ast.declaration.DecVarNode;
 import it.ghellimanca.ast.declaration.DeclarationNode;
 import it.ghellimanca.ast.exp.*;
 import it.ghellimanca.ast.statement.*;
+import it.ghellimanca.ast.statement.CallNode;
 import it.ghellimanca.ast.type.BoolTypeNode;
 import it.ghellimanca.ast.type.IntTypeNode;
 import it.ghellimanca.ast.type.PointerTypeNode;
@@ -16,6 +17,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  *
@@ -81,6 +83,7 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         ExpNode exp = (ExpNode) visit(ctx.exp());
 
         return new DecVarNode(type, id, exp);
+
     }
 
     /**
@@ -132,7 +135,6 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         }
     }
 
-
     @Override
     public DeletionNode visitDeletion(SimpLanPlusParser.DeletionContext ctx) {
 
@@ -181,6 +183,7 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         }
 
         return new CallNode(id, parameters);
+
     }
 
     @Override
@@ -259,5 +262,6 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
     @Override
     public Node visit(ParseTree tree) {
         return tree != null ? super.visit(tree) : null;
+
     }
 }

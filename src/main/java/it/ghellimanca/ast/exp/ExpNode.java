@@ -7,4 +7,7 @@ import it.ghellimanca.ast.Node;
  */
 public abstract class ExpNode implements Node {
 
+    public String toString() {
+        return toPrint("");
+    }
 }

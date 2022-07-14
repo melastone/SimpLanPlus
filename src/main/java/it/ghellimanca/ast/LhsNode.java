@@ -17,6 +17,7 @@ public class LhsNode implements Node {
     final private IdNode id;
     final LhsNode lhs;
 
+
     public LhsNode(IdNode id, LhsNode lhs) {
         this.id = id;
         this.lhs = lhs;
@@ -28,6 +29,21 @@ public class LhsNode implements Node {
 
     public LhsNode getLhs() {
         return lhs;
+    }
+
+    @Override
+    public String toPrint(String indent) {
+        if (lhs != null) {
+            return "\n" + indent + "LHS" + lhs.toPrint(indent + "\t");
+        }
+        else {
+            return "\n" + indent + id.toPrint(indent + "\t");
+        }
+    }
+
+    @Override
+    public String toString() {
+        return toPrint("");
     }
 
     //TODO da implementare checkSemantics di LhsNode

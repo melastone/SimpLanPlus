@@ -22,6 +22,7 @@ public class CallNode implements Node {
     final private List<ExpNode> params;
 
 
+
     public CallNode(IdNode id, List<ExpNode> params) {
         this.id = id;
         this.params = params;
@@ -47,4 +48,5 @@ public class CallNode implements Node {
     public Node typeCheck() {
         return null;
     }
+
 }

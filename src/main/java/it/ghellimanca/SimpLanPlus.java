@@ -52,7 +52,9 @@ public class SimpLanPlus {
         CommonTokenStream slpLexerTokens = new CommonTokenStream(slpLexer);
 
         slpLexer.removeErrorListeners();
+
 //        slpLexer.addErrorListener(new VerboseListener());
+
         
         // Checking for lexical errors
         // @todo: understand Antlr Lexer error management, then implement errorCount()
@@ -79,6 +81,7 @@ public class SimpLanPlus {
         // Visiting the tree and generating the AST
         BlockNode AST = (BlockNode) parseTreeVisitor.visitBlock(slpParser.block());
 //        AST.setMainBlock(); // The main block is special therefore just here a flag is set to signal this
+
         // (it's important for the code generation).
 
         // Checking for syntactical errors
@@ -97,7 +100,6 @@ public class SimpLanPlus {
         System.out.println("The AST generated is:" + AST);
 
 
-
         /* SEMANTIC ANALYSIS */
 
         // Creating the environment
@@ -112,6 +114,7 @@ public class SimpLanPlus {
         /* CODE GENERATION */
 
         return null;
+
     }
 
     /**

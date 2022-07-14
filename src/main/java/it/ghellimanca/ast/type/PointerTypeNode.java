@@ -4,6 +4,7 @@ package it.ghellimanca.ast.type;
  * Represents a pointer type node in the AST.
  */
 public class PointerTypeNode extends TypeNode {
+
     final TypeNode pointedType;
 
     public PointerTypeNode(TypeNode pointedType) {
@@ -12,4 +13,9 @@ public class PointerTypeNode extends TypeNode {
 
     //TODO (pointertypenode) capire se inserire checksemantics, typecheck, ecc
     // perchè per il resto non fa nulla
+
+    @Override
+    public String toPrint(String indent) {
+        return "\n" + indent + "TYPE: " + "^" + pointedType;
+    }
 }

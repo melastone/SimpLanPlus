@@ -26,4 +26,9 @@ public class DerExpNode extends ExpNode {
     public Node typeCheck() {
         return null;
     }
+
+    @Override
+    public String toPrint(String indent) {
+        return "\n" + indent + "DER_EXP" + lhs.toPrint(indent + "\t");
+    }
 }

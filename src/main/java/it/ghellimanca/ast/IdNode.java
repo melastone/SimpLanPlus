@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Node of the AST for an identifier
  *
  */
-public class IdNode implements Node{
+public class IdNode implements Node {
 
     final private String id;
 
@@ -19,7 +19,12 @@ public class IdNode implements Node{
 
     @Override
     public String toPrint(String indent) {
-        return "\n" + indent + "ID:" + "\t" + id;
+        return "\n" + indent + "ID: " + id;
+    }
+
+    @Override
+    public String toString() {
+        return toPrint("");
     }
 
     @Override

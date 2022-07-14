@@ -21,7 +21,7 @@ decVar      : type ID ('=' exp)? ';' ;
 
 type        : 'int'
             | 'bool'
-	    | '^' type ;
+	        | '^' type ;
 
 arg         : type ID;
 

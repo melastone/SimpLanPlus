@@ -1,6 +1,5 @@
 package it.ghellimanca;
 
-
 /**
  * Represents error outputted by Node::checkSemantics()
  * Contains a message
@@ -13,4 +12,5 @@ public class SemanticError {
     public SemanticError(String msg) {
         this.msg = msg;
     }
+
 }

@@ -5,7 +5,6 @@ package it.ghellimanca;
  * It is implemented as a list of hashtables.
  */
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

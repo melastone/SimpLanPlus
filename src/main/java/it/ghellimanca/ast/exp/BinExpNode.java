@@ -15,6 +15,7 @@ public class BinExpNode extends ExpNode {
     final ExpNode rightExp;
 
     //TODO: context contiene anche i seguenti attributi, controllare in futuro se servono
+
     //final List<ExpNode> expList;
     //final ExpNode exp;
 
@@ -32,5 +33,14 @@ public class BinExpNode extends ExpNode {
     @Override
     public Node typeCheck() {
         return null;
+    }
+
+
+    @Override
+    public String toPrint(String indent) {
+        return "\n" + indent + "BIN_EXP"
+                + leftExp.toPrint(indent + "\t")
+                + "\n" + indent + "\t" + "op: " + operator
+                + rightExp.toPrint(indent + "\t");
     }
 }

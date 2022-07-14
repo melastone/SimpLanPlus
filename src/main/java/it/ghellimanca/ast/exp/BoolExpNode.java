@@ -26,4 +26,9 @@ public class BoolExpNode extends ExpNode {
     public Node typeCheck() {
         return new BoolTypeNode();
     }
+
+    @Override
+    public String toPrint(String indent) {
+        return "\n" + indent + "BOOL_EXP: " + bool;
+    }
 }

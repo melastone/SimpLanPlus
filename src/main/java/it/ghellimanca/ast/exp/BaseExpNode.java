@@ -25,4 +25,10 @@ public class BaseExpNode extends ExpNode {
     public Node typeCheck() {
         return null;
     }
+
+    @Override
+    public String toPrint(String indent) {
+        return "\n" + indent + "BASE_EXP" + exp.toPrint(indent + "\t");
+    }
+
 }

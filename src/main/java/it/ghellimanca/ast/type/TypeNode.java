@@ -23,4 +23,9 @@ public abstract class TypeNode implements Node {
     public Node typeCheck() {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return toPrint("");
+    }
 }
