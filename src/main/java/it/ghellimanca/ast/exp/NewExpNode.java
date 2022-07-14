@@ -26,4 +26,9 @@ public class NewExpNode extends ExpNode {
     public Node typeCheck() {
         return null;
     }
+
+    @Override
+    public String toPrint(String indent) {
+        return "\n" + indent + "NEW_EXP" + type.toPrint(indent + "\t");
+    }
 }

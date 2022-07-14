@@ -47,4 +47,9 @@ public class CallNode implements Node {
     public Node typeCheck() {
         return null;
     }
+
+    @Override
+    public String toPrint(String indent) {
+        return null;
+    }
 }

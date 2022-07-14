@@ -28,4 +28,8 @@ public class CallExpNode extends ExpNode {
         return null;
     }
 
+    @Override
+    public String toPrint(String indent) {
+        return "\n" + indent + "CALL_EXP" + call.toPrint(indent + "\t");
+    }
 }

@@ -26,4 +26,9 @@ public class NegExpNode extends ExpNode {
     public Node typeCheck() {
         return null;
     }
+
+    @Override
+    public String toPrint(String indent) {
+        return "\n" + indent + "NEG_EXP" + exp.toPrint(indent + "\t");
+    }
 }

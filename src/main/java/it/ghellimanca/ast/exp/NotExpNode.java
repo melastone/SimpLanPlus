@@ -26,4 +26,9 @@ public class NotExpNode extends ExpNode {
     public Node typeCheck() {
         return null;
     }
+
+    @Override
+    public String toPrint(String indent) {
+        return "\n" + indent + "NOT_EXP" + exp.toPrint(indent + "\t");
+    }
 }

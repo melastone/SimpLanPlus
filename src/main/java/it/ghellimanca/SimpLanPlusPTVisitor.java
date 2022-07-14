@@ -44,8 +44,6 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         return super.visitDecVar(ctx);
     }
 
-
-
     /**
      * Creates a node in the AST that represents a 'type', by visiting the parse tree.
      */

@@ -23,4 +23,7 @@ public interface Node {
     /**
      * Check effects analysis errors.
      */
+
+
+    String toPrint(String indent);
 }

@@ -33,4 +33,12 @@ public class BinExpNode extends ExpNode {
     public Node typeCheck() {
         return null;
     }
+
+    @Override
+    public String toPrint(String indent) {
+        return "\n" + indent + "BIN_EXP"
+                + leftExp.toPrint(indent + "\t")
+                + "\n" + indent + "\t" + "op: " + operator
+                + rightExp.toPrint(indent + "\t");
+    }
 }

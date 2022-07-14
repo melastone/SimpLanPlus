@@ -21,4 +21,14 @@ public class IdNode implements Node {
     public Node typeCheck() {
         return null;
     }
+
+    @Override
+    public String toPrint(String indent) {
+        return "\n" + indent + "ID: " + id;
+    }
+
+    @Override
+    public String toString() {
+        return toPrint("");
+    }
 }

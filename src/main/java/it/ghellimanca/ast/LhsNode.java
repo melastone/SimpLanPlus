@@ -36,4 +36,19 @@ public class LhsNode implements Node {
     public Node typeCheck() {
         return null;
     }
+
+    @Override
+    public String toPrint(String indent) {
+        if (lhs != null) {
+            return "\n" + indent + "LHS" + lhs.toPrint(indent + "\t");
+        }
+        else {
+            return "\n" + indent + id.toPrint(indent + "\t");
+        }
+    }
+
+    @Override
+    public String toString() {
+        return toPrint("");
+    }
 }
