@@ -74,6 +74,8 @@ public class SimpLanPlus {
         // Creating the tree visitor
         SimpLanPlusPTVisitor parseTreeVisitor = new SimpLanPlusPTVisitor();
 
+        System.out.println("Parsing...");
+
         // Visiting the tree and generating the AST
         BlockNode AST = (BlockNode) parseTreeVisitor.visitBlock(slpParser.block());
 //        AST.setMainBlock(); // The main block is special therefore just here a flag is set to signal this
@@ -90,6 +92,10 @@ public class SimpLanPlus {
             System.err.println("There are syntactical errors in the file, look above.");
             System.exit(1);
         }
+
+        System.out.println("Parse completed without issues!\n");
+        System.out.println("The AST generated is:" + AST);
+
 
 
         /* SEMANTIC ANALYSIS */

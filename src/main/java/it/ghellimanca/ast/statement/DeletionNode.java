@@ -24,6 +24,11 @@ public class DeletionNode implements Node {
     }
 
     @Override
+    public String toPrint(String indent) {
+        return "\n" + indent + "DELETION" + id.toPrint(indent + "\t");
+    }
+
+    @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         return null;
     }

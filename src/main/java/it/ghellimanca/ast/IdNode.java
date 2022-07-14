@@ -18,6 +18,11 @@ public class IdNode implements Node{
     }
 
     @Override
+    public String toPrint(String indent) {
+        return "\n" + indent + "ID:" + "\t" + id;
+    }
+
+    @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         return null;
     }

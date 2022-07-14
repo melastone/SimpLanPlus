@@ -28,6 +28,17 @@ public class CallNode implements Node {
     }
 
     @Override
+    public String toPrint(String indent) {
+        String res = '\n' + indent + "CALL" + id.toPrint(indent + "\t");
+        if (this.params != null) {
+            for (ExpNode e : params){
+                res += e.toPrint(indent + "\t");
+            }
+        }
+        return res;
+    }
+
+    @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         return null;
     }

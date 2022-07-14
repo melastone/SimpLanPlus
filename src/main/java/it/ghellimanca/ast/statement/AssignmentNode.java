@@ -27,6 +27,11 @@ public class AssignmentNode implements Node {
     }
 
     @Override
+    public String toPrint(String indent) {
+        return "\n" + indent + "ASSIGNMENT" + lhs.toPrint(indent + "\t") + exp.toPrint(indent + "\t");
+    }
+
+    @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         return null;
     }

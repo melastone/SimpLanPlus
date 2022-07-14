@@ -29,8 +29,15 @@ public class IteNode implements Node {
 
     @Override
     public String toPrint(String indent) {
-        return indent + "If:\t" + exp.toPrint(indent) + "\nThen:" + stm1.toPrint(indent) + ;
+        String res = "\n" + indent + "ITE" + exp.toPrint(indent + "\t") + stm1.toPrint(indent + "\t");
+        if (this.stm2 != null) {
+            res += stm2.toPrint(indent + "\t");
+        }
+        return res;
     }
+
+    @Override
+    public String toString() { return toPrint("");}
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {

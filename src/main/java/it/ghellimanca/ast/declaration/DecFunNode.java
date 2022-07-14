@@ -51,6 +51,18 @@ public class DecFunNode implements Node {
     }
 
     @Override
+    public String toPrint(String indent) {
+        String res = "\n" + indent + "DECFUN" + type.toPrint(indent + "\t") + id.toPrint(indent + "\t");
+        if (this.arguments != null) {
+            for (ArgNode a : arguments) {
+                res += a.toPrint(indent + "\t");
+            }
+        }
+        res += body.toPrint(indent + "\t");
+        return res;
+     }
+
+    @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         return null;
     }

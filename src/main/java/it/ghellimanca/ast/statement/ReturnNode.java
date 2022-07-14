@@ -29,7 +29,11 @@ public class ReturnNode implements Node {
 
     @Override
     public String toPrint(String indent) {
-        return indent + "Return:\t" + (exp == null? "void" : exp.toPrint(indent));
+        String res = "\n" + indent + "RET";
+        if (this.exp != null) {
+            res += exp.toPrint(indent + "\t");
+        }
+        return res;
     }
 
     @Override

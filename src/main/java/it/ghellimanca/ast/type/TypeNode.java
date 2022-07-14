@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * A generic type node of the AST.
  */
 
-public class TypeNode implements Node {
+public abstract class TypeNode implements Node {
 
     //TODO da implementare checkSemantics di TypeNode
     @Override

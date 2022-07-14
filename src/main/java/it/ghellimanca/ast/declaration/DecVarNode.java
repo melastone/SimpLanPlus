@@ -32,6 +32,15 @@ public class DecVarNode implements Node {
     }
 
     @Override
+    public String toPrint(String indent) {
+        String res = "\n" + indent + "DECVAR" + type.toPrint(indent + "\t") + id.toPrint(indent+ "\t");
+        if (this.exp != null) {
+            res += exp.toPrint(indent + "\t");
+        }
+        return res;
+    }
+
+    @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         return null;
     }
