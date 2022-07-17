@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * Represents an expression node in the AST that is an operation between two expression.
  */
 public class BinExpNode extends ExpNode {
+
     final ExpNode leftExp;
     final String operator;
     final ExpNode rightExp;
@@ -38,9 +39,8 @@ public class BinExpNode extends ExpNode {
 
     @Override
     public String toPrint(String indent) {
-        return "\n" + indent + "BIN_EXP"
-                + leftExp.toPrint(indent + "\t")
-                + "\n" + indent + "\t" + "op: " + operator
-                + rightExp.toPrint(indent + "\t");
+        return "\n" + indent + "BIN_EXP" + leftExp.toPrint(indent + "\t")
+                    + "\n" + indent + "\t" + "op: " + operator
+                    + rightExp.toPrint(indent + "\t");
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
  * ID '(' (exp(',' exp)*)? ')'
  *
  */
-public class CallNode implements Node {
+public class CallNode extends StatementNode {
 
     final private IdNode id;
     final private List<ExpNode> params;
@@ -38,6 +38,9 @@ public class CallNode implements Node {
         }
         return res;
     }
+
+    @Override
+    public String toString() { return toPrint("");}
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {

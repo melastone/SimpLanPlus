@@ -16,7 +16,7 @@ import java.util.List;
  * @todo: discuss how to manage empty nodes. should we make 1 constructor and call it with null params in case of empty node, OR should we make both empty constructor and 1 with params?
  *
  */
-public class BlockNode implements Node{
+public class BlockNode implements Node {
 
     final private List<DeclarationNode> declarations;
     final private List<StatementNode> statements;
@@ -55,6 +55,11 @@ public class BlockNode implements Node{
         }
 
         return res;
+    }
+
+    @Override
+    public String toString() {
+        return toPrint("");
     }
 
     @Override

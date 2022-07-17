@@ -18,7 +18,7 @@ import java.util.ArrayList;
  *
  */
 
-public class DecVarNode implements Node {
+public class DecVarNode extends DeclarationNode {
 
     final private TypeNode type;
     final private IdNode id;
@@ -39,6 +39,9 @@ public class DecVarNode implements Node {
         }
         return res;
     }
+
+    @Override
+    public String toString() { return toPrint("");}
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {

@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * 'return' (exp)?
  *
  */
-public class ReturnNode implements Node {
+public class ReturnNode extends StatementNode {
 
     final private ExpNode exp;
 
@@ -35,6 +35,9 @@ public class ReturnNode implements Node {
         }
         return res;
     }
+
+    @Override
+    public String toString() { return toPrint("");}
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {

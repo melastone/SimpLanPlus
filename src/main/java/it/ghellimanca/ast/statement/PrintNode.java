@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * 'print' exp
  *
  */
-public class PrintNode implements Node {
+public class PrintNode extends StatementNode {
 
     final private ExpNode exp;
 
@@ -25,8 +25,14 @@ public class PrintNode implements Node {
 
     @Override
     public String toPrint(String indent) {
+
+        System.out.println("Entered PrintNode toPrint()..");
+
         return "\n" + indent + "PRINT" + exp.toPrint(indent + "\t");
     }
+
+    @Override
+    public String toString() { return toPrint("");}
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {

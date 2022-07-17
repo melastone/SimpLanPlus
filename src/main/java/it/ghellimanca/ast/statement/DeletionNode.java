@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * 'delete' ID
  *
  */
-public class DeletionNode implements Node {
+public class DeletionNode extends StatementNode {
 
     final private IdNode id;
 
@@ -27,6 +27,9 @@ public class DeletionNode implements Node {
     public String toPrint(String indent) {
         return "\n" + indent + "DELETION" + id.toPrint(indent + "\t");
     }
+
+    @Override
+    public String toString() { return toPrint("");}
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {

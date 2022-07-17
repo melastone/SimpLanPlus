@@ -18,7 +18,7 @@ import java.util.List;
  * type is used for int/bool function
  * voidType is used in case the function is void.
  */
-public class DecFunNode implements Node {
+public class DecFunNode extends DeclarationNode {
 
     final private TypeNode type;
     final private String voidType;
@@ -60,7 +60,10 @@ public class DecFunNode implements Node {
         }
         res += body.toPrint(indent + "\t");
         return res;
-     }
+    }
+
+    @Override
+    public String toString() { return toPrint("");}
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {

@@ -39,21 +39,33 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         }
 
         for (SimpLanPlusParser.StatementContext stmCtx : ctx.statement()){
-            statements.add((StatementNode) visit(stmCtx));
+            System.out.println(statements.add((StatementNode) visit(stmCtx)));
+
+//            statements.add((StatementNode) visit(stmCtx));
+        }
+
+        System.out.println("Created new BlockNode with ");
+
+        for (DeclarationNode decl : declarations) {
+            decl.toPrint("");
+        }
+
+        for(StatementNode stat : statements){
+            stat.toPrint("");
         }
 
         return new BlockNode(declarations,statements);
     }
 
-    @Override
-    public StatementNode visitStatement(SimpLanPlusParser.StatementContext ctx) {
-        return (StatementNode) visit(ctx);
-    }
+//    @Override
+//    public StatementNode visitStatement(SimpLanPlusParser.StatementContext ctx) {
+//        return (StatementNode) visit(ctx);
+//    }
 
-    @Override
-    public DeclarationNode visitDeclaration(SimpLanPlusParser.DeclarationContext ctx) {
-        return (DeclarationNode) visit(ctx);
-    }
+//    @Override
+//    public DeclarationNode visitDeclaration(SimpLanPlusParser.DeclarationContext ctx) {
+//        return (DeclarationNode) visit(ctx);
+//    }
 
     @Override
     public Node visitDecFun(SimpLanPlusParser.DecFunContext ctx) {
@@ -137,6 +149,8 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
 
     @Override
     public DeletionNode visitDeletion(SimpLanPlusParser.DeletionContext ctx) {
+
+        System.out.println("VisitDeletion called..");
 
         IdNode id = new IdNode(ctx.ID().toString());
 

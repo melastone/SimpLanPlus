@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * lhs '=' exp
  *
  */
-public class AssignmentNode implements Node {
+public class AssignmentNode extends StatementNode {
 
     final private LhsNode lhs;
     final private ExpNode exp;
@@ -28,8 +28,12 @@ public class AssignmentNode implements Node {
 
     @Override
     public String toPrint(String indent) {
+        System.out.println("Entered Assignmentnode toPrint()..");
         return "\n" + indent + "ASSIGNMENT" + lhs.toPrint(indent + "\t") + exp.toPrint(indent + "\t");
     }
+
+    @Override
+    public String toString() { return toPrint("");}
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {

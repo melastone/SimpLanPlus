@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * 'if' '(' exp ')' statement ('else' statement)?
  *
  */
-public class IteNode implements Node {
+public class IteNode extends StatementNode {
 
     final private ExpNode exp;
     final private StatementNode stm1;
@@ -30,6 +30,7 @@ public class IteNode implements Node {
     @Override
     public String toPrint(String indent) {
         String res = "\n" + indent + "ITE" + exp.toPrint(indent + "\t") + stm1.toPrint(indent + "\t");
+
         if (this.stm2 != null) {
             res += stm2.toPrint(indent + "\t");
         }
