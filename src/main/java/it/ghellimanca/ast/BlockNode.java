@@ -5,6 +5,7 @@ import it.ghellimanca.SemanticError;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.declaration.DeclarationNode;
 import it.ghellimanca.ast.statement.StatementNode;
+import org.antlr.v4.codegen.model.decl.Decl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,25 @@ public class BlockNode implements Node{
     public BlockNode(List<DeclarationNode> declarations, List<StatementNode> statements) {
         this.declarations = declarations;
         this.statements = statements;
+    }
+
+    @Override
+    public String toPrint(String indent) {
+        String res = "\n" + indent + "BLOCK";
+
+        if (this.declarations != null) {
+            for (DeclarationNode dec : declarations) {
+                res += dec.toPrint(indent + "\t");
+            }
+        }
+
+        if (this.statements != null) {
+            for (StatementNode stat : statements) {
+                res += stat.toPrint(indent + "\t");
+            }
+        }
+
+        return res;
     }
 
     @Override
