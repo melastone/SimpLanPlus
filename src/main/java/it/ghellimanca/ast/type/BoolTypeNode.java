@@ -13,5 +13,9 @@ public class BoolTypeNode extends TypeNode {
         return "\n" + indent + "TYPE: " + "bool";
     }
 
+    @Override
+    public String toString() {
+        return "bool";
+    }
 }
 

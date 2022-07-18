@@ -33,13 +33,16 @@ public class LhsNode implements Node {
 
     @Override
     public String toPrint(String indent) {
+        String res = "\n" + indent + "LHS";
 
         if (lhs != null) {
-            return "\n" + indent + "LHS" + lhs.toPrint(indent + "\t");
+            res += lhs.toPrint(indent + "\t");
         }
         else {
-            return "\n" + indent + id.toPrint(indent + "\t");
+            res += id.toPrint(indent + "\t");
         }
+
+        return res;
     }
 
     @Override

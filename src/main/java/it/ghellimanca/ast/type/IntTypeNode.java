@@ -13,4 +13,9 @@ public class IntTypeNode extends TypeNode {
     public String toPrint(String indent) {
         return "\n" + indent + "TYPE: " + "int";
     }
+
+    @Override
+    public String toString() {
+        return "int";
+    }
 }

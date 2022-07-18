@@ -17,9 +17,12 @@ public class IdNode implements Node {
         this.id = id;
     }
 
+    public String getId() {
+        return id;
+    }
+
     @Override
     public String toPrint(String indent) {
-
         return "\n" + indent + "ID: " + id;
     }
 

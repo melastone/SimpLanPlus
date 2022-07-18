@@ -52,7 +52,18 @@ public class DecFunNode extends DeclarationNode {
 
     @Override
     public String toPrint(String indent) {
-        String res = "\n" + indent + "DECFUN" + type.toPrint(indent + "\t") + id.toPrint(indent + "\t");
+        //String res = "\n" + indent + "DECFUN" + type.toPrint(indent + "\t") + id.toPrint(indent + "\t");
+        String res = "\n" + indent + "DECFUN";
+
+        if (this.voidType != null) {
+            res += "\n" + indent + "\t" + "TYPE: " + "void" + id.toPrint(indent + "\t");
+        }
+        else {
+            if (type != null) {
+                res += type.toPrint(indent + "\t") + id.toPrint(indent + "\t");
+            }
+        }
+
         if (this.arguments != null) {
             for (ArgNode a : arguments) {
                 res += a.toPrint(indent + "\t");

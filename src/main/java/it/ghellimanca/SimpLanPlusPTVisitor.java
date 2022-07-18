@@ -39,19 +39,7 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         }
 
         for (SimpLanPlusParser.StatementContext stmCtx : ctx.statement()){
-            System.out.println(statements.add((StatementNode) visit(stmCtx)));
-
-//            statements.add((StatementNode) visit(stmCtx));
-        }
-
-        System.out.println("Created new BlockNode with ");
-
-        for (DeclarationNode decl : declarations) {
-            decl.toPrint("");
-        }
-
-        for(StatementNode stat : statements){
-            stat.toPrint("");
+            statements.add((StatementNode) visit(stmCtx));
         }
 
         return new BlockNode(declarations,statements);
@@ -61,6 +49,49 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
 //    public StatementNode visitStatement(SimpLanPlusParser.StatementContext ctx) {
 //        return (StatementNode) visit(ctx);
 //    }
+    @Override
+    public Node visitDeclaration(SimpLanPlusParser.DeclarationContext ctx){
+        Node res;
+
+        if(ctx.decFun() != null) {
+            res = visit(ctx.decFun());
+        }
+        else if(ctx.decVar() != null){
+            res = visit(ctx.decVar());
+        }
+        else {
+            return null;
+        }
+        return res;
+    }
+    @Override public Node visitStatement(SimpLanPlusParser.StatementContext ctx){
+        Node res;
+        if (ctx.block() != null) {
+            res = visit(ctx.block());
+        }
+        else if(ctx.call()!=null){
+            res = visit(ctx.call());
+        }
+        else if(ctx.ite()!=null){
+            res = visit(ctx.ite());
+        }
+        else if(ctx.ret()!=null){
+            res = visit(ctx.ret());
+        }
+        else if(ctx.print()!=null){
+            res = visit(ctx.print());
+        }
+        else if(ctx.deletion()!=null){
+            res = visit(ctx.deletion());
+        }
+        else if(ctx.assignment()!=null){
+            res = visit(ctx.assignment());
+        }
+        else{
+            return null;
+        }
+        return res;
+    }
 
 //    @Override
 //    public DeclarationNode visitDeclaration(SimpLanPlusParser.DeclarationContext ctx) {

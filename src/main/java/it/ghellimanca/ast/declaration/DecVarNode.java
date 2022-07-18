@@ -33,7 +33,7 @@ public class DecVarNode extends DeclarationNode {
 
     @Override
     public String toPrint(String indent) {
-        String res = "\n" + indent + "DECVAR" + type.toPrint(indent + "\t") + id.toPrint(indent+ "\t");
+        String res = "\n" + indent + "DECVAR" + type.toPrint(indent + "\t") + id.toPrint(indent + "\t");
         if (this.exp != null) {
             res += exp.toPrint(indent + "\t");
         }

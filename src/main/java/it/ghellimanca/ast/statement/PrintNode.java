@@ -26,8 +26,6 @@ public class PrintNode extends StatementNode {
     @Override
     public String toPrint(String indent) {
 
-        System.out.println("Entered PrintNode toPrint()..");
-
         return "\n" + indent + "PRINT" + exp.toPrint(indent + "\t");
     }
 

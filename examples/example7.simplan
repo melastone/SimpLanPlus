@@ -8,7 +8,7 @@
     The program is well formed and should output 1.
     */
     ^int u = new int;
-    void f(^int x, int n) { 
+    void f(^int x, int n) {
         if (n == 0) {
             print(x);
             delete x;
