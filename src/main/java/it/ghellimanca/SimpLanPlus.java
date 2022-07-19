@@ -16,7 +16,6 @@ import java.nio.file.Paths;
  * Implements both the compiler and interpreter.
  *
  * @todo: create verbose listener
- * @todo: implement the tree visitor
  */
 
 public class SimpLanPlus {
@@ -51,8 +50,8 @@ public class SimpLanPlus {
         SimpLanPlusLexer slpLexer = new SimpLanPlusLexer(CharStreams.fromString(simpLanPlusCode));
         CommonTokenStream slpLexerTokens = new CommonTokenStream(slpLexer);
 
-        slpLexer.removeErrorListeners();
-
+//        slpLexer.removeErrorListeners();
+//
 //        slpLexer.addErrorListener(new VerboseListener());
 
         

@@ -8,6 +8,9 @@ import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class SimpLanPlusLexer extends Lexer {
 	static { RuntimeMetaData.checkVersion("4.9.2", RuntimeMetaData.VERSION); }
@@ -99,6 +102,11 @@ public class SimpLanPlusLexer extends Lexer {
 		return VOCABULARY;
 	}
 
+//	private List<String> errors = new ArrayList<>();
+//
+//    public int errorCount() {
+//        return errors.size();
+//    }
 
 	public SimpLanPlusLexer(CharStream input) {
 		super(input);
@@ -122,6 +130,14 @@ public class SimpLanPlusLexer extends Lexer {
 
 	@Override
 	public ATN getATN() { return _ATN; }
+
+//	private void ERR_action(RuleContext _localctx, int actionIndex) {
+//    	switch (actionIndex) {
+//            case 0:
+//                errors.add("Invalid character: " + getText());
+//                break;
+//        }
+//    }
 
 	public static final String _serializedATN =
 		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\2&\u00eb\b\1\4\2\t"+
