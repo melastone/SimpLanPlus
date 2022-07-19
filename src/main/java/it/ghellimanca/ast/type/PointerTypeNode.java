@@ -14,8 +14,13 @@ public class PointerTypeNode extends TypeNode {
     //TODO (pointertypenode) capire se inserire checksemantics, typecheck, ecc
     // perchè per il resto non fa nulla
 
+
+    public TypeNode getPointedType() {
+        return pointedType;
+    }
+
     @Override
     public String toPrint(String indent) {
-        return "\n" + indent + "TYPE: " + "^" + pointedType;
+        return "\n" + indent + "TYPE: " + "^" + pointedType.toPrint(indent + "\t");
     }
 }
