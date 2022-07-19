@@ -28,7 +28,6 @@ public class AssignmentNode extends StatementNode {
 
     @Override
     public String toPrint(String indent) {
-        System.out.println("Entered Assignmentnode toPrint()..");
         return "\n" + indent + "ASSIGNMENT" + lhs.toPrint(indent + "\t") + exp.toPrint(indent + "\t");
     }
 

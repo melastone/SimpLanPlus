@@ -40,7 +40,7 @@ public class BinExpNode extends ExpNode {
     @Override
     public String toPrint(String indent) {
         return "\n" + indent + "BIN_EXP" + leftExp.toPrint(indent + "\t")
-                    + "\n" + indent + "\t" + "op: " + operator
+                    + "\n" + indent + "\t" + "operator: " + operator
                     + rightExp.toPrint(indent + "\t");
     }
 }
