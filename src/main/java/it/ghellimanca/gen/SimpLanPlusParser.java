@@ -43,6 +43,7 @@ public class SimpLanPlusParser extends Parser {
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
+
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
@@ -102,22 +103,32 @@ public class SimpLanPlusParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
+	// ricorda che un block può essere una lista di decl seguito da una lista di statement
 	public static class BlockContext extends ParserRuleContext {
+
+		// restituisce tutta la lista delle dichiarazioni
 		public List<DeclarationContext> declaration() {
 			return getRuleContexts(DeclarationContext.class);
 		}
+
+		// restituisce una precisa dichiarazione di indice i dalla lista delle dichiarazioni
 		public DeclarationContext declaration(int i) {
 			return getRuleContext(DeclarationContext.class,i);
 		}
+
 		public List<StatementContext> statement() {
 			return getRuleContexts(StatementContext.class);
 		}
+
 		public StatementContext statement(int i) {
 			return getRuleContext(StatementContext.class,i);
 		}
+
+		// costruttore
 		public BlockContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
+
 		@Override public int getRuleIndex() { return RULE_block; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -127,6 +138,7 @@ public class SimpLanPlusParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof SimpLanPlusListener ) ((SimpLanPlusListener)listener).exitBlock(this);
 		}
+
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SimpLanPlusVisitor ) return ((SimpLanPlusVisitor<? extends T>)visitor).visitBlock(this);
@@ -367,6 +379,7 @@ public class SimpLanPlusParser extends Parser {
 	}
 
 	public static class DecFunContext extends ParserRuleContext {
+
 		public TerminalNode ID() { return getToken(SimpLanPlusParser.ID, 0); }
 		public BlockContext block() {
 			return getRuleContext(BlockContext.class,0);
@@ -380,6 +393,7 @@ public class SimpLanPlusParser extends Parser {
 		public ArgContext arg(int i) {
 			return getRuleContext(ArgContext.class,i);
 		}
+
 		public DecFunContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -481,6 +495,7 @@ public class SimpLanPlusParser extends Parser {
 		public ExpContext exp() {
 			return getRuleContext(ExpContext.class,0);
 		}
+
 		public DecVarContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -539,9 +554,11 @@ public class SimpLanPlusParser extends Parser {
 	}
 
 	public static class TypeContext extends ParserRuleContext {
+
 		public TypeContext type() {
 			return getRuleContext(TypeContext.class,0);
 		}
+
 		public TypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1088,6 +1105,7 @@ public class SimpLanPlusParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+
 	public static class BaseExpContext extends ExpContext {
 		public ExpContext exp() {
 			return getRuleContext(ExpContext.class,0);
@@ -1107,6 +1125,7 @@ public class SimpLanPlusParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+
 	public static class BinExpContext extends ExpContext {
 		public ExpContext left;
 		public Token op;
@@ -1132,6 +1151,7 @@ public class SimpLanPlusParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+
 	public static class DerExpContext extends ExpContext {
 		public LhsContext lhs() {
 			return getRuleContext(LhsContext.class,0);

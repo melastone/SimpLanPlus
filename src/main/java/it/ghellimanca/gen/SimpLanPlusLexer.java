@@ -8,6 +8,9 @@ import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class SimpLanPlusLexer extends Lexer {
 	static { RuntimeMetaData.checkVersion("4.9.2", RuntimeMetaData.VERSION); }
@@ -21,6 +24,7 @@ public class SimpLanPlusLexer extends Lexer {
 		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
 		T__24=25, T__25=26, T__26=27, T__27=28, T__28=29, T__29=30, BOOL=31, ID=32, 
 		NUMBER=33, WS=34, LINECOMMENTS=35, BLOCKCOMMENTS=36;
+
 	public static String[] channelNames = {
 		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
 	};
@@ -28,6 +32,7 @@ public class SimpLanPlusLexer extends Lexer {
 	public static String[] modeNames = {
 		"DEFAULT_MODE"
 	};
+
 
 	private static String[] makeRuleNames() {
 		return new String[] {
@@ -38,6 +43,7 @@ public class SimpLanPlusLexer extends Lexer {
 			"NUMBER", "WS", "LINECOMMENTS", "BLOCKCOMMENTS"
 		};
 	}
+
 	public static final String[] ruleNames = makeRuleNames();
 
 	private static String[] makeLiteralNames() {
@@ -48,7 +54,9 @@ public class SimpLanPlusLexer extends Lexer {
 			"'=='", "'!='", "'&&'", "'||'"
 		};
 	}
+
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
+
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
@@ -57,7 +65,9 @@ public class SimpLanPlusLexer extends Lexer {
 			"LINECOMMENTS", "BLOCKCOMMENTS"
 		};
 	}
+
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
+
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
 	/**
@@ -65,6 +75,7 @@ public class SimpLanPlusLexer extends Lexer {
 	 */
 	@Deprecated
 	public static final String[] tokenNames;
+
 	static {
 		tokenNames = new String[_SYMBOLIC_NAMES.length];
 		for (int i = 0; i < tokenNames.length; i++) {
@@ -91,6 +102,11 @@ public class SimpLanPlusLexer extends Lexer {
 		return VOCABULARY;
 	}
 
+//	private List<String> errors = new ArrayList<>();
+//
+//    public int errorCount() {
+//        return errors.size();
+//    }
 
 	public SimpLanPlusLexer(CharStream input) {
 		super(input);
@@ -114,6 +130,14 @@ public class SimpLanPlusLexer extends Lexer {
 
 	@Override
 	public ATN getATN() { return _ATN; }
+
+//	private void ERR_action(RuleContext _localctx, int actionIndex) {
+//    	switch (actionIndex) {
+//            case 0:
+//                errors.add("Invalid character: " + getText());
+//                break;
+//        }
+//    }
 
 	public static final String _serializedATN =
 		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\2&\u00eb\b\1\4\2\t"+
@@ -188,8 +212,10 @@ public class SimpLanPlusLexer extends Lexer {
 		"\u00e6\3\2\2\2\u00e5\u00e3\3\2\2\2\u00e6\u00e7\7,\2\2\u00e7\u00e8\7\61"+
 		"\2\2\u00e8\u00e9\3\2\2\2\u00e9\u00ea\b\'\2\2\u00eaN\3\2\2\2\n\2\u00b6"+
 		"\u00bd\u00bf\u00c7\u00d3\u00e1\u00e3\3\b\2\2";
+
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
+
 	static {
 		_decisionToDFA = new DFA[_ATN.getNumberOfDecisions()];
 		for (int i = 0; i < _ATN.getNumberOfDecisions(); i++) {
