@@ -102,12 +102,6 @@ public class SimpLanPlusLexer extends Lexer {
 		return VOCABULARY;
 	}
 
-//	private List<String> errors = new ArrayList<>();
-//
-//    public int errorCount() {
-//        return errors.size();
-//    }
-
 	public SimpLanPlusLexer(CharStream input) {
 		super(input);
 		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
