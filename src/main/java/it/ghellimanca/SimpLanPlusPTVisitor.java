@@ -24,6 +24,7 @@ import java.util.List;
  * Parse Tree Visitor.
  *
  * Extends SimpLanPlusBaseVisitor, empty implementation of SimpLanPlusVisitor Interface
+ * @todo: improve the code where making several null controls
  *
  */
 public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
@@ -62,35 +63,38 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         else {
             return null;
         }
+
         return res;
     }
 
     @Override public Node visitStatement(SimpLanPlusParser.StatementContext ctx){
         Node res;
+
         if (ctx.block() != null) {
             res = visit(ctx.block());
         }
-        else if(ctx.call()!=null){
+        else if(ctx.call() != null){
             res = visit(ctx.call());
         }
-        else if(ctx.ite()!=null){
+        else if(ctx.ite() != null){
             res = visit(ctx.ite());
         }
-        else if(ctx.ret()!=null){
+        else if(ctx.ret() != null){
             res = visit(ctx.ret());
         }
-        else if(ctx.print()!=null){
+        else if(ctx.print() != null){
             res = visit(ctx.print());
         }
-        else if(ctx.deletion()!=null){
+        else if(ctx.deletion() != null){
             res = visit(ctx.deletion());
         }
-        else if(ctx.assignment()!=null){
+        else if(ctx.assignment() != null){
             res = visit(ctx.assignment());
         }
-        else{
+        else {
             return null;
         }
+
         return res;
     }
 
@@ -181,8 +185,6 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
 
     @Override
     public DeletionNode visitDeletion(SimpLanPlusParser.DeletionContext ctx) {
-
-        System.out.println("VisitDeletion called..");
 
         IdNode id = new IdNode(ctx.ID().toString());
 

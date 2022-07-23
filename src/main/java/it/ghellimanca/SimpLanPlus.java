@@ -7,6 +7,8 @@ import it.ghellimanca.SimpLanPlusPTVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -15,7 +17,6 @@ import java.nio.file.Paths;
  * This is the main class.
  * Implements both the compiler and interpreter.
  *
- * @todo: create verbose listener
  */
 
 public class SimpLanPlus {
@@ -41,36 +42,33 @@ public class SimpLanPlus {
     /**
      * Handles the compilation phase
      */
-    private static String compile(final String simpLanPlusCode) {
+    private static String compile(final String simpLanPlusCode) throws IOException {
 
+        // Creating file object. Deleting errors.txt file if it exists
+        File file = new File("errors.txt");
+        file.delete();
 
         /* LEXER */
 
         // Creating the lexer
         SimpLanPlusLexer slpLexer = new SimpLanPlusLexer(CharStreams.fromString(simpLanPlusCode));
         CommonTokenStream slpLexerTokens = new CommonTokenStream(slpLexer);
+        SimpLanPlusErrorListener slpErrorListenerLexer = new SimpLanPlusErrorListener();
 
-//        slpLexer.removeErrorListeners();
-//
-//        slpLexer.addErrorListener(new VerboseListener());
+        slpLexer.removeErrorListeners();
 
-        
-        // Checking for lexical errors
-        // @todo: understand Antlr Lexer error management, then implement errorCount()
-        if (slpLexer.errorCount() > 0) {
-            System.err.println("Lexical analysis:");
-            System.err.println("There are lexical errors in the file. It cannot compile.");
-            System.exit(1);
-        }
+        slpLexer.addErrorListener(slpErrorListenerLexer);
 
 
         /* PARSER */
 
         // Creating the parser
         SimpLanPlusParser slpParser = new SimpLanPlusParser(slpLexerTokens);
+        SimpLanPlusErrorListener slpErrorListenerParser = new SimpLanPlusErrorListener();
 
-//        slpParser.removeErrorListeners();
-//        slpParser.addErrorListener(new VerboseListener());
+        slpParser.removeErrorListeners();
+
+        slpParser.addErrorListener(slpErrorListenerParser);
 
         // Creating the tree visitor
         SimpLanPlusPTVisitor parseTreeVisitor = new SimpLanPlusPTVisitor();
@@ -81,21 +79,56 @@ public class SimpLanPlus {
         BlockNode AST = (BlockNode) parseTreeVisitor.visitBlock(slpParser.block());
 //        AST.setMainBlock(); // The main block is special therefore just here a flag is set to signal this
 
-        // (it's important for the code generation).
 
-        // Checking for syntactical errors
-        /*
-        *
-        * Il paster implementa la classe Parser, che ha un attributo _syntaxError che tiene il conto degli errori fatti
-        *
-        * */
-        if (slpParser.getNumberOfSyntaxErrors() > 0) {
-            System.err.println("Syntactic analysis:");
-            System.err.println("There are syntactic errors in the file, look above.");
+        /* ERROR DETECTION */
+
+        if (slpErrorListenerParser.getErrors().size() > 0 || slpErrorListenerLexer.getErrors().size() > 0) {
+
+            // Creating the file for lexical and syntactic error tracking
+            file.createNewFile();
+
+            // Checking for lexical errors
+            if (slpErrorListenerLexer.getErrors().size() > 0) {
+
+                // Creating a FileWriter Object
+                FileWriter writer = new FileWriter(file, true);
+                writer.write("Lexical errors:\n");
+
+                for (String error : slpErrorListenerLexer.getErrors()) {
+                    // Writing the content to the file
+                    writer.write(error);
+                }
+                writer.flush();
+                writer.close();
+
+                System.err.println("Lexical analysis:");
+                System.err.println("There are errors in the file. Look at the errors.txt file.");
+            }
+
+            // Checking for syntactical errors
+            if (slpErrorListenerParser.getErrors().size() > 0) {
+
+                // Creating a FileWriter Object
+                FileWriter writer = new FileWriter(file, true);
+                writer.write("Syntactic errors:\n");
+
+                for (String error : slpErrorListenerParser.getErrors()) {
+                    // Writing the content to the file
+                    writer.write(error);
+                }
+                writer.write("\n");
+                writer.flush();
+                writer.close();
+
+                System.err.println("Syntactic analysis:");
+                System.err.println("There are errors in the file. Look at the errors.txt file.");
+            }
+
             System.exit(1);
         }
 
-        System.out.println("Parse completed without issues!\n");
+
+        System.out.println("Parse completed without issues!");
         System.out.println("The AST generated is:" + AST);
 
 
