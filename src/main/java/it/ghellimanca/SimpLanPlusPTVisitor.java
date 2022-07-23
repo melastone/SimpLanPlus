@@ -64,6 +64,7 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         }
         return res;
     }
+
     @Override public Node visitStatement(SimpLanPlusParser.StatementContext ctx){
         Node res;
         if (ctx.block() != null) {

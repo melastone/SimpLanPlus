@@ -57,11 +57,11 @@ public class SimpLanPlus {
         
         // Checking for lexical errors
         // @todo: understand Antlr Lexer error management, then implement errorCount()
-//        if (slpLexer.errorCount() > 0) {
-//            System.err.println("Lexical analysis:");
-//            System.err.println("There are lexical errors in the file. It cannot compile.");
-//            System.exit(1);
-//        }
+        if (slpLexer.errorCount() > 0) {
+            System.err.println("Lexical analysis:");
+            System.err.println("There are lexical errors in the file. It cannot compile.");
+            System.exit(1);
+        }
 
 
         /* PARSER */
@@ -91,7 +91,7 @@ public class SimpLanPlus {
         * */
         if (slpParser.getNumberOfSyntaxErrors() > 0) {
             System.err.println("Syntactic analysis:");
-            System.err.println("There are syntactical errors in the file, look above.");
+            System.err.println("There are syntactic errors in the file, look above.");
             System.exit(1);
         }
 
