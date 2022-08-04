@@ -1,9 +1,12 @@
-package it.ghellimanca;
+package it.ghellimanca.semanticanalysis;
 
 import it.ghellimanca.ast.type.TypeNode;
 
-// represents an entry of the symbol table
-public class STentry {
+/**
+ * Represents an entry of the symbol table.
+ *
+ */
+public class STEntry {
 
     //nesting level
     private final int nestingLevel;
@@ -12,12 +15,13 @@ public class STentry {
 
     private final int offset;
 
-    public STentry(int nestingLevel, int offset) {
+
+    public STEntry(int nestingLevel, int offset) {
         this.nestingLevel = nestingLevel;
         this.offset = offset;
     }
 
-    public STentry(int nestingLevel, TypeNode type, int offset) {
+    public STEntry(int nestingLevel, TypeNode type, int offset) {
         this(nestingLevel, offset);
         this.type = type;
     }

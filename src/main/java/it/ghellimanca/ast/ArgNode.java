@@ -1,7 +1,7 @@
 package it.ghellimanca.ast;
 
-import it.ghellimanca.Environment;
-import it.ghellimanca.SemanticError;
+import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;

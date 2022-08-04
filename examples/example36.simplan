@@ -1,6 +1,6 @@
 {
     /*
-    This example contains lexical and syntactic error. The token # cannot be recognized. The variable declaration is missind the ID.
+    This example contains lexical and syntactic error. The token # cannot be recognized. The variable declaration is missing the ID.
     */
 
     int # = 1;
