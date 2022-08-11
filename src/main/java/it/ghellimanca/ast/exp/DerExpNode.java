@@ -19,7 +19,7 @@ public class DerExpNode extends ExpNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        return new ArrayList<>(lhs.checkSemantics(env));
     }
 
     @Override

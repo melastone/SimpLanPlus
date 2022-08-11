@@ -5,6 +5,9 @@ package it.ghellimanca;
  * It is implemented as a list of hashtables.
  */
 
+import it.ghellimanca.ast.type.TypeNode;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,9 +20,11 @@ public class Environment {
      * with the table via Environment class methods.
      *
      */
-    //final private List<Map<String,STEntry>> symbolTable ;
+    private List<Map<String, STEntry>> symbolTable;
 
     private int nestingLevel;
+
+    private int offset;
 
 
     /**
@@ -28,10 +33,26 @@ public class Environment {
      * @param symTable     a list of hashmaps (that can be empty)
      * @param nestingLevel a positive integer
      */
-//    public Environment(List<Map<String, STEntry>> symTable, int nestingLevel) {
-//        this.symbolTable = symTable;
-//        this.nestingLevel = nestingLevel;
-//    }
+    public Environment(List<Map<String, STEntry>> symTable, int nestingLevel) {
+       this.symbolTable = symTable;
+       this.nestingLevel = nestingLevel;
+    }
+
+    public List<Map<String, STEntry>> getSymbolTable() {
+        return symbolTable;
+    }
+
+    public int getNestingLevel() {
+        return nestingLevel;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public TypeNode lookup(String id) {
+        return null;
+    }
 
     /**
      * @return the current active scope.

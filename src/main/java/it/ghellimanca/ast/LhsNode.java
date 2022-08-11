@@ -50,10 +50,16 @@ public class LhsNode implements Node {
         return toPrint("");
     }
 
-    //TODO da implementare checkSemantics di LhsNode
+
+    // checksemantic a cascata until i find an lhsnode with idnode
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+
+        if (lhs == null) {
+            return id.checkSemantics(env);
+        }
+
+        return new ArrayList<>(lhs.checkSemantics(env));
     }
 
     //TODO da implementare typeCheck di LhsNode

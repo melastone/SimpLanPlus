@@ -31,9 +31,16 @@ public class IdNode implements Node {
         return toPrint("");
     }
 
+    // will be called only when id is used not declared
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        ArrayList<SemanticError> err = new ArrayList<>();
+
+        if (env.lookup(id) == null) { // may do this control with try catch and a specific exception
+            err.add(new SemanticError("Missing declaration for ID: " + id));
+        }
+
+        return err;
     }
 
     @Override

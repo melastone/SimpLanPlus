@@ -31,9 +31,10 @@ public class DeletionNode extends StatementNode {
     @Override
     public String toString() { return toPrint("");}
 
+    //check if id was declared
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        return id.checkSemantics(env);
     }
 
     @Override

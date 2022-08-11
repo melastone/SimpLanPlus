@@ -42,9 +42,20 @@ public class CallNode extends StatementNode {
     @Override
     public String toString() { return toPrint("");}
 
+    // prima controllare che id sia stato dichiarato
+    // poi il resto
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        ArrayList<SemanticError> err = new ArrayList<>();
+
+        err.addAll(id.checkSemantics(env));
+        if (err.size() != 0) {
+            return err;
+        }
+
+        // TODO: THE REST
+
+        return err;
     }
 
     @Override
