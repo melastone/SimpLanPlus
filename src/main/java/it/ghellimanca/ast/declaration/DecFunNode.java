@@ -1,6 +1,7 @@
 package it.ghellimanca.ast.declaration;
 
 import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.MultipleDeclarationException;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.ArgNode;
 import it.ghellimanca.ast.BlockNode;
@@ -17,6 +18,8 @@ import java.util.List;
  * Has two attributes, which are mutually exclusive:
  * type is used for int/bool function
  * voidType is used in case the function is void.
+ *
+ * todo: rifare considerando il FunType.
  */
 public class DecFunNode extends DeclarationNode {
 
@@ -78,7 +81,15 @@ public class DecFunNode extends DeclarationNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        ArrayList<SemanticError> err = new ArrayList<SemanticError>();
+
+        try {
+            env.addDeclaration(id.getId(), type);   //todo: gestire il caso delle funzioni void
+        } catch (MultipleDeclarationException e) {
+            err.add(new SemanticError(e.getMessage()));
+        }
+
+        return err;
     }
 
     @Override
