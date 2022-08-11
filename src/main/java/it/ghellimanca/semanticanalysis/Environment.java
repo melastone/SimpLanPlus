@@ -84,11 +84,10 @@ public class Environment {
      *
      * @param id   the identifier of the variable or function.
      * @param type the type of the variable or function.
-     * @param offset the current offset where the variable or function will be stored
      * @throws MultipleDeclarationException when [id] is already present in the head
      *                                      of the Symbol Table.
      */
-    public List<Map<String, STEntry>> addDeclaration(String id, int nestingLevel, TypeNode type, int offset) throws MultipleDeclarationException{
+    public List<Map<String, STEntry>> addDeclaration(String id, TypeNode type) throws MultipleDeclarationException{
         STEntry stentry = new STEntry(nestingLevel, type, offset);
 
         STEntry declaration = currentScope().put(id, stentry);
