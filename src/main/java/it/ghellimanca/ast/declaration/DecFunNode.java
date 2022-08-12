@@ -84,7 +84,9 @@ public class DecFunNode extends DeclarationNode {
         ArrayList<SemanticError> err = new ArrayList<SemanticError>();
 
         try {
-            env.addDeclaration(id.getId(), type);   //todo: gestire il caso delle funzioni void
+            env.addDeclaration(id.getId(), type);   //non considera il caso delle funzioni void
+
+            err.addAll(body.checkSemantics(env));
         } catch (MultipleDeclarationException e) {
             err.add(new SemanticError(e.getMessage()));
         }
