@@ -49,7 +49,7 @@ public class DecVarNode extends DeclarationNode {
     }
 
     @Override
-    public Node typeCheck() {
+    public TypeNode typeCheck() {
         return null;
     }
 }

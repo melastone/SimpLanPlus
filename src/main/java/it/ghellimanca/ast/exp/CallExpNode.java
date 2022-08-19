@@ -4,6 +4,7 @@ import it.ghellimanca.Environment;
 import it.ghellimanca.SemanticError;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.statement.CallNode;
+import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
 
@@ -20,11 +21,12 @@ public class CallExpNode extends ExpNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        return new ArrayList<>(call.checkSemantics(env));
     }
 
+    //@TODO: typenode callexp
     @Override
-    public Node typeCheck() {
+    public TypeNode typeCheck() {
         return null;
     }
 

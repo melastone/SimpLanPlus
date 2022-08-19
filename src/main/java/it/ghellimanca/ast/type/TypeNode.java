@@ -12,20 +12,14 @@ import java.util.ArrayList;
 
 public abstract class TypeNode implements Node {
 
-    //TODO da implementare checkSemantics di TypeNode
-    @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return new ArrayList<>();
-    }
-
-    //TODO da implementare typeCheck di TypeNode
-    @Override
-    public Node typeCheck() {
-        return null;
-    }
-
     @Override
     public String toString() {
         return toPrint("");
+    }
+
+    // this equal will be used to check the equality of two types in type checking functions
+    @Override
+    public boolean equals(Object obj) {
+        return obj != null && this.getClass().equals(obj.getClass());
     }
 }

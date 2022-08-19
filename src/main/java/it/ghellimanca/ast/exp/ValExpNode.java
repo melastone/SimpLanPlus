@@ -5,6 +5,7 @@ import it.ghellimanca.SemanticError;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.exp.ExpNode;
 import it.ghellimanca.ast.type.IntTypeNode;
+import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
 
@@ -20,11 +21,11 @@ public class ValExpNode extends ExpNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
-    public Node typeCheck() {
+    public TypeNode typeCheck() {
         return new IntTypeNode();
     }
 

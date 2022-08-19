@@ -7,6 +7,7 @@ import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.ast.LhsNode;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.exp.ExpNode;
+import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,7 +53,7 @@ public class AssignmentNode extends StatementNode {
     }
 
     @Override
-    public Node typeCheck() {
+    public TypeNode typeCheck() {
         return null;
     }
 }

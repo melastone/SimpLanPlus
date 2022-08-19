@@ -2,6 +2,8 @@ package it.ghellimanca.ast;
 
 import it.ghellimanca.Environment;
 import it.ghellimanca.SemanticError;
+import it.ghellimanca.ast.type.TypeNode;
+import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
 
@@ -26,7 +28,7 @@ public interface Node {
     /**
      * Type checking.
      * */
-    Node typeCheck();
+    TypeNode typeCheck() throws TypeCheckingException;
 
     /**
      * Check effects analysis errors.

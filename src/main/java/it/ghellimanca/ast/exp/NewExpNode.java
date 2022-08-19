@@ -19,11 +19,13 @@ public class NewExpNode extends ExpNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        return new ArrayList<>();
     }
 
+    //@todo implementare typecheck newexp
+    //@todo capire come funziona new
     @Override
-    public Node typeCheck() {
+    public TypeNode typeCheck() {
         return null;
     }
 

@@ -53,7 +53,7 @@ public class Environment {
 
     public TypeNode lookup(String id) throws MissingDeclarationException {
         //return null;
-        throw new MissingDeclarationException("Missing declaration for ID: " + id);
+        throw new MissingDeclarationException("Missing declaration for ID: " + id + ".");
     }
 
     /**

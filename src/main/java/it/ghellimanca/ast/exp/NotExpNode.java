@@ -4,6 +4,10 @@ import it.ghellimanca.Environment;
 import it.ghellimanca.SemanticError;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.exp.ExpNode;
+import it.ghellimanca.ast.type.BoolTypeNode;
+import it.ghellimanca.ast.type.IntTypeNode;
+import it.ghellimanca.ast.type.TypeNode;
+import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
 
@@ -19,12 +23,17 @@ public class NotExpNode extends ExpNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
-    public Node typeCheck() {
-        return null;
+    public TypeNode typeCheck() throws TypeCheckingException {
+
+        // checking that the expression returns a bool to be negated with the NOT operator
+        if (!(exp.typeCheck() instanceof BoolTypeNode))
+            throw new TypeCheckingException("Expression must be of type bool to be negated with the NOT operator.");
+
+        return new BoolTypeNode();
     }
 
     @Override

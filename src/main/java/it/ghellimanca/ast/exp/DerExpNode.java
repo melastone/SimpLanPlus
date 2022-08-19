@@ -4,6 +4,7 @@ import it.ghellimanca.Environment;
 import it.ghellimanca.SemanticError;
 import it.ghellimanca.ast.LhsNode;
 import it.ghellimanca.ast.Node;
+import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
 
@@ -23,8 +24,8 @@ public class DerExpNode extends ExpNode {
     }
 
     @Override
-    public Node typeCheck() {
-        return null;
+    public TypeNode typeCheck() {
+        return lhs.typeCheck();
     }
 
     @Override

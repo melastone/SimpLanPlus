@@ -4,6 +4,7 @@ import it.ghellimanca.Environment;
 import it.ghellimanca.SemanticError;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.exp.ExpNode;
+import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
 
@@ -45,7 +46,7 @@ public class ReturnNode extends StatementNode {
     }
 
     @Override
-    public Node typeCheck() {
+    public TypeNode typeCheck() {
         return null;
     }
 }

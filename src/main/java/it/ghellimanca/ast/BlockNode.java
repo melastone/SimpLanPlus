@@ -5,6 +5,7 @@ import it.ghellimanca.SemanticError;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.declaration.DeclarationNode;
 import it.ghellimanca.ast.statement.StatementNode;
+import it.ghellimanca.ast.type.TypeNode;
 import org.antlr.v4.codegen.model.decl.Decl;
 
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public class BlockNode extends StatementNode {
     }
 
     @Override
-    public Node typeCheck() {
+    public TypeNode typeCheck() {
         return null;
     }
 }

@@ -2,6 +2,8 @@ package it.ghellimanca.ast;
 
 import it.ghellimanca.Environment;
 import it.ghellimanca.SemanticError;
+import it.ghellimanca.ast.type.PointerTypeNode;
+import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
 
@@ -62,9 +64,15 @@ public class LhsNode implements Node {
         return new ArrayList<>(lhs.checkSemantics(env));
     }
 
-    //TODO da implementare typeCheck di LhsNode
     @Override
-    public Node typeCheck() {
-        return null;
+    public TypeNode typeCheck() {
+
+        if (lhs == null) {
+            return id.typeCheck();
+        }
+
+        // if lhs is not null that means that the id at the end of the chain is surely of type pointertype
+        // so we have to get its pointed type
+        return ((PointerTypeNode) lhs.typeCheck()).getPointedType();
     }
 }

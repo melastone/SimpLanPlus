@@ -3,6 +3,8 @@ package it.ghellimanca.ast.exp;
 import it.ghellimanca.Environment;
 import it.ghellimanca.SemanticError;
 import it.ghellimanca.ast.Node;
+import it.ghellimanca.ast.type.TypeNode;
+import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
 
@@ -18,12 +20,12 @@ public class BaseExpNode extends ExpNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
-    public Node typeCheck() {
-        return null;
+    public TypeNode typeCheck() throws TypeCheckingException {
+        return exp.typeCheck();
     }
 
     @Override

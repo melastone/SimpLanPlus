@@ -1,17 +1,29 @@
 package it.ghellimanca.ast.type;
 
+import it.ghellimanca.Environment;
+import it.ghellimanca.SemanticError;
+import it.ghellimanca.semanticanalysis.TypeCheckingException;
+
+import java.util.ArrayList;
+
 /**
  * Represents a integer type node in the AST.
  */
 public class IntTypeNode extends TypeNode {
 
-    //TODO (inttypenode) capire se inserire checksemantics, typecheck, ecc
-    // perchè per il resto non fa nulla
-
-
     @Override
     public String toPrint(String indent) {
         return "\n" + indent + "TYPE: " + "int";
+    }
+
+    @Override
+    public ArrayList<SemanticError> checkSemantics(Environment env) {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public TypeNode typeCheck() throws TypeCheckingException {
+        return null;
     }
 
     @Override
