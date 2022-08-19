@@ -2,6 +2,7 @@ package it.ghellimanca.ast;
 
 import it.ghellimanca.Environment;
 import it.ghellimanca.SemanticError;
+import it.ghellimanca.semanticanalysis.MissingDeclarationException;
 
 import java.util.ArrayList;
 
@@ -36,8 +37,10 @@ public class IdNode implements Node {
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> err = new ArrayList<>();
 
-        if (env.lookup(id) == null) { // may do this control with try catch and a specific exception
-            err.add(new SemanticError("Missing declaration for ID: " + id));
+        try {
+            env.lookup(id);
+        } catch(MissingDeclarationException exception) {
+            err.add(new SemanticError(exception.getMessage()));
         }
 
         return err;

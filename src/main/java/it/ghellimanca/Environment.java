@@ -6,6 +6,7 @@ package it.ghellimanca;
  */
 
 import it.ghellimanca.ast.type.TypeNode;
+import it.ghellimanca.semanticanalysis.MissingDeclarationException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,8 +51,9 @@ public class Environment {
         return offset;
     }
 
-    public TypeNode lookup(String id) {
-        return null;
+    public TypeNode lookup(String id) throws MissingDeclarationException {
+        //return null;
+        throw new MissingDeclarationException("Missing declaration for ID: " + id);
     }
 
     /**
