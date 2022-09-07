@@ -17,7 +17,7 @@ public class IdNode implements Node {
         this.id = id;
     }
 
-    public String getId() {
+    public String getIdentifier() {
         return id;
     }
 

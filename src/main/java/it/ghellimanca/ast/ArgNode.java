@@ -19,6 +19,14 @@ public class ArgNode implements Node {
         this.id = id;
     }
 
+    public IdNode getId() {
+        return id;
+    }
+
+    public TypeNode getType() {
+        return type;
+    }
+
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         return null;
