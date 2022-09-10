@@ -33,7 +33,7 @@ public class DeletionNode extends StatementNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        return id.checkSemantics(env);
     }
 
     @Override

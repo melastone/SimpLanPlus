@@ -1,9 +1,6 @@
 package it.ghellimanca.semanticanalysis;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.semanticanalysis.*;
@@ -42,6 +39,12 @@ public class Environment {
         this.offset = offset;
     }
 
+    public Environment() {
+        this.symbolTable = new ArrayList<>();
+        this.nestingLevel = -1;
+        this.offset = 0;
+    }
+
     /**
      * @return the current active scope.
      */
@@ -52,6 +55,9 @@ public class Environment {
 
     /**
      * Extends the symbolTable with a new empty scope
+     *
+     * @return the updated Symbol Table
+
      */
     public List<Map<String,STEntry>> newScope() {
 
@@ -65,7 +71,9 @@ public class Environment {
 
     /**
      * Extends the symbolTable with an initialized scope
+     *
      * @param  s  the scope to add
+     * @return the updated Symbol Table
      */
     public List<Map<String,STEntry>> newScope(Map<String,STEntry> s) {
 
@@ -86,6 +94,7 @@ public class Environment {
      * @param type the type of the variable or function.
      * @throws MultipleDeclarationException when [id] is already present in the head
      *                                      of the Symbol Table.
+     * @return the updated Symbol Table
      */
     public List<Map<String, STEntry>> addDeclaration(String id, TypeNode type) throws MultipleDeclarationException{
         STEntry stentry = new STEntry(nestingLevel, type, offset);
@@ -103,7 +112,8 @@ public class Environment {
 
 
     /**
-     looks for the type of id in st, if any
+     * Looks for the type of id in ST, if any
+     *
      */
     //Type lookup(String id);
 

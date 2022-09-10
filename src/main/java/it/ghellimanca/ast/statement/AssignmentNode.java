@@ -36,7 +36,12 @@ public class AssignmentNode extends StatementNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        ArrayList<SemanticError> err = new ArrayList<>();
+
+        err.addAll(lhs.checkSemantics(env));
+        err.addAll(exp.checkSemantics(env));
+
+        return err;
     }
 
     @Override

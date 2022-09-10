@@ -44,7 +44,17 @@ public class CallNode extends StatementNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        ArrayList<SemanticError> err = new ArrayList<>();
+
+        err.addAll(id.checkSemantics(env));
+
+        if (this.params != null) {
+            for (ExpNode par : params) {
+                err.addAll(par.checkSemantics(env));
+            }
+        }
+
+        return err;
     }
 
     @Override

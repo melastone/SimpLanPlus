@@ -4,6 +4,7 @@ import it.ghellimanca.ast.BlockNode;
 import it.ghellimanca.gen.SimpLanPlusLexer;
 import it.ghellimanca.gen.SimpLanPlusParser;
 import it.ghellimanca.SimpLanPlusPTVisitor;
+import it.ghellimanca.semanticanalysis.Environment;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
@@ -135,6 +136,7 @@ public class SimpLanPlus {
         /* SEMANTIC ANALYSIS */
 
         // Creating the environment
+        Environment gamma = new Environment();
 
         // Checking for semantic errors
 

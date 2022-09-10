@@ -41,7 +41,11 @@ public class ReturnNode extends StatementNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        if (this.exp != null) {
+            return exp.checkSemantics(env);
+        }
+
+        return new ArrayList<>();
     }
 
     @Override
