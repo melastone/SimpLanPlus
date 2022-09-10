@@ -8,27 +8,30 @@ import it.ghellimanca.ast.type.TypeNode;
 import java.util.ArrayList;
 
 /**
- * Represents the new operator as a node in the AST.
+ * Represents the new operator 'new' type node in the AST.
  */
 public class NewExpNode extends ExpNode {
+
     final TypeNode type;
+
 
     public NewExpNode(TypeNode type) {
         this.type = type;
     }
 
+
+    @Override
+    public String toPrint(String indent) {
+        return "\n" + indent + "NEW_EXP" + type.toPrint(indent + "\t");
+    }
+
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
     public Node typeCheck() {
         return null;
-    }
-
-    @Override
-    public String toPrint(String indent) {
-        return "\n" + indent + "NEW_EXP" + type.toPrint(indent + "\t");
     }
 }

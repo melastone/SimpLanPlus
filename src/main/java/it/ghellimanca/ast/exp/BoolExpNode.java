@@ -11,24 +11,27 @@ import java.util.ArrayList;
  * Represents a boolean expression node in the AST.
  */
 public class BoolExpNode extends ExpNode {
+
     final boolean bool;
+
 
     public BoolExpNode(boolean bool) {
         this.bool = bool;
     }
 
+
+    @Override
+    public String toPrint(String indent) {
+        return "\n" + indent + "BOOL_EXP: " + bool;
+    }
+
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
     public Node typeCheck() {
         return new BoolTypeNode();
-    }
-
-    @Override
-    public String toPrint(String indent) {
-        return "\n" + indent + "BOOL_EXP: " + bool;
     }
 }

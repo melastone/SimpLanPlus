@@ -8,28 +8,30 @@ import it.ghellimanca.ast.statement.CallNode;
 import java.util.ArrayList;
 
 /**
- * Represents an expression node in the AST that is the value returned by a function.
+ * Represents a function call expression ID '(' (exp(',' exp)*)? ')' node in the AST.
  */
 public class CallExpNode extends ExpNode {
 
     CallNode call;
 
+
     public CallExpNode(CallNode call) {
         this.call = call;
     }
 
+
+    @Override
+    public String toPrint(String indent) {
+        return "\n" + indent + "CALL_EXP" + call.toPrint(indent + "\t");
+    }
+
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        return call.checkSemantics(env);
     }
 
     @Override
     public Node typeCheck() {
         return null;
-    }
-
-    @Override
-    public String toPrint(String indent) {
-        return "\n" + indent + "CALL_EXP" + call.toPrint(indent + "\t");
     }
 }

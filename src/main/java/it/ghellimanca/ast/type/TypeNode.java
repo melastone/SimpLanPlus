@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 public abstract class TypeNode implements Node {
 
-    //TODO da implementare checkSemantics di TypeNode
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         return new ArrayList<>();

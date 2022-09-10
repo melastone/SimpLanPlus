@@ -7,7 +7,7 @@ import it.ghellimanca.ast.Node;
 import java.util.ArrayList;
 
 /**
- * Represents an expression node in the AST that is an operation between two expression.
+ * Represents a binary expression left=exp op right=exp node in the AST.
  */
 public class BinExpNode extends ExpNode {
 
@@ -26,21 +26,30 @@ public class BinExpNode extends ExpNode {
         this.rightExp = rightExp;
     }
 
-    @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
-    }
-
-    @Override
-    public Node typeCheck() {
-        return null;
-    }
-
 
     @Override
     public String toPrint(String indent) {
         return "\n" + indent + "BIN_EXP" + leftExp.toPrint(indent + "\t")
                     + "\n" + indent + "\t" + "operator: " + operator
                     + rightExp.toPrint(indent + "\t");
+    }
+
+    @Override
+    public ArrayList<SemanticError> checkSemantics(Environment env) {
+        ArrayList<SemanticError> err = new ArrayList<>();
+
+        if (this.leftExp != null) {
+            err.addAll(leftExp.checkSemantics(env));
+        }
+        if(this.rightExp != null) {
+            err.addAll(rightExp.checkSemantics(env));
+        }
+
+        return err;
+    }
+
+    @Override
+    public Node typeCheck() {
+        return null;
     }
 }

@@ -23,6 +23,7 @@ public class LhsNode implements Node {
         this.lhs = lhs;
     }
 
+
     public IdNode getId() {
         return id;
     }
@@ -50,13 +51,19 @@ public class LhsNode implements Node {
         return toPrint("");
     }
 
-    //TODO da implementare checkSemantics di LhsNode
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        if (lhs == null) {  // then it only has an ID
+            return id.checkSemantics(env);
+        }
+
+        ArrayList<SemanticError> err = new ArrayList<>();
+
+        err.addAll(lhs.checkSemantics(env));
+
+        return err;
     }
 
-    //TODO da implementare typeCheck di LhsNode
     @Override
     public Node typeCheck() {
         return null;

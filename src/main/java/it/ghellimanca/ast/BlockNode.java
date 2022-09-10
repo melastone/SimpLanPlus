@@ -66,14 +66,12 @@ public class BlockNode extends StatementNode {
 
         env.newScope();
 
-        // check declarations
         if (this.declarations != null) {
             for (DeclarationNode dec : declarations) {
                 err.addAll(dec.checkSemantics(env));
             }
         }
 
-        // check statements
         if (this.statements != null) {
             for (StatementNode stat : statements) {
                 err.addAll(stat.checkSemantics(env));
