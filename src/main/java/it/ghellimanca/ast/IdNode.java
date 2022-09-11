@@ -1,12 +1,12 @@
 package it.ghellimanca.ast;
 
-import it.ghellimanca.Environment;
-import it.ghellimanca.STEntry;
-import it.ghellimanca.SemanticError;
+
 import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.semanticanalysis.MissingDeclarationException;
-
+import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.SemanticError;
 import java.util.ArrayList;
+
 
 /**
  * Node of the AST for an identifier
@@ -21,7 +21,7 @@ public class IdNode implements Node {
         this.id = id;
     }
 
-    public String getId() {
+    public String getIdentifier() {
         return id;
     }
 

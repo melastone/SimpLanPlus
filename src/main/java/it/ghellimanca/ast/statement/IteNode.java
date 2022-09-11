@@ -1,7 +1,7 @@
 package it.ghellimanca.ast.statement;
 
-import it.ghellimanca.Environment;
-import it.ghellimanca.SemanticError;
+import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.exp.ExpNode;
 import it.ghellimanca.ast.type.TypeNode;
@@ -28,6 +28,12 @@ public class IteNode extends StatementNode {
         this.stm2 = stm2;
     }
 
+    public IteNode(ExpNode exp, StatementNode stm1) {
+        this.exp = exp;
+        this.stm1 = stm1;
+        this.stm2 = null;
+    }
+
     @Override
     public String toPrint(String indent) {
         String res = "\n" + indent + "ITE" + exp.toPrint(indent + "\t") + stm1.toPrint(indent + "\t");
@@ -43,7 +49,17 @@ public class IteNode extends StatementNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        ArrayList<SemanticError> err = new ArrayList<>();
+
+        err.addAll(exp.checkSemantics(env));
+        err.addAll(stm1.checkSemantics(env));
+
+        if(this.stm2 != null) {     // else branch is not empty
+            err.addAll(stm2.checkSemantics(env));
+        }
+
+        return err;
+
     }
 
     @Override

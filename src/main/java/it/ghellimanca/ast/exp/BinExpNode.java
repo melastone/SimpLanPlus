@@ -1,8 +1,7 @@
 package it.ghellimanca.ast.exp;
 
-import it.ghellimanca.Environment;
-import it.ghellimanca.SemanticError;
-import it.ghellimanca.ast.Node;
+import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.type.BoolTypeNode;
 import it.ghellimanca.ast.type.IntTypeNode;
 import it.ghellimanca.ast.type.TypeNode;
@@ -11,7 +10,7 @@ import it.ghellimanca.semanticanalysis.TypeCheckingException;
 import java.util.ArrayList;
 
 /**
- * Represents an expression node in the AST that is an operation between two expression.
+ * Represents a binary expression left=exp op right=exp node in the AST.
  */
 public class BinExpNode extends ExpNode {
 
@@ -29,9 +28,26 @@ public class BinExpNode extends ExpNode {
         this.rightExp = rightExp;
     }
 
+
+    @Override
+    public String toPrint(String indent) {
+        return "\n" + indent + "BIN_EXP" + leftExp.toPrint(indent + "\t")
+                    + "\n" + indent + "\t" + "operator: " + operator
+                    + rightExp.toPrint(indent + "\t");
+    }
+
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return new ArrayList<>();
+        ArrayList<SemanticError> err = new ArrayList<>();
+
+        if (this.leftExp != null) {
+            err.addAll(leftExp.checkSemantics(env));
+        }
+        if(this.rightExp != null) {
+            err.addAll(rightExp.checkSemantics(env));
+        }
+
+        return err;
     }
 
     @Override
@@ -41,7 +57,7 @@ public class BinExpNode extends ExpNode {
 
         // checking that the expression have the same type
         if (!left.equals(right)) {
-            throw new TypeCheckingException("Left expression: "+ leftExp + " and right expression: " + rightExp + " have incompatible types.");
+            throw new TypeCheckingException("Left expression: " + leftExp + " and right expression: " + rightExp + " have incompatible types.");
         }
 
         switch (operator) {
@@ -55,7 +71,7 @@ public class BinExpNode extends ExpNode {
             case ">":
             case ">=":
                 // i only check the left exp's type just because i already checked that it is the same as the right one
-                if(!(left instanceof IntTypeNode)) {
+                if (!(left instanceof IntTypeNode)) {
                     throw new TypeCheckingException("The operator: " + operator + " requires integer expressions.");
                 }
                 return new IntTypeNode();
@@ -68,7 +84,7 @@ public class BinExpNode extends ExpNode {
             // operators for boolean type exps
             case "&&":
             case "||":
-                if(!(left instanceof BoolTypeNode)) {
+                if (!(left instanceof BoolTypeNode)) {
                     throw new TypeCheckingException("The operator: " + operator + " requires boolean expressions.");
                 }
                 return new BoolTypeNode();
@@ -77,12 +93,5 @@ public class BinExpNode extends ExpNode {
             default:
                 return null;
         }
-    }
-
-    @Override
-    public String toPrint(String indent) {
-        return "\n" + indent + "BIN_EXP" + leftExp.toPrint(indent + "\t")
-                    + "\n" + indent + "\t" + "operator: " + operator
-                    + rightExp.toPrint(indent + "\t");
     }
 }

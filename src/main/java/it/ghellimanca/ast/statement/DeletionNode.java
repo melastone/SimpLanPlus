@@ -1,7 +1,7 @@
 package it.ghellimanca.ast.statement;
 
-import it.ghellimanca.Environment;
-import it.ghellimanca.SemanticError;
+import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.type.TypeNode;
@@ -32,7 +32,6 @@ public class DeletionNode extends StatementNode {
     @Override
     public String toString() { return toPrint("");}
 
-    //check if id was declared
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         return id.checkSemantics(env);

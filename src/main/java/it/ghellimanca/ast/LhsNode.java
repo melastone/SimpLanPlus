@@ -1,9 +1,10 @@
 package it.ghellimanca.ast;
 
-import it.ghellimanca.Environment;
-import it.ghellimanca.SemanticError;
+
 import it.ghellimanca.ast.type.PointerTypeNode;
 import it.ghellimanca.ast.type.TypeNode;
+import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.SemanticError;
 
 import java.util.ArrayList;
 
@@ -24,6 +25,7 @@ public class LhsNode implements Node {
         this.id = id;
         this.lhs = lhs;
     }
+
 
     public IdNode getId() {
         return id;

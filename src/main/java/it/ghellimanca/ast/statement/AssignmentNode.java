@@ -1,17 +1,13 @@
 package it.ghellimanca.ast.statement;
 
-import it.ghellimanca.Environment;
-import it.ghellimanca.STEntry;
-import it.ghellimanca.SemanticError;
-import it.ghellimanca.ast.IdNode;
+
+import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.LhsNode;
-import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.exp.ExpNode;
 import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Node of the AST for an assignment statement

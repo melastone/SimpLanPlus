@@ -1,15 +1,14 @@
 package it.ghellimanca.ast;
 
-import it.ghellimanca.Environment;
-import it.ghellimanca.SemanticError;
-import it.ghellimanca.ast.Node;
+import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.declaration.DeclarationNode;
 import it.ghellimanca.ast.statement.StatementNode;
 import it.ghellimanca.ast.type.TypeNode;
-import org.antlr.v4.codegen.model.decl.Decl;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Node of the AST for a block
@@ -65,7 +64,25 @@ public class BlockNode extends StatementNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        ArrayList<SemanticError> err = new ArrayList<SemanticError>();
+
+        env.newScope();
+
+        if (this.declarations != null) {
+            for (DeclarationNode dec : declarations) {
+                err.addAll(dec.checkSemantics(env));
+            }
+        }
+
+        if (this.statements != null) {
+            for (StatementNode stat : statements) {
+                err.addAll(stat.checkSemantics(env));
+            }
+        }
+
+        env.exitScope();
+
+        return err;
     }
 
     @Override

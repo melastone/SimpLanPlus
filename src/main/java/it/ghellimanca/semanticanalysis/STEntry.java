@@ -1,14 +1,20 @@
-package it.ghellimanca;
+package it.ghellimanca.semanticanalysis;
 
 import it.ghellimanca.ast.type.TypeNode;
 
-// represents an entry of the symbol table
- public class STEntry {
-    private final int nestingLevel;
+/**
+ * Represents an entry of the symbol table.
+ *
+ */
+public class STEntry {
 
+    //nesting level
+    private final int nestingLevel;
+    //type
     private TypeNode type;
 
     private final int offset;
+
 
     public STEntry(int nestingLevel, int offset) {
         this.nestingLevel = nestingLevel;
@@ -36,5 +42,15 @@ import it.ghellimanca.ast.type.TypeNode;
         return offset;
     }
 
+    @Override
+    public String toString() {
+        return "STentry{" +
+                "nestingLevel=" + nestingLevel +
+                ", type=" + type +
+                ", offset=" + offset +
+                '}';
+    }
+
+    //todo implementare equals
 }
 

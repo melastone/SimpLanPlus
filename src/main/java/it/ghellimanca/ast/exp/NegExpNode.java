@@ -1,10 +1,7 @@
 package it.ghellimanca.ast.exp;
 
-import it.ghellimanca.Environment;
-import it.ghellimanca.SemanticError;
-import it.ghellimanca.ast.Node;
-import it.ghellimanca.ast.exp.ExpNode;
-import it.ghellimanca.ast.type.BoolTypeNode;
+import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.type.IntTypeNode;
 import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.semanticanalysis.TypeCheckingException;
@@ -12,18 +9,26 @@ import it.ghellimanca.semanticanalysis.TypeCheckingException;
 import java.util.ArrayList;
 
 /**
- * Represents an value expression node in the AST being negated.
+ * Represents an negated expression '-' exp node in the AST.
  */
 public class NegExpNode extends ExpNode {
+
     final ExpNode exp;
+
 
     public NegExpNode(ExpNode exp) {
         this.exp = exp;
     }
 
+
+    @Override
+    public String toPrint(String indent) {
+        return "\n" + indent + "NEG_EXP" + exp.toPrint(indent + "\t");
+    }
+
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return new ArrayList<>();
+        return exp.checkSemantics(env);
     }
 
     @Override
@@ -34,10 +39,5 @@ public class NegExpNode extends ExpNode {
             throw new TypeCheckingException("Expression must be of type int to be negated.");
 
         return new IntTypeNode();
-    }
-
-    @Override
-    public String toPrint(String indent) {
-        return "\n" + indent + "NEG_EXP" + exp.toPrint(indent + "\t");
     }
 }

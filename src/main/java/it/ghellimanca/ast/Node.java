@@ -1,10 +1,9 @@
 package it.ghellimanca.ast;
 
-import it.ghellimanca.Environment;
-import it.ghellimanca.SemanticError;
 import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.semanticanalysis.TypeCheckingException;
-
+import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.SemanticError;
 import java.util.ArrayList;
 
 /**

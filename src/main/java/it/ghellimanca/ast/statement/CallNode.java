@@ -1,7 +1,7 @@
 package it.ghellimanca.ast.statement;
 
-import it.ghellimanca.Environment;
-import it.ghellimanca.SemanticError;
+import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.exp.ExpNode;
@@ -43,18 +43,17 @@ public class CallNode extends StatementNode {
     @Override
     public String toString() { return toPrint("");}
 
-    // prima controllare che id sia stato dichiarato
-    // poi il resto
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> err = new ArrayList<>();
 
         err.addAll(id.checkSemantics(env));
-        if (err.size() != 0) {
-            return err;
-        }
 
-        // TODO: THE REST
+        if (this.params != null) {
+            for (ExpNode par : params) {
+                err.addAll(par.checkSemantics(env));
+            }
+        }
 
         return err;
     }

@@ -1,8 +1,9 @@
 package it.ghellimanca.ast.type;
 
-import it.ghellimanca.Environment;
-import it.ghellimanca.SemanticError;
+
 import it.ghellimanca.semanticanalysis.TypeCheckingException;
+import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.SemanticError;
 
 import java.util.ArrayList;
 
@@ -36,4 +37,5 @@ public class PointerTypeNode extends TypeNode {
     public TypeNode typeCheck() throws TypeCheckingException {
         return null;
     }
+
 }

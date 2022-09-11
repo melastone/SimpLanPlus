@@ -1,7 +1,7 @@
 package it.ghellimanca.ast.statement;
 
-import it.ghellimanca.Environment;
-import it.ghellimanca.SemanticError;
+import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.exp.ExpNode;
 import it.ghellimanca.ast.type.TypeNode;
@@ -35,7 +35,8 @@ public class PrintNode extends StatementNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+        return exp.checkSemantics(env);
+
     }
 
     @Override

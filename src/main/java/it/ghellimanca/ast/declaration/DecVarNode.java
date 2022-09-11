@@ -1,7 +1,9 @@
 package it.ghellimanca.ast.declaration;
 
-import it.ghellimanca.Environment;
-import it.ghellimanca.SemanticError;
+import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.MultipleDeclarationException;
+import it.ghellimanca.semanticanalysis.STEntry;
+import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.exp.ExpNode;
@@ -45,7 +47,20 @@ public class DecVarNode extends DeclarationNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return null;
+
+        ArrayList<SemanticError> err = new ArrayList<SemanticError>();
+
+        if (exp != null) {  // if the variable is also initialized
+            err.addAll(exp.checkSemantics(env));
+        }
+
+        try {
+            env.addDeclaration(id.getIdentifier(), type);
+        } catch (MultipleDeclarationException e) {
+            err.add(new SemanticError(e.getMessage()));
+        }
+
+        return err;
     }
 
     @Override

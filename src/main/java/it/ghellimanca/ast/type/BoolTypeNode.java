@@ -1,8 +1,9 @@
 package it.ghellimanca.ast.type;
 
-import it.ghellimanca.Environment;
-import it.ghellimanca.SemanticError;
+
 import it.ghellimanca.semanticanalysis.TypeCheckingException;
+import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.SemanticError;
 
 import java.util.ArrayList;
 
@@ -17,6 +18,11 @@ public class BoolTypeNode extends TypeNode {
     }
 
     @Override
+    public String toString() {
+        return "bool";
+    }
+
+    @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         return new ArrayList<>();
     }
@@ -24,11 +30,6 @@ public class BoolTypeNode extends TypeNode {
     @Override
     public TypeNode typeCheck() throws TypeCheckingException {
         return null;
-    }
-
-    @Override
-    public String toString() {
-        return "bool";
     }
 }
 
