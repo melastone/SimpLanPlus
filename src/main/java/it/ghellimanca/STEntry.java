@@ -3,7 +3,7 @@ package it.ghellimanca;
 import it.ghellimanca.ast.type.TypeNode;
 
 // represents an entry of the symbol table
-public class STEntry {
+ public class STEntry {
     private final int nestingLevel;
 
     private TypeNode type;

@@ -8,6 +8,7 @@ package it.ghellimanca;
 import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.semanticanalysis.MissingDeclarationException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,10 @@ public class Environment {
        this.nestingLevel = nestingLevel;
     }
 
+    public Environment() {
+        this(new ArrayList<>(), -1);
+    }
+
     public List<Map<String, STEntry>> getSymbolTable() {
         return symbolTable;
     }
@@ -51,10 +56,7 @@ public class Environment {
         return offset;
     }
 
-    public TypeNode lookup(String id) throws MissingDeclarationException {
-        //return null;
-        throw new MissingDeclarationException("Missing declaration for ID: " + id + ".");
-    }
+
 
     /**
      * @return the current active scope.
@@ -89,11 +91,18 @@ public class Environment {
      */
     //public List<Map<String,STEntry>> addDecl(String id, Type t);
 
-
     /*
      looks for the type of id in st, if any
      */
-    //Type lookup(String id);
+     public TypeNode lookup(String id) throws MissingDeclarationException {
+         for (int i = nestingLevel; i >= 0; i--) {
+            Map<String, STEntry> scope = symbolTable.get(i);
+            STEntry stEntry = scope.get(id);
+            if (stEntry != null)
+                return stEntry.getType();
+        }
+        throw new MissingDeclarationException("Missing declaration for ID: " + id + ".");
+     }
 
 
     /**

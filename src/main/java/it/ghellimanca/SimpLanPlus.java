@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 /**
  * This is the main class.
@@ -135,9 +136,13 @@ public class SimpLanPlus {
         /* SEMANTIC ANALYSIS */
 
         // Creating the environment
+        Environment environment = new Environment();
 
         // Checking for semantic errors
-
+        ArrayList<SemanticError> semanticErrors = AST.checkSemantics(environment);
+        if (!semanticErrors.isEmpty()) {
+            System.err.println("Semantic analysis:");
+        }
         // Checking for type errors
 
         // Checking for effect analysis errors
