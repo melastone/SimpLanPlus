@@ -144,7 +144,11 @@ public class SimpLanPlus {
         // Checking for semantic errors
         ArrayList<SemanticError> semanticErrors = AST.checkSemantics(environment);
         if (!semanticErrors.isEmpty()) {
-            System.err.println("Semantic analysis:");
+            System.err.println("Semantic analysis:\n");
+            
+            for (SemanticError err : semanticErrors) {
+                System.err.println(err);
+            }
         }
         // Checking for type errors
 

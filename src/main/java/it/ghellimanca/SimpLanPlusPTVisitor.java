@@ -6,10 +6,7 @@ import it.ghellimanca.ast.declaration.DeclarationNode;
 import it.ghellimanca.ast.exp.*;
 import it.ghellimanca.ast.statement.*;
 import it.ghellimanca.ast.statement.CallNode;
-import it.ghellimanca.ast.type.BoolTypeNode;
-import it.ghellimanca.ast.type.IntTypeNode;
-import it.ghellimanca.ast.type.PointerTypeNode;
-import it.ghellimanca.ast.type.TypeNode;
+import it.ghellimanca.ast.type.*;
 import it.ghellimanca.gen.*;
 import it.ghellimanca.ast.*;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -118,7 +115,8 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
             TypeNode type = visitType(ctx.type());
             return new DecFunNode(type, id, arguments, body);
         } else {
-            return new DecFunNode("void", id, arguments, body);
+            VoidTypeNode type = new VoidTypeNode();
+            return new DecFunNode(type, id, arguments, body);
         }
 
     }
