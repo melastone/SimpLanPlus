@@ -1,9 +1,6 @@
 package it.ghellimanca.ast.declaration;
 
-import it.ghellimanca.semanticanalysis.Environment;
-import it.ghellimanca.semanticanalysis.MultipleDeclarationException;
-import it.ghellimanca.semanticanalysis.STEntry;
-import it.ghellimanca.semanticanalysis.SemanticError;
+import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.exp.ExpNode;
@@ -64,7 +61,15 @@ public class DecVarNode extends DeclarationNode {
     }
 
     @Override
-    public TypeNode typeCheck() {
+    public TypeNode typeCheck() throws TypeCheckingException {
+        if (exp != null) {
+            TypeNode expNodeType = exp.typeCheck();
+
+            if (!type.equals(expNodeType)){
+                throw new TypeCheckingException("Type mismatch: expression " + exp + " type does not match variable " + id.getIdentifier() + " type.");
+            }
+        }
+
         return null;
     }
 }

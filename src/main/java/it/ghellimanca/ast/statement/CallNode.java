@@ -1,14 +1,18 @@
 package it.ghellimanca.ast.statement;
 
+import it.ghellimanca.ast.ArgNode;
+import it.ghellimanca.ast.type.ArrowTypeNode;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.exp.ExpNode;
 import it.ghellimanca.ast.type.TypeNode;
+import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Node of the AST for a call statement
@@ -23,11 +27,11 @@ public class CallNode extends StatementNode {
     final private List<ExpNode> params;
 
 
-
     public CallNode(IdNode id, List<ExpNode> params) {
         this.id = id;
         this.params = params;
     }
+
 
     @Override
     public String toPrint(String indent) {
@@ -59,8 +63,32 @@ public class CallNode extends StatementNode {
     }
 
     @Override
-    public TypeNode typeCheck() {
-        return null;
+    public TypeNode typeCheck() throws TypeCheckingException {
+        TypeNode funType = id.typeCheck();
+
+        if (!(funType instanceof ArrowTypeNode)) {
+            throw new TypeCheckingException("Type mismatch: " + id + " has not a function type.");
+        }
+
+        List<TypeNode> formalParamsTypes = ((ArrowTypeNode) funType).getArgs();
+        List<TypeNode> actualParamsTypes = new ArrayList<>();
+
+        for (ExpNode par : params) {
+            actualParamsTypes.add(par.typeCheck());
+        }
+
+        int size = formalParamsTypes.size();
+        if (actualParamsTypes.size() != size) {
+            throw new TypeCheckingException("Type mismatch: " + id + " has incorrect number of parameters. Expecting " + size + ".");
+        }
+
+        for (int i = 0; i < size; i++) {
+            if (!actualParamsTypes.get(i).equals(formalParamsTypes.get(i))) {
+                throw new TypeCheckingException("Type mismatch: expecting argument of type " + formalParamsTypes.get(i) + " but got " + actualParamsTypes.get(i) + " instead.");
+            }
+        }
+
+        return ((ArrowTypeNode) funType).getRet();
     }
 
 }
