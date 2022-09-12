@@ -1,11 +1,13 @@
 package it.ghellimanca.ast.statement;
 
 
+import it.ghellimanca.ast.type.VoidTypeNode;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.LhsNode;
 import it.ghellimanca.ast.exp.ExpNode;
 import it.ghellimanca.ast.type.TypeNode;
+import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
 
@@ -49,7 +51,14 @@ public class AssignmentNode extends StatementNode {
     }
 
     @Override
-    public TypeNode typeCheck() {
-        return null;
+    public TypeNode typeCheck() throws TypeCheckingException {
+        TypeNode lhsType = lhs.typeCheck();
+        TypeNode expType = exp.typeCheck();
+
+        if (!lhsType.equals(expType)) {
+            throw new TypeCheckingException("Type mismatch: expecting variable of type " + lhsType + " but got " + expType + " instead.");
+        }
+
+        return new VoidTypeNode();
     }
 }
