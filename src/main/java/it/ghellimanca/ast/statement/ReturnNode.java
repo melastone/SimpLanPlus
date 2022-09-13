@@ -1,10 +1,12 @@
 package it.ghellimanca.ast.statement;
 
+import it.ghellimanca.ast.type.VoidTypeNode;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.exp.ExpNode;
 import it.ghellimanca.ast.type.TypeNode;
+import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
 
@@ -18,7 +20,6 @@ import java.util.ArrayList;
 public class ReturnNode extends StatementNode {
 
     final private ExpNode exp;
-
 
     public ReturnNode() {
         this.exp = null;
@@ -50,7 +51,13 @@ public class ReturnNode extends StatementNode {
     }
 
     @Override
-    public TypeNode typeCheck() {
-        return null;
+    public TypeNode typeCheck() throws TypeCheckingException {
+
+        // if there is an expression we return its type
+        if (this.exp != null) {
+            return exp.typeCheck();
+        }
+
+        return new VoidTypeNode();
     }
 }

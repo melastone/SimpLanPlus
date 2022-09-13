@@ -50,7 +50,5 @@ public class STEntry {
                 ", offset=" + offset +
                 '}';
     }
-
-    //todo implementare equals
 }
 

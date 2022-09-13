@@ -1,10 +1,12 @@
 package it.ghellimanca.ast.statement;
 
+import it.ghellimanca.ast.type.VoidTypeNode;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.exp.ExpNode;
 import it.ghellimanca.ast.type.TypeNode;
+import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
 
@@ -26,7 +28,6 @@ public class PrintNode extends StatementNode {
 
     @Override
     public String toPrint(String indent) {
-
         return "\n" + indent + "PRINT" + exp.toPrint(indent + "\t");
     }
 
@@ -36,11 +37,14 @@ public class PrintNode extends StatementNode {
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         return exp.checkSemantics(env);
-
     }
 
     @Override
-    public TypeNode typeCheck() {
-        return null;
+    public TypeNode typeCheck() throws TypeCheckingException {
+
+        // just continuing the typechecking process
+        exp.typeCheck();
+
+        return new VoidTypeNode();
     }
 }

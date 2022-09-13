@@ -1,5 +1,6 @@
 package it.ghellimanca.ast.exp;
 
+import it.ghellimanca.ast.type.PointerTypeNode;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.type.TypeNode;
@@ -24,8 +25,6 @@ public class NewExpNode extends ExpNode {
         return "\n" + indent + "NEW_EXP" + type.toPrint(indent + "\t");
     }
 
-    //@todo implementare typecheck newexp
-    //@todo capire come funziona new
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         return new ArrayList<>();
@@ -33,6 +32,6 @@ public class NewExpNode extends ExpNode {
 
     @Override
     public TypeNode typeCheck() {
-        return null;
+        return new PointerTypeNode(type);
     }
 }

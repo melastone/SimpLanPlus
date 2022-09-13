@@ -290,12 +290,10 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         return new BoolExpNode(bool);
     }
 
-    //todo aggiornare dopo che ho visitCall
     @Override
     public CallExpNode visitCallExp(SimpLanPlusParser.CallExpContext ctx) {
-        //CallNode call = visitCall(ctx.call());
-        //return new CallExpNode(call);
-        return null;
+        CallNode call = visitCall(ctx.call());
+        return new CallExpNode(call);
     }
 
     @Override
