@@ -53,7 +53,7 @@ public class SimpLanPlus {
 
         /* LEXER */
 
-        // Creating the lexer
+        // Instantiate the lexer
         SimpLanPlusLexer slpLexer = new SimpLanPlusLexer(CharStreams.fromString(simpLanPlusCode));
         CommonTokenStream slpLexerTokens = new CommonTokenStream(slpLexer);
         SimpLanPlusErrorListener slpErrorListenerLexer = new SimpLanPlusErrorListener();
@@ -65,7 +65,7 @@ public class SimpLanPlus {
 
         /* PARSER */
 
-        // Creating the parser
+        // Instantiate the parser
         SimpLanPlusParser slpParser = new SimpLanPlusParser(slpLexerTokens);
         SimpLanPlusErrorListener slpErrorListenerParser = new SimpLanPlusErrorListener();
 

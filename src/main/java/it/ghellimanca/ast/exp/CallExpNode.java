@@ -4,13 +4,13 @@ import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.statement.CallNode;
 import it.ghellimanca.ast.type.TypeNode;
+import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
 
 /**
  * Represents a function call expression ID '(' (exp(',' exp)*)? ')' node in the AST.
  *
- * todo: typecheck()
  */
 public class CallExpNode extends ExpNode {
 
@@ -33,7 +33,7 @@ public class CallExpNode extends ExpNode {
     }
 
     @Override
-    public TypeNode typeCheck() {
-        return null;
+    public TypeNode typeCheck() throws TypeCheckingException {
+        return call.typeCheck();
     }
 }

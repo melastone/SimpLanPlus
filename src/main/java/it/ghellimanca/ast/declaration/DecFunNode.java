@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
  * type is used for int/bool function
  * voidType is used in case the function is void.
  *
- * todo: controlla se il nodo viene creato correttamente in caso di funzioni void.
  */
 public class DecFunNode extends DeclarationNode {
 

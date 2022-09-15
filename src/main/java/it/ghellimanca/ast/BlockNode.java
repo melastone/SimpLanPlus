@@ -13,7 +13,6 @@ import java.util.List;
 /**
  * Node of the AST for a block
  *
- * @todo: discuss how to manage empty nodes. should we make 1 constructor and call it with null params in case of empty node, OR should we make both empty constructor and 1 with params?
  *
  */
 public class BlockNode extends StatementNode {
@@ -21,14 +20,14 @@ public class BlockNode extends StatementNode {
     final private List<DeclarationNode> declarations;
     final private List<StatementNode> statements;
 
-
-    /*
-    Constructor for an empty block
-     */
-    public BlockNode() {
-        this.declarations = null;
-        this.statements = null;
-    }
+//
+//    /*
+//    Constructor for an empty block
+//     */
+//    public BlockNode() {
+//        this.declarations = null;
+//        this.statements = null;
+//    }
 
     /*
     Constructor
