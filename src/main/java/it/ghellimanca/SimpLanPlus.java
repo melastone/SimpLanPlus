@@ -1,11 +1,13 @@
 package it.ghellimanca;
 
 import it.ghellimanca.ast.BlockNode;
+import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.gen.SimpLanPlusLexer;
 import it.ghellimanca.gen.SimpLanPlusParser;
 import it.ghellimanca.SimpLanPlusPTVisitor;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
+import it.ghellimanca.semanticanalysis.TypeCheckingException;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
@@ -53,7 +55,7 @@ public class SimpLanPlus {
 
         /* LEXER */
 
-        // Creating the lexer
+        // Instantiate the lexer
         SimpLanPlusLexer slpLexer = new SimpLanPlusLexer(CharStreams.fromString(simpLanPlusCode));
         CommonTokenStream slpLexerTokens = new CommonTokenStream(slpLexer);
         SimpLanPlusErrorListener slpErrorListenerLexer = new SimpLanPlusErrorListener();
@@ -65,7 +67,7 @@ public class SimpLanPlus {
 
         /* PARSER */
 
-        // Creating the parser
+        // Instantiate the parser
         SimpLanPlusParser slpParser = new SimpLanPlusParser(slpLexerTokens);
         SimpLanPlusErrorListener slpErrorListenerParser = new SimpLanPlusErrorListener();
 
@@ -144,13 +146,21 @@ public class SimpLanPlus {
         // Checking for semantic errors
         ArrayList<SemanticError> semanticErrors = AST.checkSemantics(environment);
         if (!semanticErrors.isEmpty()) {
-            System.err.println("Semantic analysis:");
+            System.err.println("Semantic errors:");
 
             for (SemanticError err : semanticErrors) {
                 System.err.println(err);
             }
         }
         // Checking for type errors
+        try {
+            TypeNode finalType = AST.typeCheck();
+            System.out.println("Type checking completed with success!");
+            System.out.println("Final block type is " + finalType);
+        } catch (TypeCheckingException exception) {
+            System.err.println("Type error:\n" + exception.getMessage());
+        }
+
 
         // Checking for effect analysis errors
 

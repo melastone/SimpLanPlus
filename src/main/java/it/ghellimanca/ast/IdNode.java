@@ -17,9 +17,11 @@ public class IdNode implements Node {
     final private String id;
     private TypeNode entryType;
 
+
     public IdNode(String id) {
         this.id = id;
     }
+
 
     public String getIdentifier() {
         return id;

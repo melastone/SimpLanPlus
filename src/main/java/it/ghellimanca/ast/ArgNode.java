@@ -1,5 +1,6 @@
 package it.ghellimanca.ast;
 
+import it.ghellimanca.ast.type.VoidTypeNode;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.type.TypeNode;
@@ -35,7 +36,7 @@ public class ArgNode implements Node {
 
     @Override
     public TypeNode typeCheck() {
-        return null;
+        return new VoidTypeNode();    // has nothing to return
     }
 
     @Override

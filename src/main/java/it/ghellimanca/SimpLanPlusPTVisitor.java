@@ -209,13 +209,20 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
     public IteNode visitIte(SimpLanPlusParser.IteContext ctx) {
 
         ExpNode cond = (ExpNode) visit(ctx.exp());
-        List<StatementNode> statements = new ArrayList<>();
 
-        for (SimpLanPlusParser.StatementContext stmCtx : ctx.statement()){
-            statements.add((StatementNode) visit(stmCtx));
+        List<SimpLanPlusParser.StatementContext> statementsCtx = ctx.statement();
+
+        if (statementsCtx.size() > 1) {
+            List<StatementNode> statements = new ArrayList<>();
+
+            for (SimpLanPlusParser.StatementContext stmCtx : ctx.statement()){
+                statements.add((StatementNode) visit(stmCtx));
+            }
+
+            return new IteNode(cond, statements.get(0), statements.get(1));
         }
 
-        return new IteNode(cond, statements.get(0), statements.get(1));
+        return new IteNode(cond,(StatementNode) visit(statementsCtx.get(0)));
     }
 
     @Override

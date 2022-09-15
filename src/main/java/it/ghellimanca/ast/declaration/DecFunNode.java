@@ -1,5 +1,6 @@
 package it.ghellimanca.ast.declaration;
 
+import it.ghellimanca.ast.type.ArrowTypeNode;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.MultipleDeclarationException;
 import it.ghellimanca.semanticanalysis.SemanticError;
@@ -8,9 +9,11 @@ import it.ghellimanca.ast.BlockNode;
 import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.type.TypeNode;
+import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Node of the AST for a function declaration.
@@ -19,7 +22,6 @@ import java.util.List;
  * type is used for int/bool function
  * voidType is used in case the function is void.
  *
- * todo: controlla se il nodo viene creato correttamente in caso di funzioni void.
  */
 public class DecFunNode extends DeclarationNode {
 
@@ -64,10 +66,11 @@ public class DecFunNode extends DeclarationNode {
         ArrayList<SemanticError> err = new ArrayList<SemanticError>();
 
         try {
-            env.addDeclaration(id.getIdentifier(), type);
+            List<TypeNode> argsType = arguments.stream().map(ArgNode::getType).collect(Collectors.toList());
+            ArrowTypeNode funType = new ArrowTypeNode(argsType,type);
+            env.addDeclaration(id.getIdentifier(), funType);
 
-            // Creates a new scope for params and function body
-            env.newScope();
+            env.newScope();     // Creates a new scope for params and function body
 
             for (ArgNode arg : arguments) {
                 env.addDeclaration(arg.getId().getIdentifier(), arg.getType());
@@ -84,7 +87,12 @@ public class DecFunNode extends DeclarationNode {
     }
 
     @Override
-    public TypeNode typeCheck() {
+    public TypeNode typeCheck() throws TypeCheckingException {
+
+        if (!type.equals(body.typeCheck())) {
+            throw new TypeCheckingException("Type mismatch: function " + id + " does not return " + type + " type.");
+        }
+
         return null;
     }
 }

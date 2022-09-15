@@ -52,6 +52,7 @@ public class AssignmentNode extends StatementNode {
 
     @Override
     public TypeNode typeCheck() throws TypeCheckingException {
+
         TypeNode idType = lhs.typeCheck(); // TODO: se non facciamo puntatori è da cambiare
         TypeNode expType = exp.typeCheck();
 

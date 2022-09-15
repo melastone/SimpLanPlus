@@ -57,7 +57,7 @@ public class BinExpNode extends ExpNode {
 
         // checking that the expression have the same type
         if (!left.equals(right)) {
-            throw new TypeCheckingException("Left expression: " + leftExp + " and right expression: " + rightExp + " have incompatible types.");
+            throw new TypeCheckingException("Left expression: " + leftExp.toPrint("\t") + " \nand right expression: " + rightExp.toPrint("\t") + " \nhave incompatible types.");
         }
 
         switch (operator) {
@@ -66,15 +66,20 @@ public class BinExpNode extends ExpNode {
             case "/":
             case "+":
             case "-":
-            case "<":
-            case "<=":
-            case ">":
-            case ">=":
                 // i only check the left exp's type just because i already checked that it is the same as the right one
                 if (!(left instanceof IntTypeNode)) {
                     throw new TypeCheckingException("The operator: " + operator + " requires integer expressions.");
                 }
                 return new IntTypeNode();
+
+            case "<":
+            case "<=":
+            case ">":
+            case ">=":
+                if (!(left instanceof IntTypeNode)) {
+                    throw new TypeCheckingException("The operator: " + operator + " requires integer expressions.");
+                }
+                return new BoolTypeNode();
 
             // operators for exps of the same type that always return a bool
             case "==":
