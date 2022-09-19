@@ -151,6 +151,8 @@ public class SimpLanPlus {
             for (SemanticError err : semanticErrors) {
                 System.err.println(err);
             }
+
+            System.exit(1);
         }
         // Checking for type errors
         try {

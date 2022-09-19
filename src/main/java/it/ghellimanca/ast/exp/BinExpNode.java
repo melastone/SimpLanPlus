@@ -40,12 +40,8 @@ public class BinExpNode extends ExpNode {
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> err = new ArrayList<>();
 
-        if (this.leftExp != null) {
-            err.addAll(leftExp.checkSemantics(env));
-        }
-        if(this.rightExp != null) {
-            err.addAll(rightExp.checkSemantics(env));
-        }
+        err.addAll(leftExp.checkSemantics(env));
+        err.addAll(rightExp.checkSemantics(env));
 
         return err;
     }
