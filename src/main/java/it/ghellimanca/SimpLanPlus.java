@@ -1,6 +1,6 @@
 package it.ghellimanca;
 
-import it.ghellimanca.ast.BlockNode;
+import it.ghellimanca.ast.ProgramNode;
 import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.gen.SimpLanPlusLexer;
 import it.ghellimanca.gen.SimpLanPlusParser;
@@ -81,7 +81,7 @@ public class SimpLanPlus {
         System.out.println("Parsing...");
 
         // Visiting the tree and generating the AST
-        BlockNode AST = (BlockNode) parseTreeVisitor.visitBlock(slpParser.block());
+        ProgramNode AST = (ProgramNode) parseTreeVisitor.visitProgram(slpParser.program());
 //        AST.setMainBlock(); // The main block is special therefore just here a flag is set to signal this
 
 

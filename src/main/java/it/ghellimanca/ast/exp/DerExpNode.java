@@ -1,9 +1,8 @@
 package it.ghellimanca.ast.exp;
 
+import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
-import it.ghellimanca.ast.LhsNode;
-import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
@@ -13,26 +12,25 @@ import java.util.ArrayList;
  */
 public class DerExpNode extends ExpNode {
 
-    final LhsNode lhs;
+    final IdNode id;
 
-
-    public DerExpNode(LhsNode lhs) {
-        this.lhs = lhs;
+    public DerExpNode(IdNode id) {
+        this.id = id;
     }
 
 
     @Override
     public String toPrint(String indent) {
-        return "\n" + indent + "DER_EXP" + lhs.toPrint(indent + "\t");
+        return "\n" + indent + "DER_EXP" + id.toPrint(indent + "\t");
     }
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return lhs.checkSemantics(env);
+        return id.checkSemantics(env);
     }
 
     @Override
     public TypeNode typeCheck() {
-        return lhs.typeCheck();
+        return id.typeCheck();
     }
 }

@@ -1,18 +1,12 @@
 {
     /*
-    This example shows the problems arising with aliasing.
-    While f is perfectly correct, if we were to declare a pointer like this:
-      ^int x = new int;
-    and use it in the following statement:
-      f(x, x);
-    then the program should display:
-      - "The dereferenced pointer x^ is used after deletion."
+    This example shows the use of an if-then-else statement.
+    The condition can be changed to output other stuff.
+    With a set to 10, the program should output 10.
     */
-    ^int x = new int;
-    void f(^int x, ^int y) {
-        delete x;
-        delete y;
-    }
-
-    f(x,x);
+    int a = 10;
+    if (a >= 0)
+        print a;
+    else
+        print 0;
 }

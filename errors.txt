@@ -1,5 +1,2 @@
-Syntactic errors:
-line 8:10 extraneous input 'var' expecting {')', 'int', 'bool', '^'}
-    int f(var bool arg) {
-          ^^^
-
+Lexical errors:
+line 1:0 token recognition error at: '$'

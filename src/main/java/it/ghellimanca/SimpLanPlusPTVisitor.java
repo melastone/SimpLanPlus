@@ -26,6 +26,7 @@ import java.util.List;
  */
 public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
 
+
     @Override
     public Node visitProgram(SimpLanPlusParser.ProgramContext ctx) {
 
@@ -42,6 +43,7 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
 
         return new ProgramNode(declarations,statements);
     }
+
 
     @Override
     public BlockNode visitBlock(SimpLanPlusParser.BlockContext ctx) {
@@ -60,10 +62,7 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         return new BlockNode(variableDeclarations,statements);
     }
 
-//    @Override
-//    public StatementNode visitStatement(SimpLanPlusParser.StatementContext ctx) {
-//        return (StatementNode) visit(ctx);
-//    }
+
     @Override
     public Node visitDeclaration(SimpLanPlusParser.DeclarationContext ctx){
         Node res;
@@ -80,6 +79,7 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
 
         return res;
     }
+
 
     @Override public Node visitStatement(SimpLanPlusParser.StatementContext ctx){
         Node res;
@@ -99,9 +99,6 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         else if(ctx.print() != null){
             res = visit(ctx.print());
         }
-        else if(ctx.deletion() != null){
-            res = visit(ctx.deletion());
-        }
         else if(ctx.assignment() != null){
             res = visit(ctx.assignment());
         }
@@ -112,10 +109,6 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         return res;
     }
 
-//    @Override
-//    public DeclarationNode visitDeclaration(SimpLanPlusParser.DeclarationContext ctx) {
-//        return (DeclarationNode) visit(ctx);
-//    }
 
     @Override
     public Node visitDecFun(SimpLanPlusParser.DecFunContext ctx) {
@@ -138,6 +131,7 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
 
     }
 
+
     @Override
     public DecVarNode visitDecVar(SimpLanPlusParser.DecVarContext ctx) {
 
@@ -149,9 +143,7 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
 
     }
 
-    /**
-     * Creates a node in the AST that represents a 'type', by visiting the parse tree.
-     */
+
     @Override
     public TypeNode visitType(SimpLanPlusParser.TypeContext ctx) {
 
@@ -163,7 +155,7 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
             return new BoolTypeNode();
         }
 
-        return new PointerTypeNode(visitType(ctx.type())); // visiting the TypeNode pointed by the pointer
+        return new VoidTypeNode();
     }
 
 
@@ -176,35 +168,16 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         return new ArgNode(type, id);
     }
 
+
     @Override
     public AssignmentNode visitAssignment(SimpLanPlusParser.AssignmentContext ctx) {
 
-        LhsNode lhs = visitLhs(ctx.lhs());
+        IdNode id = new IdNode(ctx.ID().getText());
         ExpNode exp = (ExpNode) visit(ctx.exp());
 
-        return new AssignmentNode(lhs, exp);
+        return new AssignmentNode(id, exp);
     }
 
-    @Override
-    public LhsNode visitLhs(SimpLanPlusParser.LhsContext ctx) {
-
-        if (ctx.lhs() != null) { // lhs '^' case
-            LhsNode lhs = visitLhs(ctx.lhs());
-            return new LhsNode(lhs.getId(), lhs);
-        }
-        else { // ID case
-            IdNode id = new IdNode(ctx.ID().getText());
-            return new LhsNode(id, null);
-        }
-    }
-
-    @Override
-    public DeletionNode visitDeletion(SimpLanPlusParser.DeletionContext ctx) {
-
-        IdNode id = new IdNode(ctx.ID().toString());
-
-        return new DeletionNode(id);
-    }
 
     @Override
     public PrintNode visitPrint(SimpLanPlusParser.PrintContext ctx) {
@@ -214,6 +187,7 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         return new PrintNode(exp);
     }
 
+
     @Override
     public ReturnNode visitRet(SimpLanPlusParser.RetContext ctx) {
 
@@ -221,6 +195,7 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
 
         return new ReturnNode(exp);
     }
+
 
     @Override
     public IteNode visitIte(SimpLanPlusParser.IteContext ctx) {
@@ -242,6 +217,7 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         return new IteNode(cond,(StatementNode) visit(statementsCtx.get(0)));
     }
 
+
     @Override
     public CallNode visitCall(SimpLanPlusParser.CallContext ctx) {
 
@@ -256,6 +232,7 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
 
     }
 
+
     @Override
     public BaseExpNode visitBaseExp(SimpLanPlusParser.BaseExpContext ctx) {
 
@@ -263,6 +240,7 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
 
         return new BaseExpNode(exp);
     }
+
 
     @Override
     public BinExpNode visitBinExp(SimpLanPlusParser.BinExpContext ctx) {
@@ -274,21 +252,15 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         return new BinExpNode(left, op, right);
     }
 
+
     @Override
     public DerExpNode visitDerExp(SimpLanPlusParser.DerExpContext ctx) {
 
-        LhsNode lhs = visitLhs(ctx.lhs());
+        IdNode id = new IdNode(ctx.ID().getText());
 
-        return new DerExpNode(lhs);
+        return new DerExpNode(id);
     }
 
-    @Override
-    public NewExpNode visitNewExp(SimpLanPlusParser.NewExpContext ctx) {
-
-        TypeNode type = visitType(ctx.type());
-
-        return new NewExpNode(type);
-    }
 
     @Override
     public ValExpNode visitValExp(SimpLanPlusParser.ValExpContext ctx) {
@@ -298,6 +270,7 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         return new ValExpNode(number);
     }
 
+
     @Override
     public NegExpNode visitNegExp(SimpLanPlusParser.NegExpContext ctx) {
 
@@ -305,6 +278,7 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
 
         return new NegExpNode(exp);
     }
+
 
     @Override
     public BoolExpNode visitBoolExp(SimpLanPlusParser.BoolExpContext ctx) {
@@ -314,11 +288,13 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         return new BoolExpNode(bool);
     }
 
+
     @Override
     public CallExpNode visitCallExp(SimpLanPlusParser.CallExpContext ctx) {
         CallNode call = visitCall(ctx.call());
         return new CallExpNode(call);
     }
+
 
     @Override
     public NotExpNode visitNotExp(SimpLanPlusParser.NotExpContext ctx) {
@@ -326,6 +302,7 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
 
         return new NotExpNode(exp);
     }
+
 
     @Override
     public Node visit(ParseTree tree) {

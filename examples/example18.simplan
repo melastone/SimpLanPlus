@@ -1,9 +1,11 @@
 {
     /*
-    This example shows the behaviour of the SimpLanPlus interpreter when dealing with uninitialized variables.
-    The program fails to compile and should output:
-        - "a is used prior to initialization."
+    This example shows what happens with the multiple declaration of a variable in SimpLanPlus.
+    The program is not well formed and should display the following error:
+      - "Multiple declaration for ID: x. It was previously defined of type: int."
     */
-    int a;
-    int b = a;
+
+    int x = 1;
+    int x = 4; // multiple decl err!
+    print x;
 }
