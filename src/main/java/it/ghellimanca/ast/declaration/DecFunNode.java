@@ -90,7 +90,7 @@ public class DecFunNode extends DeclarationNode {
     public TypeNode typeCheck() throws TypeCheckingException {
 
         if (!type.equals(body.typeCheck())) {
-            throw new TypeCheckingException("Type mismatch: function " + id + " does not return " + type + " type.");
+            throw new TypeCheckingException("Type mismatch: function " + id.getIdentifier() + " does not return " + type + " type.");
         }
 
         return null;

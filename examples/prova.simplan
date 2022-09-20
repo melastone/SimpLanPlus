@@ -2,4 +2,12 @@
     /*
     Questo file possiamo usarlo per testare codice al volo.
     */
+    int x = 1;
+    bool y;
+
+    int f(var bool arg) {
+        return 1;
+    }
+
+    y = !x;
 }

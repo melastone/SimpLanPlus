@@ -45,7 +45,7 @@ public class DeletionNode extends StatementNode {
 
         // checking that the id is a pointer to be deleted
         if(!(idType instanceof PointerTypeNode))
-            throw new TypeCheckingException("Id " + id + " must be a pointer to be deleted.");
+            throw new TypeCheckingException("Id " + id.getIdentifier() + " must be a pointer to be deleted.");
 
         return new VoidTypeNode();
     }

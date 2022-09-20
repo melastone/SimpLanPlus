@@ -1,0 +1,5 @@
+Syntactic errors:
+line 8:10 extraneous input 'var' expecting {')', 'int', 'bool', '^'}
+    int f(var bool arg) {
+          ^^^
+

@@ -57,7 +57,7 @@ public class AssignmentNode extends StatementNode {
         TypeNode expType = exp.typeCheck();
 
         if (!idType.equals(expType)) {
-            throw new TypeCheckingException("Can't assign expression of type "+ expType + "to id of type: " + idType);
+            throw new TypeCheckingException("Can't assign expression of type " + expType + " to id of type " + idType);
         }
 
         return new VoidTypeNode();

@@ -1,4 +1,4 @@
-package it.ghellimanca.gen;// Generated from /home/melania/Documents/UNI-BOH/1 ANNO/CI/progetto/SimpLanPlus/src/SimpLanPlus.g4 by ANTLR 4.9.2
+package it.ghellimanca.gen;// Generated from /home/melania/Documents/UNI-BOH/1 ANNO/CI/progetto/SimpLanPlus/src/main/antlr/SimpLanPlus.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -6,6 +6,16 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  * {@link SimpLanPlusParser}.
  */
 public interface SimpLanPlusListener extends ParseTreeListener {
+	/**
+	 * Enter a parse tree produced by {@link SimpLanPlusParser#program}.
+	 * @param ctx the parse tree
+	 */
+	void enterProgram(SimpLanPlusParser.ProgramContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SimpLanPlusParser#program}.
+	 * @param ctx the parse tree
+	 */
+	void exitProgram(SimpLanPlusParser.ProgramContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SimpLanPlusParser#block}.
 	 * @param ctx the parse tree
@@ -87,26 +97,6 @@ public interface SimpLanPlusListener extends ParseTreeListener {
 	 */
 	void exitAssignment(SimpLanPlusParser.AssignmentContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SimpLanPlusParser#lhs}.
-	 * @param ctx the parse tree
-	 */
-	void enterLhs(SimpLanPlusParser.LhsContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SimpLanPlusParser#lhs}.
-	 * @param ctx the parse tree
-	 */
-	void exitLhs(SimpLanPlusParser.LhsContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link SimpLanPlusParser#deletion}.
-	 * @param ctx the parse tree
-	 */
-	void enterDeletion(SimpLanPlusParser.DeletionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SimpLanPlusParser#deletion}.
-	 * @param ctx the parse tree
-	 */
-	void exitDeletion(SimpLanPlusParser.DeletionContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link SimpLanPlusParser#print}.
 	 * @param ctx the parse tree
 	 */
@@ -182,18 +172,6 @@ public interface SimpLanPlusListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDerExp(SimpLanPlusParser.DerExpContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code newExp}
-	 * labeled alternative in {@link SimpLanPlusParser#exp}.
-	 * @param ctx the parse tree
-	 */
-	void enterNewExp(SimpLanPlusParser.NewExpContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code newExp}
-	 * labeled alternative in {@link SimpLanPlusParser#exp}.
-	 * @param ctx the parse tree
-	 */
-	void exitNewExp(SimpLanPlusParser.NewExpContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code valExp}
 	 * labeled alternative in {@link SimpLanPlusParser#exp}.
