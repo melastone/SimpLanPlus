@@ -1,6 +1,6 @@
 {
     /*
-    This example shows the correct working of function invocations with inner variable declarations.
+    This example shows the correct working of function invocations with inner variable variableDeclarations.
     This program is well formed and should output 1.
     */
     int f() {

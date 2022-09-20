@@ -1,6 +1,6 @@
-// Generated from /home/melania/Documents/UNI-BOH/1 ANNO/CI/progetto/SimpLanPlus/src/main/antlr/SimpLanPlus.g4 by ANTLR 4.9.2
-import it.ghellimanca.gen.SimpLanPlusListener;
-import it.ghellimanca.gen.SimpLanPlusVisitor;
+package it.ghellimanca.gen;// Generated from /home/melania/Documents/UNI-BOH/1 ANNO/CI/progetto/SimpLanPlus/src/main/antlr/SimpLanPlus.g4 by ANTLR 4.9.2
+
+
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;

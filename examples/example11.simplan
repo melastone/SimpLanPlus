@@ -1,6 +1,6 @@
 {
     /*
-    This example shows some variable declarations but most importantly it shows:
+    This example shows some variable variableDeclarations but most importantly it shows:
       - that Boolean values are represented as integers inside the memory, hence "true" becomes 1 and "false" 0
       - that even if pointers are variable containing memory addresses, integers do not cast to memory addresses in this language
     The program should output 56 followed by 1 in the following row.

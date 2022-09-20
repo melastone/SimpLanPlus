@@ -27,7 +27,7 @@ import java.util.List;
 public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
 
     @Override
-    public BlockNode visitBlock(SimpLanPlusParser.BlockContext ctx) {
+    public Node visitProgram(SimpLanPlusParser.ProgramContext ctx) {
 
         List<DeclarationNode> declarations = new ArrayList<>();
         List<StatementNode> statements = new ArrayList<>();
@@ -40,7 +40,24 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
             statements.add((StatementNode) visit(stmCtx));
         }
 
-        return new BlockNode(declarations,statements);
+        return new ProgramNode(declarations,statements);
+    }
+
+    @Override
+    public BlockNode visitBlock(SimpLanPlusParser.BlockContext ctx) {
+
+        List<DecVarNode> variableDeclarations = new ArrayList<>();
+        List<StatementNode> statements = new ArrayList<>();
+
+        for (SimpLanPlusParser.DecVarContext declCtx : ctx.decVar()) {
+            variableDeclarations.add((DecVarNode) visit(declCtx));
+        }
+
+        for (SimpLanPlusParser.StatementContext stmCtx : ctx.statement()){
+            statements.add((StatementNode) visit(stmCtx));
+        }
+
+        return new BlockNode(variableDeclarations,statements);
     }
 
 //    @Override
