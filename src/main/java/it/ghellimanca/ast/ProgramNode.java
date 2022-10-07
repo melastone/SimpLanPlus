@@ -1,46 +1,36 @@
 package it.ghellimanca.ast;
 
-import it.ghellimanca.ast.declaration.DecVarNode;
+import it.ghellimanca.ast.declaration.DeclarationNode;
 import it.ghellimanca.ast.statement.IteNode;
 import it.ghellimanca.ast.statement.ReturnNode;
+import it.ghellimanca.ast.statement.StatementNode;
+import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.ast.type.VoidTypeNode;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
-import it.ghellimanca.ast.declaration.DeclarationNode;
-import it.ghellimanca.ast.statement.StatementNode;
-import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
 import java.util.List;
 
+public class ProgramNode implements Node {
 
-/**
- * Node of the AST for a block
- *
- *
- */
-public class BlockNode extends StatementNode {
-
-    final private List<DecVarNode> variableDeclarations;
+    final private List<DeclarationNode> declarations;
     final private List<StatementNode> statements;
 
 
-    /*
-    Constructor
-     */
-    public BlockNode(List<DecVarNode> variableDeclarations, List<StatementNode> statements) {
-        this.variableDeclarations = variableDeclarations;
+    public ProgramNode(List<DeclarationNode> declarations, List<StatementNode> statements) {
+        this.declarations = declarations;
         this.statements = statements;
     }
 
 
     @Override
     public String toPrint(String indent) {
-        String res = "\n" + indent + "BLOCK";
+        String res = "\n" + indent + "PROGRAM";
 
-        if (this.variableDeclarations != null) {
-            for (DeclarationNode dec : variableDeclarations) {
+        if (this.declarations != null) {
+            for (DeclarationNode dec : declarations) {
                 res += dec.toPrint(indent + "\t");
             }
         }
@@ -65,8 +55,8 @@ public class BlockNode extends StatementNode {
 
         env.newScope();
 
-        if (this.variableDeclarations != null) {
-            for (DeclarationNode dec : variableDeclarations) {
+        if (this.declarations != null) {
+            for (DeclarationNode dec : declarations) {
                 err.addAll(dec.checkSemantics(env));
             }
         }
@@ -85,8 +75,8 @@ public class BlockNode extends StatementNode {
     @Override
     public TypeNode typeCheck() throws TypeCheckingException {
 
-        if (this.variableDeclarations != null) {
-            for (DeclarationNode dec : variableDeclarations) {
+        if (this.declarations != null) {
+            for (DeclarationNode dec : declarations) {
                 dec.typeCheck();
             }
         }

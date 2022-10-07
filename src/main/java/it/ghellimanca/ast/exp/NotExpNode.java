@@ -16,11 +16,9 @@ public class NotExpNode extends ExpNode {
 
     final ExpNode exp;
 
-
     public NotExpNode(ExpNode exp) {
         this.exp = exp;
     }
-
 
     @Override
     public String toPrint(String indent) {

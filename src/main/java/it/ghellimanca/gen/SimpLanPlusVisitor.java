@@ -1,4 +1,4 @@
-package it.ghellimanca.gen;// Generated from /home/melania/Documents/UNI-BOH/1 ANNO/CI/progetto/SimpLanPlus/src/SimpLanPlus.g4 by ANTLR 4.9.2
+package it.ghellimanca.gen;// Generated from /home/melania/Documents/UNI-BOH/1 ANNO/CI/progetto/SimpLanPlus/src/main/antlr/SimpLanPlus.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -9,6 +9,12 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  * operations with no return type.
  */
 public interface SimpLanPlusVisitor<T> extends ParseTreeVisitor<T> {
+	/**
+	 * Visit a parse tree produced by {@link SimpLanPlusParser#program}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitProgram(SimpLanPlusParser.ProgramContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SimpLanPlusParser#block}.
 	 * @param ctx the parse tree
@@ -58,18 +64,6 @@ public interface SimpLanPlusVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssignment(SimpLanPlusParser.AssignmentContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SimpLanPlusParser#lhs}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLhs(SimpLanPlusParser.LhsContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SimpLanPlusParser#deletion}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDeletion(SimpLanPlusParser.DeletionContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link SimpLanPlusParser#print}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -114,13 +108,6 @@ public interface SimpLanPlusVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitDerExp(SimpLanPlusParser.DerExpContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code newExp}
-	 * labeled alternative in {@link SimpLanPlusParser#exp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNewExp(SimpLanPlusParser.NewExpContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code valExp}
 	 * labeled alternative in {@link SimpLanPlusParser#exp}.

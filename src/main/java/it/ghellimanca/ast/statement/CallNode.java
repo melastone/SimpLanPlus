@@ -67,7 +67,7 @@ public class CallNode extends StatementNode {
         TypeNode funType = id.typeCheck();
 
         if (!(funType instanceof ArrowTypeNode)) {
-            throw new TypeCheckingException("Type mismatch: " + id + " has not a function type.");
+            throw new TypeCheckingException("Function " + id.getIdentifier() + " does not have a function type.");
         }
 
         List<TypeNode> formalParamsTypes = ((ArrowTypeNode) funType).getArgs();
@@ -79,12 +79,12 @@ public class CallNode extends StatementNode {
 
         int size = formalParamsTypes.size();
         if (actualParamsTypes.size() != size) {
-            throw new TypeCheckingException("Type mismatch: " + id + " has incorrect number of parameters. Expecting " + size + ".");
+            throw new TypeCheckingException("Function " + id.getIdentifier() + ": expecting " + size + " number of parameters but got " + actualParamsTypes.size()  + " instead.");
         }
 
         for (int i = 0; i < size; i++) {
             if (!actualParamsTypes.get(i).equals(formalParamsTypes.get(i))) {
-                throw new TypeCheckingException("Type mismatch: expecting argument of type " + formalParamsTypes.get(i) + " but got " + actualParamsTypes.get(i) + " instead.");
+                throw new TypeCheckingException("Function " + id.getIdentifier() + ": expecting argument of type " + formalParamsTypes.get(i) + " but got " + actualParamsTypes.get(i) + " instead.");
             }
         }
 

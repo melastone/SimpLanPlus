@@ -1,24 +1,15 @@
-
 {
     /*
-    This example shows the correct use of recursive functions and pointers.
-    The variable u is a pointer and after returning from:
-      f(u,1);
-    it is deleted.
-    The program is well formed and should output 1.
+    This example is the recursive version of the Fibonacci function.
+    fib(n) is the n-th number in the Fibonacci series.
     */
-    ^int u = new int;
-    void f(^int x, int n) {
-        if (n == 0) {
-            print(x);
-            delete x;
+    int fib(int n) {
+        if (n <= 1) {
+            return n;
         }
-        else {
-            ^int y = new int;
-            y^ = x^ * n;
-            f(y,n-1);
-        }	
+        
+        return fib(n-1) + fib(n-2);
     }
-    u^ = 1;
-    f(u,1);
+
+    print fib(10);
 }

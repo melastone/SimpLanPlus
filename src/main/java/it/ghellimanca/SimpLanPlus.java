@@ -1,11 +1,13 @@
 package it.ghellimanca;
 
-import it.ghellimanca.ast.BlockNode;
+import it.ghellimanca.ast.ProgramNode;
+import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.gen.SimpLanPlusLexer;
 import it.ghellimanca.gen.SimpLanPlusParser;
 import it.ghellimanca.SimpLanPlusPTVisitor;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
+import it.ghellimanca.semanticanalysis.TypeCheckingException;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
@@ -79,7 +81,7 @@ public class SimpLanPlus {
         System.out.println("Parsing...");
 
         // Visiting the tree and generating the AST
-        BlockNode AST = (BlockNode) parseTreeVisitor.visitBlock(slpParser.block());
+        ProgramNode AST = (ProgramNode) parseTreeVisitor.visitProgram(slpParser.program());
 //        AST.setMainBlock(); // The main block is special therefore just here a flag is set to signal this
 
 
@@ -144,13 +146,23 @@ public class SimpLanPlus {
         // Checking for semantic errors
         ArrayList<SemanticError> semanticErrors = AST.checkSemantics(environment);
         if (!semanticErrors.isEmpty()) {
-            System.err.println("Semantic analysis:");
+            System.err.println("Semantic errors:");
 
             for (SemanticError err : semanticErrors) {
                 System.err.println(err);
             }
+
+            System.exit(1);
         }
         // Checking for type errors
+        try {
+            TypeNode finalType = AST.typeCheck();
+            System.out.println("Type checking completed with success!");
+            System.out.println("Final block type is " + finalType);
+        } catch (TypeCheckingException exception) {
+            System.err.println("Type error:\n" + exception.getMessage());
+        }
+
 
         // Checking for effect analysis errors
 

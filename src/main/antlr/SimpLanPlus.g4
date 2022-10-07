@@ -2,10 +2,11 @@ grammar SimpLanPlus;
 
 // THIS IS THE PARSER INPUT
 
-block	    : '{' declaration* statement* '}';
+program     : '{' declaration* statement* '}' EOF;
+
+block	    : '{' decVar* statement* '}';
 
 statement   : assignment ';'
-	    | deletion ';'
 	    | print ';'
 	    | ret ';'
 	    | ite
@@ -20,16 +21,11 @@ decFun	    : (type | 'void') ID '(' (arg (',' arg)*)? ')' block ;
 decVar      : type ID ('=' exp)? ';' ;
 
 type        : 'int'
-            | 'bool'
-	        | '^' type ;
+            | 'bool';
 
-arg         : type ID;
+arg         : ('var')? type ID;
 
-assignment  : lhs '=' exp ;
-
-lhs         : ID | lhs '^' ;
-
-deletion    : 'delete' ID;
+assignment  : ID '=' exp ;
 
 print	    : 'print' exp;
 
@@ -41,17 +37,16 @@ call        : ID '(' (exp(',' exp)*)? ')';
 
 exp	    : '(' exp ')'				        #baseExp
 	    | '-' exp					        #negExp
-	    | '!' exp                                           #notExp
-	    | lhs						#derExp
-	    | 'new' type					#newExp
+	    | '!' exp                           #notExp
+	    | ID						        #derExp
 	    | left=exp op=('*' | '/')               right=exp   #binExp
 	    | left=exp op=('+' | '-')               right=exp   #binExp
 	    | left=exp op=('<' | '<=' | '>' | '>=') right=exp   #binExp
 	    | left=exp op=('=='| '!=')              right=exp   #binExp
 	    | left=exp op='&&'                      right=exp   #binExp
 	    | left=exp op='||'                      right=exp   #binExp
-	    | call                                              #callExp
-	    | BOOL                                              #boolExp
+	    | call                              #callExp
+	    | BOOL                              #boolExp
 	    | NUMBER					        #valExp;
 
 

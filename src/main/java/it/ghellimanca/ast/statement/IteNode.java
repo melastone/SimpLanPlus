@@ -1,10 +1,13 @@
 package it.ghellimanca.ast.statement;
 
+import it.ghellimanca.ast.type.BoolTypeNode;
+import it.ghellimanca.ast.type.VoidTypeNode;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.exp.ExpNode;
 import it.ghellimanca.ast.type.TypeNode;
+import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
 
@@ -63,7 +66,20 @@ public class IteNode extends StatementNode {
     }
 
     @Override
-    public TypeNode typeCheck() {
-        return null;
+    public TypeNode typeCheck() throws TypeCheckingException {
+        TypeNode condType = exp.typeCheck();
+        TypeNode stm1Type = stm1.typeCheck();
+
+        // checking that the condition is a boolean expression
+        if(!(condType instanceof BoolTypeNode))
+            throw new TypeCheckingException("Condition of the if statement is not of type bool.");
+
+        // checking that if there is an else branch it's the same type as the then branch
+        if (this.stm2 != null && !(stm1Type.equals(stm2.typeCheck()))) {
+            throw new TypeCheckingException("Then and else branch of the if statement have different types.");
+        }
+
+        // returning the branches type
+        return stm1Type;
     }
 }

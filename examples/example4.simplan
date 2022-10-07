@@ -1,19 +1,18 @@
 {
     /*
-    This example shows the importance of having a fix-point method implemented for performing the effects analysis on functions.
-    The program is correct and should not output anything. Both a and b will be marked as deleted.
+    This example shows the use of mutual recursion, which is not supported by SimpLanPlus.
+    The fact that if it was supported it would display an out of memory error does not mean anything.
+    The program should output:
+      - "Missing declaration for ID: g."
     */
-    ^int a = new int;
-    ^int b = new int;
-    void h(^int x, ^int y) {
-        if (y^ == 0) 
-            delete x;
-        else { 
-            x^ = x^ - 1;
-            h(y,x);
-        }
+    void f() {
+        print 1;
+        g();
     }
-    a^ = 1;
-    b^ = 0;
-    h(a, b);
+    void g() {
+        print 2;
+        f();
+    }
+
+    f();
 }

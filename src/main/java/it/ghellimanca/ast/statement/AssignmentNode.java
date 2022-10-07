@@ -1,10 +1,10 @@
 package it.ghellimanca.ast.statement;
 
 
+import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.ast.type.VoidTypeNode;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
-import it.ghellimanca.ast.LhsNode;
 import it.ghellimanca.ast.exp.ExpNode;
 import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.semanticanalysis.TypeCheckingException;
@@ -15,23 +15,24 @@ import java.util.ArrayList;
  * Node of the AST for an assignment statement
  *
  * An assignment has the form:
- * lhs '=' exp
+ * id '=' exp
  *
  */
 public class AssignmentNode extends StatementNode {
 
-    final private LhsNode lhs;
+    final private IdNode id;
     final private ExpNode exp;
 
 
-    public AssignmentNode(LhsNode lhs, ExpNode exp) {
-        this.lhs = lhs;
+    public AssignmentNode(IdNode id, ExpNode exp) {
+        this.id = id;
         this.exp = exp;
     }
 
+
     @Override
     public String toPrint(String indent) {
-        return "\n" + indent + "ASSIGNMENT" + lhs.toPrint(indent + "\t") + exp.toPrint(indent + "\t");
+        return "\n" + indent + "ASSIGNMENT" + id.toPrint(indent + "\t") + exp.toPrint(indent + "\t");
     }
 
     @Override
@@ -44,7 +45,7 @@ public class AssignmentNode extends StatementNode {
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> err = new ArrayList<>();
 
-        err.addAll(lhs.checkSemantics(env));
+        err.addAll(id.checkSemantics(env));
         err.addAll(exp.checkSemantics(env));
 
         return err;
@@ -52,11 +53,12 @@ public class AssignmentNode extends StatementNode {
 
     @Override
     public TypeNode typeCheck() throws TypeCheckingException {
-        TypeNode lhsType = lhs.typeCheck();
+
+        TypeNode idType = id.typeCheck();
         TypeNode expType = exp.typeCheck();
 
-        if (!lhsType.equals(expType)) {
-            throw new TypeCheckingException("Type mismatch: expecting variable of type " + lhsType + " but got " + expType + " instead.");
+        if (!idType.equals(expType)) {
+            throw new TypeCheckingException("Can't assign expression of type " + expType + " to id of type " + idType);
         }
 
         return new VoidTypeNode();

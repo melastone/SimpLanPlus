@@ -1,21 +1,21 @@
 {
     /*
-    This program shows the use of recursion.
-    While calling function f in this way:
-      f(5,4);
-    is correct and terminates (output 9), calling:
-      f(4,5);
-    then the program should display:
-      - "Reached max memory limit."
+    This example shows the correct working of deeply-nested return statements inside a function.
+    This program is well formed and should output what is written in the comments on the side of print statements. 
     */
-    void f(int m, int n) {
-        if (m>n) {
-            print(m+n);
+    int f(int a){
+        if(a > 1){ // a >= 2
+            if (a > 4) {
+                return 1; // a >= 5
+            }
+        } else { // a <= 1
+            return 2;
         }
-        else {
-            int x = 1;
-            f(m+1,n+1);
-        }
+
+        return 3; // a == 3 || a == 4 
     }
-    f(5,4);
+
+    print f(2); // Should output 3
+    print f(5); // Should output 1
+    print f(0); // Should output 2
 }
