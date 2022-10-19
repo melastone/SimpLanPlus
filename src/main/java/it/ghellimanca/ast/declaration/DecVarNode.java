@@ -45,7 +45,7 @@ public class DecVarNode extends DeclarationNode {
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
 
-        ArrayList<SemanticError> err = new ArrayList<SemanticError>();
+        ArrayList<SemanticError> err = new ArrayList<>();
 
         if (exp != null) {  // if the variable is also initialized
             err.addAll(exp.checkSemantics(env));
@@ -72,4 +72,21 @@ public class DecVarNode extends DeclarationNode {
 
         return null;
     }
+
+   /* @Override
+    public ArrayList<SemanticError> checkEffects(Environment env) {
+        //STEntry entry = env.lookup(id.getIdentifier()); //TODO: lookup deve restituire l'entry
+        ArrayList<SemanticError> err = new ArrayList<>();
+
+        //if exp ! null
+        // err.addall(exp.checkeffects(env))
+        // entry.setStatus(init)
+        //else
+        // entry.setStatus(dec)
+
+        // ricomporre l'env
+        // env.addEntry(id.getIdentifier(), entry)
+
+        return err;
+    }*/
 }

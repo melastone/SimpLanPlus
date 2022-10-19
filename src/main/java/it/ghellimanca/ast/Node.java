@@ -1,9 +1,8 @@
 package it.ghellimanca.ast;
 
 import it.ghellimanca.ast.type.TypeNode;
-import it.ghellimanca.semanticanalysis.TypeCheckingException;
-import it.ghellimanca.semanticanalysis.Environment;
-import it.ghellimanca.semanticanalysis.SemanticError;
+import it.ghellimanca.semanticanalysis.*;
+
 import java.util.ArrayList;
 
 /**
@@ -32,5 +31,5 @@ public interface Node {
     /**
      * Check effects analysis errors.
      */
-
+    //ArrayList<SemanticError> checkEffects(Environment env) throws MissingDeclarationException;
 }

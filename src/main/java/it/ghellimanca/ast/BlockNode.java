@@ -123,4 +123,9 @@ public class BlockNode extends StatementNode {
 
         return new VoidTypeNode();
     }
+
+   /* @Override
+    public ArrayList<SemanticError> checkEffects(Environment env) {
+        return null;
+    }*/
 }
