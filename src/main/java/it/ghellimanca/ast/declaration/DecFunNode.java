@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
  * voidType is used in case the function is void.
  *
  * todo: aggiungi i controlli di subtyping per le regole di tipaggio (non sarebbero necessarie x questa grammatica, ma il prof le apprezza)
+ * todo: testa la definizione di fun senza args
  */
 public class DecFunNode extends DeclarationNode {
 

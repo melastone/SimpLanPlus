@@ -46,6 +46,13 @@ public class Environment {
     }
 
     /**
+     * Creates a copy of Environment env
+     *
+     * @param env   environment to be copied
+     */
+    // Environment(Environment env) {}
+
+    /**
      * @return the current active scope.
      */
     private Map<String, STEntry> currentScope() {

@@ -72,4 +72,17 @@ public class DecVarNode extends DeclarationNode {
 
         return null;
     }
+
+    @Override
+    public ArrayList<SemanticError> checkEffects(Environment sigma) {
+        ArrayList<SemanticError> err = new ArrayList<SemanticError>();
+
+        if (exp != null) {  // if the variable is also initialized
+            err.addAll(exp.checkEffects(sigma));
+        }
+
+        
+
+        return err;
+    }
 }

@@ -123,4 +123,27 @@ public class BlockNode extends StatementNode {
 
         return new VoidTypeNode();
     }
+
+    @Override
+    public ArrayList<SemanticError> checkEffects(Environment sigma) {
+        ArrayList<SemanticError> err = new ArrayList<>();
+
+        sigma.newScope();
+
+        if (this.variableDeclarations != null) {
+            for (DeclarationNode dec : variableDeclarations) {
+                err.addAll(dec.checkEffects(sigma));
+            }
+        }
+
+        if (this.statements != null) {
+            for (StatementNode stat : statements) {
+                err.addAll(stat.checkEffects(sigma));
+            }
+        }
+
+        sigma.exitScope();
+
+        return err;
+    }
 }

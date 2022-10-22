@@ -1,7 +1,7 @@
 {
     /*
         This example shows what happens with if statements if we do not perform Effect Analysis.
-        The program should output a semantic error: we cannot increment a when the if statement is performed.
+        The program should output a semantic error: we cannot increment x when the if statement is performed.
     */
 
     int x; int n = 1;

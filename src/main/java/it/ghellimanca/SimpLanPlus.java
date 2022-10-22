@@ -165,6 +165,9 @@ public class SimpLanPlus {
 
 
         // Checking for effect analysis errors
+        Environment sigma = new Environment();
+
+        //ArrayList<SemanticError> effectAnalysisErrors = AST.checkEffects(sigma);
 
 
         /* CODE GENERATION */

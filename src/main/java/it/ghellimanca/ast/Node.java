@@ -32,5 +32,6 @@ public interface Node {
     /**
      * Check effects analysis errors.
      */
+    ArrayList<SemanticError> checkEffects(Environment sigma);
 
 }
