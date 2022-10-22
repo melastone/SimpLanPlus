@@ -2,6 +2,7 @@ package it.ghellimanca.ast;
 
 
 import it.ghellimanca.ast.type.TypeNode;
+import it.ghellimanca.semanticanalysis.Effect;
 import it.ghellimanca.semanticanalysis.MissingDeclarationException;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 public class IdNode implements Node {
 
     final private String id;
-    private TypeNode entryType;
+    private TypeNode entryType; // solo usato per non rifare lookup
 
 
     public IdNode(String id) {
@@ -55,4 +56,5 @@ public class IdNode implements Node {
     public TypeNode typeCheck() {
         return entryType;
     }
+
 }

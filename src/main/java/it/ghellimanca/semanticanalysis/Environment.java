@@ -19,7 +19,7 @@ public class Environment {
      * with the table via Environment class methods.
      *
      */
-    final private List<Map<String,STEntry>> symbolTable ;
+    final private List<Map<String,STEntry>> symbolTable;
 
     private int nestingLevel;
 
@@ -144,5 +144,47 @@ public class Environment {
             offset = stEntry.map(entry -> entry.getOffset() + 1).orElse(0);
         }
     }
+
+    //MAX
+    //TODO: probabilmente generalizzare perchè seq per environment è stesso codice tranne al momento della op
+    public Environment max(Environment env1, Environment env2) {
+        Environment resEnv = new Environment();
+
+        /*
+        for scope in symbol table di env1           // non ho capito bene come scorrere symboltable
+            scope1 = env1.symbolTable.get(i)
+            scope2 = env2.symbolTable.get(i)
+
+            HashMap<String, STEntry> resScope = new HashMap<>();
+
+            for id in scope1
+                entry1 = scope1.get(id)
+                entry2 = scope2.get(id)
+
+
+                //IMPORTANTE controllo x appartiene dom(sigma')
+                if (entry2 != null)
+                    STEntry entry_op = new STEntry(entry1.getNestingLevel, entry1.getType, entry1.getOffset)
+                    entryOp.setStatus(max(entry1.getStatus, entry2.getStatus))
+                    resScope.put(id, entryOp)
+                else
+                    resScope.put(id, entry1)
+
+            resEnv.symbolTable.add(resScope)
+
+        */
+
+        return  resEnv;
+    }
+
+    //SEQ
+
+    //PAR
+
+    //BIN
+
+    //UPDATE
+
+
 
 }
