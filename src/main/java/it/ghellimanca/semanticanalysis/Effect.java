@@ -26,6 +26,7 @@ public class Effect {
 
     /**
      * Implements the max binary operator
+     *
      * @param e1 first effect
      * @param e2 second effect
      * @return the highest effect between e1 and e2
@@ -36,6 +37,7 @@ public class Effect {
 
     /**
      * Implements the sequential binary operator
+     *
      * @param e1 previous effect
      * @param e2 new effect to assign
      * @return the result effect of the update
@@ -76,6 +78,7 @@ public class Effect {
     /**
      * Implements the ???? par operato
      * todo: scrivere la definizione di questa funzione, che ancora non ho capito ehehehe
+     *
      * @param e1
      * @param e2
      * @return

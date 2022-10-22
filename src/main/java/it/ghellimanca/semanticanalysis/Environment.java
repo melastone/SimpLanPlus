@@ -50,7 +50,20 @@ public class Environment {
      *
      * @param env   environment to be copied
      */
-    // Environment(Environment env) {}
+    public Environment(Environment env) {
+        this(new ArrayList<>(), env.nestingLevel, env.offset);     // copying env global variables (n, o); init Symbol Table
+
+        // copying Symbol Table
+        for (var scope : env.symbolTable) {
+            Map<String,STEntry> copyScope = new HashMap();
+
+            for (var id : scope.keySet()) {
+                copyScope.put(id, new STEntry(scope.get(id)));
+            }
+            this.symbolTable.add(copyScope);
+        }
+    }
+
 
     /**
      * @return the current active scope.
@@ -104,7 +117,7 @@ public class Environment {
      * @return the updated Symbol Table
      */
     public List<Map<String, STEntry>> addDeclaration(String id, TypeNode type) throws MultipleDeclarationException{
-        STEntry stentry = new STEntry(nestingLevel, type, offset);
+        STEntry stentry = new STEntry(type, nestingLevel, offset);
 
         STEntry declaration = currentScope().put(id, stentry);
         if (declaration != null) {

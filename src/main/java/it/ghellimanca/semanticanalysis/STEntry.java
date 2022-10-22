@@ -8,23 +8,35 @@ import it.ghellimanca.ast.type.TypeNode;
  */
 public class STEntry {
 
-    //nesting level
-    private final int nestingLevel;
-    //type
     private TypeNode type;
+
+    private final int nestingLevel;
 
     private final int offset;
 
 
-    public STEntry(int nestingLevel, int offset) {
+    /**
+     * Constructor for {@code STEntry}
+     *
+     * @param nestingLevel  a positive integer
+     * @param type          a TypeNode
+     * @param offset        a positive integer
+     */
+    public STEntry(TypeNode type, int nestingLevel, int offset) {
+        this.type = type;
         this.nestingLevel = nestingLevel;
         this.offset = offset;
     }
 
-    public STEntry(int nestingLevel, TypeNode type, int offset) {
-        this(nestingLevel, offset);
-        this.type = type;
+    /**
+     * Copy constructor for {@code STEntry}
+     *
+     * @param e STEntry to be copied
+     */
+    public STEntry(STEntry e){
+        this(e.type, e.nestingLevel, e.offset);
     }
+
 
     public int getNestingLevel() {
         return nestingLevel;

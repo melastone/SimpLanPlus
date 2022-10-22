@@ -55,10 +55,16 @@ public class IteNode extends StatementNode {
         ArrayList<SemanticError> err = new ArrayList<>();
 
         err.addAll(exp.checkSemantics(env));
-        err.addAll(stm1.checkSemantics(env));
 
-        if(this.stm2 != null) {     // else branch is not empty
-            err.addAll(stm2.checkSemantics(env));
+
+        if(this.stm2 == null) {     // else branch empty
+            err.addAll(stm1.checkSemantics(env));
+        } else {                    // else branch not empty
+            Environment thenBranchEnv = new Environment(env);   // copy of env for then branch eval; it will change with results of its eval
+            err.addAll(stm1.checkSemantics(thenBranchEnv));
+
+            Environment elseBranchEnv = new Environment(env);   // copy of env for else branch eval
+            err.addAll(stm2.checkSemantics(elseBranchEnv));
         }
 
         return err;
