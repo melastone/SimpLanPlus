@@ -14,6 +14,8 @@ public class STEntry {
 
     private final int offset;
 
+    private Effect status;
+
 
     /**
      * Constructor for {@code STEntry}
@@ -22,6 +24,13 @@ public class STEntry {
      * @param type          a TypeNode
      * @param offset        a positive integer
      */
+    public STEntry(TypeNode type, int nestingLevel, int offset, Effect status) {
+        this.type = type;
+        this.nestingLevel = nestingLevel;
+        this.offset = offset;
+        this.status = status;
+    }
+
     public STEntry(TypeNode type, int nestingLevel, int offset) {
         this.type = type;
         this.nestingLevel = nestingLevel;
@@ -34,12 +43,16 @@ public class STEntry {
      * @param e STEntry to be copied
      */
     public STEntry(STEntry e){
-        this(e.type, e.nestingLevel, e.offset);
+        this(e.type, e.nestingLevel, e.offset, e.status);
     }
 
 
     public int getNestingLevel() {
         return nestingLevel;
+    }
+
+    public Effect getStatus() {
+        return status;
     }
 
     public TypeNode getType() {
@@ -52,6 +65,9 @@ public class STEntry {
 
     public int getOffset() {
         return offset;
+    }
+    public void setStatus(Effect status) {
+        this.status = status;
     }
 
     @Override
