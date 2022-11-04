@@ -42,7 +42,6 @@ public class PrintNode extends StatementNode {
     @Override
     public TypeNode typeCheck() throws TypeCheckingException {
 
-        // just continuing the typechecking process
         exp.typeCheck();
 
         return new VoidTypeNode();

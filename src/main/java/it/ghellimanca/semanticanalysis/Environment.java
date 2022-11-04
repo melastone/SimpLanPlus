@@ -125,7 +125,7 @@ public class Environment {
                     + ". It was previously defined of type: " + declaration.getType() + ".");
         }
 
-        offset += 1;    // 1 = 4 Byte, for integers, boolean (1/0) and pointers
+        offset += 1;    // 1 = 4 Byte, for integers and boolean (1/0)
 
         return this.symbolTable;
     }

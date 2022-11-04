@@ -148,4 +148,8 @@ public class BlockNode extends StatementNode {
 //        return err;
 //    }
 
+    public void addDeclarations(List<DecVarNode> decs) {
+        this.variableDeclarations.addAll(decs);
+    }
+
 }
