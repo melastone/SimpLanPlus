@@ -2,6 +2,7 @@ package it.ghellimanca.ast.statement;
 
 import it.ghellimanca.ast.ArgNode;
 import it.ghellimanca.ast.type.ArrowTypeNode;
+import it.ghellimanca.ast.type.VarTypeNode;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.IdNode;
@@ -74,7 +75,12 @@ public class CallNode extends StatementNode {
         List<TypeNode> actualParamsTypes = new ArrayList<>();
 
         for (ExpNode par : params) {
-            actualParamsTypes.add(par.typeCheck());
+            TypeNode parType = par.typeCheck();
+
+            if (parType instanceof VarTypeNode) {
+                actualParamsTypes.add(((VarTypeNode) parType).getType());
+            }
+            else { actualParamsTypes.add(parType);}
         }
 
         int size = formalParamsTypes.size();

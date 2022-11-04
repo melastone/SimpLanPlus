@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 /**
  * Represents an argument of a function node in the AST.
+ *
+ * type ID | var type ID
+ *
+ * todo: inserire il riferimento esplicito nel caso di arg passati per riferimento
  */
 public class ArgNode implements Node {
 

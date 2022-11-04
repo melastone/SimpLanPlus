@@ -165,7 +165,12 @@ public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
         TypeNode type = visitType(ctx.type());
         IdNode id = new IdNode(ctx.ID().getText());
 
-        return new ArgNode(type, id);
+        if(ctx.children.get(0).toString().equals("var")) {
+            VarTypeNode varType = new VarTypeNode(type);
+            return new ArgNode(varType, id);
+        } else {
+            return new ArgNode(type, id);
+        }
     }
 
 
