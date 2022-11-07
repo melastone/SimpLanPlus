@@ -76,12 +76,10 @@ public class DecFunNode extends DeclarationNode {
             // creating an array of DecVar in order to add it to the body
             // so that the variables declared as args are saved in the same scope as the function body
             ArrayList<DecVarNode> params = new ArrayList<>();
-
             for (ArgNode arg : arguments) {
                 DecVarNode dec = new DecVarNode(arg.getType(), arg.getId(), null);
                 params.add(dec);
             }
-
             body.addDeclarations(params);
 
             // it will create a new scope with both params and function body info
