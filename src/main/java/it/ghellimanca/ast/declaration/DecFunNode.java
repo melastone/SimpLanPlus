@@ -99,6 +99,6 @@ public class DecFunNode extends DeclarationNode {
             throw new TypeCheckingException("Type mismatch: function " + id.getIdentifier() + " does not return " + type + " type.");
         }
 
-        return null;
+        return type;
     }
 }

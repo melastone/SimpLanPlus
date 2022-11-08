@@ -40,7 +40,7 @@ public class ArgNode implements Node {
 
     @Override
     public TypeNode typeCheck() {
-        return new VoidTypeNode();    // has nothing to return
+        return type;
     }
 
     @Override

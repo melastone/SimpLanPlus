@@ -70,7 +70,7 @@ public class DecVarNode extends DeclarationNode {
             }
         }
 
-        return null;
+        return type;
     }
 
 //    @Override
