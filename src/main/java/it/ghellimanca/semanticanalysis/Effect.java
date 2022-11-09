@@ -31,7 +31,7 @@ public class Effect {
      * @param e2 second effect
      * @return the highest effect between e1 and e2
      */
-    public Effect max(Effect e1, Effect e2) {
+    public static Effect max(Effect e1, Effect e2) {
         return new Effect(Math.max(e1.status, e2.status));
     }
 
@@ -42,7 +42,7 @@ public class Effect {
      * @param e2 new effect to assign
      * @return the result effect of the update
      */
-    public Effect seq(Effect e1, Effect e2) {
+    public static Effect seq(Effect e1, Effect e2) {
         Effect max = max(e1, e2);
         if (((e1.status != DECLARED) && (e2.status != USED)) && (max.status <= USED)) {
             return max;
@@ -65,7 +65,7 @@ public class Effect {
      * @param e2 second effect
      * @return the effect that is most critical, following the truth table
      */
-    public Effect bin(Effect e1, Effect e2) {
+    public static Effect bin(Effect e1, Effect e2) {
         if (e1.status == ERROR || e2.status == ERROR) {
             return new Effect(ERROR);
         } else if(e1.status == DECLARED || e2.status == DECLARED) {
@@ -83,7 +83,7 @@ public class Effect {
      * @param e2
      * @return
      */
-    public Effect par(Effect e1, Effect e2) {
+    public static Effect par(Effect e1, Effect e2) {
         return max(e1, e2);
     }
 
