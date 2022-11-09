@@ -79,7 +79,7 @@ public class DecVarNode extends DeclarationNode {
 //
 //        if (exp != null) {  // if the variable is also initialized
 //            err.addAll(exp.checkEffects(sigma));
-//            // entry.setStatus(init)
+//            entry.setStatus(init)
 //        }
 //        //else
 //        // entry.setStatus(dec)

@@ -2,10 +2,8 @@ package it.ghellimanca.ast;
 
 
 import it.ghellimanca.ast.type.TypeNode;
-import it.ghellimanca.semanticanalysis.Effect;
-import it.ghellimanca.semanticanalysis.MissingDeclarationException;
-import it.ghellimanca.semanticanalysis.Environment;
-import it.ghellimanca.semanticanalysis.SemanticError;
+import it.ghellimanca.semanticanalysis.*;
+
 import java.util.ArrayList;
 
 
@@ -16,7 +14,9 @@ import java.util.ArrayList;
 public class IdNode implements Node {
 
     final private String id;
-    private TypeNode entryType; // solo usato per non rifare lookup
+
+    private STEntry stEntry;
+
 
 
     public IdNode(String id) {
@@ -44,7 +44,7 @@ public class IdNode implements Node {
         ArrayList<SemanticError> err = new ArrayList<>();
 
         try {
-            entryType = env.lookup(id); // lookup has to return the type of the value that the id identifies
+            stEntry = env.lookup(id); // lookup has to return the type of the value that the id identifies
         } catch(MissingDeclarationException exception) {
             err.add(new SemanticError(exception.getMessage()));
         }
@@ -54,7 +54,7 @@ public class IdNode implements Node {
 
     @Override
     public TypeNode typeCheck() {
-        return entryType;
+        return stEntry.getType();
     }
 
 }

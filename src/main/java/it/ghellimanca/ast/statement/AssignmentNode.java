@@ -38,9 +38,7 @@ public class AssignmentNode extends StatementNode {
     @Override
     public String toString() { return toPrint("");}
 
-    // check if the id of the lhs that is being assigned has been declared in this level or below
-    // if not: semantic error
-    // if yes: check semantic of expression
+
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> err = new ArrayList<>();
@@ -64,3 +62,5 @@ public class AssignmentNode extends StatementNode {
         return new VoidTypeNode();
     }
 }
+
+

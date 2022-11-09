@@ -135,12 +135,12 @@ public class Environment {
      * Looks for the type of id in ST, if any
      *
      */
-     public TypeNode lookup(String id) throws MissingDeclarationException {
+     public STEntry lookup(String id) throws MissingDeclarationException {
          for (int i = nestingLevel; i >= 0; i--) {
             Map<String, STEntry> scope = symbolTable.get(i);
             STEntry stEntry = scope.get(id);
             if (stEntry != null)
-                return stEntry.getType();
+                return stEntry;
         }
         throw new MissingDeclarationException("Missing declaration for ID: " + id + ".");
      }

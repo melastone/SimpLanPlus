@@ -84,13 +84,14 @@ public class CallNode extends StatementNode {
             TypeNode expType = params.get(i).typeCheck();
             TypeNode parType = formalParamsTypes.get(i);
 
+            if (parType instanceof VarTypeNode) {
+                parType = ((VarTypeNode) parType).getType();
+            }
+
             if (!expType.equals(parType)) {
                 throw new TypeCheckingException("Function " + id.getIdentifier() + ": expecting argument of type " + parType + " but got " + expType + " instead.");
             }
 
-            // al momento il controllo sopra segnerà come diverse le coppie (int, &int), cosa che invece dovrebbe essere corretta.
-            // per i parametri passati per riferimento infatti io ho come tipo del par FORMALE un VarTypeNode
-            // ma come tipo del par ATTUALE il corrispondente TypeNode.
         }
 
         return ((ArrowTypeNode) funType).getRet();
@@ -104,7 +105,7 @@ public class CallNode extends StatementNode {
 //            throw new TypeCheckingException("Function " + id.getIdentifier() + " does not have a function type.");
 //        }
 //
-//        List<TypeNode> formalParamsTypes = ((ArrowTypeNode) funType).getArgs();
+//        List<TypeNode> formalParamsTypes = ((ArrowTypeNode) funType).getArgs();   //T1 x .. x Tn
 //        List<TypeNode> actualParamsTypes = new ArrayList<>();
 //
 //        for (ExpNode par : params) {

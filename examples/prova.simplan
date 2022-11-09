@@ -9,4 +9,5 @@
     int f(var bool z) {
         return 1;
     }
+    f(y);
 }
