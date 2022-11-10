@@ -138,8 +138,9 @@ public class Environment {
      *                                      of the Symbol Table.
      * @return the updated Symbol Table
      */
-    public List<Map<String, STEntry>> addDeclaration(String id, TypeNode type) throws MultipleDeclarationException{
-        STEntry stentry = new STEntry(type, nestingLevel, offset, new Effect());
+    public List<Map<String, STEntry>> addDeclaration(String id, TypeNode type, int status) throws MultipleDeclarationException{
+        Effect effect = new Effect(status);
+        STEntry stentry = new STEntry(type, nestingLevel, offset, effect);
 
         STEntry declaration = currentScope().put(id, stentry);
         if (declaration != null) {
@@ -166,6 +167,29 @@ public class Environment {
         }
         throw new MissingDeclarationException("Missing declaration for ID: " + id + ".");
      }
+
+
+     /**
+     * Replaces the current environment with another one
+     *
+     * @param env new environment that will replace the current one
+     */
+    public void replace (Environment env) {
+        // copying env global variables (n, o); clearing Symbol Table
+        this.symbolTable.clear();
+        this.nestingLevel = env.getNestingLevel();
+        this.offset = env.getOffset();
+
+        // copying Symbol Table
+        for (var scope : env.symbolTable) {
+            Map<String,STEntry> copyScope = new HashMap();
+
+            for (var id : scope.keySet()) {
+                copyScope.put(id, new STEntry(scope.get(id)));
+            }
+            this.symbolTable.add(copyScope);
+        }
+    }
 
 
     /**

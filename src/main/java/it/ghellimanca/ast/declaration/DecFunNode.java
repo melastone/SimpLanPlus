@@ -1,15 +1,12 @@
 package it.ghellimanca.ast.declaration;
 
 import it.ghellimanca.ast.type.ArrowTypeNode;
-import it.ghellimanca.semanticanalysis.Environment;
-import it.ghellimanca.semanticanalysis.MultipleDeclarationException;
-import it.ghellimanca.semanticanalysis.SemanticError;
+import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.ast.ArgNode;
 import it.ghellimanca.ast.BlockNode;
 import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.type.TypeNode;
-import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +68,7 @@ public class DecFunNode extends DeclarationNode {
         try {
             List<TypeNode> argsType = arguments.stream().map(ArgNode::getType).collect(Collectors.toList());
             ArrowTypeNode funType = new ArrowTypeNode(argsType,type);
-            env.addDeclaration(id.getIdentifier(), funType);
+            env.addDeclaration(id.getIdentifier(), funType, Effect.DECLARED);
 
             // creating an array of DecVar in order to add it to the body
             // so that the variables declared as args are saved in the same scope as the function body
