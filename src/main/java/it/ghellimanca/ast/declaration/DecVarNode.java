@@ -15,7 +15,6 @@ import java.util.ArrayList;
  * A variable declaration has the form:
  * type ID ('=' exp)? ';' ;
  *
- * todo: aggiorna con lo status giusto quando fai addDeclaration
  */
 
 public class DecVarNode extends DeclarationNode {
@@ -48,12 +47,14 @@ public class DecVarNode extends DeclarationNode {
 
         ArrayList<SemanticError> err = new ArrayList<>();
 
-        if (exp != null) {  // if the variable is also initialized
-            err.addAll(exp.checkSemantics(env));
-        }
 
         try {
-            env.addDeclaration(id.getIdentifier(), type, Effect.DECLARED);
+            if (exp != null) {  // if the variable is also initialized
+                err.addAll(exp.checkSemantics(env));
+                env.addDeclaration(id.getIdentifier(), type, Effect.INIT);
+            } else {
+                env.addDeclaration(id.getIdentifier(), type, Effect.DECLARED);
+            }
         } catch (MultipleDeclarationException e) {
             err.add(new SemanticError(e.getMessage()));
         }
