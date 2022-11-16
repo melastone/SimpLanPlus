@@ -3,6 +3,7 @@ package it.ghellimanca.ast.statement;
 
 import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.ast.type.VoidTypeNode;
+import it.ghellimanca.semanticanalysis.Effect;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.exp.ExpNode;
@@ -43,8 +44,19 @@ public class AssignmentNode extends StatementNode {
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> err = new ArrayList<>();
 
-        err.addAll(id.checkSemantics(env));
+        // setting the new and old status of the id in question
+        Effect newStat = new Effect(Effect.INIT);
+        Effect oldStat;
+
+        // first checking the semantic errors
         err.addAll(exp.checkSemantics(env));
+        err.addAll(id.checkSemantics(env));
+
+        // setting the old status of the id in question
+        oldStat = env.safeLookup(id.getId()).getStatus();
+
+        // checking if there are errors from the setting of the new status
+        err.addAll(id.checkEffects(env, newStat, oldStat));
 
         return err;
     }

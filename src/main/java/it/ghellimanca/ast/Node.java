@@ -24,7 +24,6 @@ public interface Node {
     ArrayList<SemanticError> checkSemantics(Environment env);
 
 
-
     /**
      * Type checking.
      * */

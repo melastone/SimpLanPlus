@@ -138,7 +138,7 @@ public class Environment {
      *                                      of the Symbol Table.
      * @return the updated Symbol Table
      */
-    public List<Map<String, STEntry>> addDeclaration(String id, TypeNode type) throws MultipleDeclarationException{
+    public List<Map<String, STEntry>> addDeclaration(String id, TypeNode type) throws MultipleDeclarationException {
         STEntry stentry = new STEntry(type, nestingLevel, offset, new Effect());
 
         STEntry declaration = currentScope().put(id, stentry);
@@ -150,6 +150,13 @@ public class Environment {
         offset += 1;    // 1 = 4 Byte, for integers and boolean (1/0)
 
         return this.symbolTable;
+    }
+
+    public void addDeclarationSafe(String id, TypeNode type, Effect effect) {
+        STEntry stentry = new STEntry(type, nestingLevel, offset, effect);
+
+        currentScope().put(id, stentry);
+        offset += 1;    // 1 = 4 Byte, for integers and boolean (1/0)
     }
 
 
@@ -167,6 +174,40 @@ public class Environment {
         throw new MissingDeclarationException("Missing declaration for ID: " + id + ".");
      }
 
+    public STEntry safeLookup(String id) {
+        for (int i = nestingLevel; i >= 0; i--) {
+            Map<String, STEntry> scope = symbolTable.get(i);
+            STEntry stEntry = scope.get(id);
+            if (stEntry != null)
+                return stEntry;
+        }
+
+        System.err.println("Missing declaration for ID: " + id + ". This should not happen as this is a safe lookup.\n");
+
+        return null;
+    }
+
+    /**
+     * Replaces the current environment with another one
+     *
+     * @param env new environment that will replace the current one
+     */
+    public void replace(Environment env) {
+        // copying env global variables (n, o); clearing Symbol Table
+        this.symbolTable.clear();
+        this.nestingLevel = env.getNestingLevel();
+        this.offset = env.getOffset();
+
+        // copying Symbol Table
+        for (var scope : env.symbolTable) {
+            Map<String,STEntry> copyScope = new HashMap();
+
+            for (var id : scope.keySet()) {
+                copyScope.put(id, new STEntry(scope.get(id)));
+            }
+            this.symbolTable.add(copyScope);
+        }
+    }
 
     /**
      * Exits the current scope
@@ -181,30 +222,30 @@ public class Environment {
     }
 
     //MAX
-    public Environment max(Environment env1, Environment env2) {
-        return operationsOnEnvironments(env1, env2, Effect::max);
+    public Environment max(Environment env2) {
+        return operationsOnEnvironments(env2, Effect::max);
     }
 
     //SEQ
-    public Environment seq(Environment env1, Environment env2) {
-        return operationsOnEnvironments(env1, env2, Effect::seq);
+    public Environment seq(Environment env2) {
+        return operationsOnEnvironments(env2, Effect::seq);
     }
 
     //PAR
-    public Environment par(Environment env1, Environment env2) {
-        return operationsOnEnvironments(env1, env2, Effect::par);
+    public Environment par(Environment env2) {
+        return operationsOnEnvironments(env2, Effect::par);
     }
 
     //BIN
-    public Environment bin(Environment env1, Environment env2) {
-        return operationsOnEnvironments(env1, env2, Effect::bin);
+    public Environment bin(Environment env2) {
+        return operationsOnEnvironments(env2, Effect::bin);
     }
 
-    Environment operationsOnEnvironments(Environment env1, Environment env2, BiFunction<Effect, Effect, Effect> operator) {
-        Environment resEnv = new Environment(new ArrayList<>(), env1.getNestingLevel(), env1.getOffset());
+    Environment operationsOnEnvironments(Environment env2, BiFunction<Effect, Effect, Effect> operator) {
+        Environment resEnv = new Environment(new ArrayList<>(), nestingLevel, offset);
 
-        for (int i = (env1.getSymbolTable().size() - 1); i >= 0; i--) {
-            var scope1 = env1.symbolTable.get(i);
+        for (int i = (symbolTable.size() - 1); i >= 0; i--) {
+            var scope1 = symbolTable.get(i);
             var scope2 = env2.symbolTable.get(i);
 
             HashMap<String, STEntry> resScope = new HashMap<>();

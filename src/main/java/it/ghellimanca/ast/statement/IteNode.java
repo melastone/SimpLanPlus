@@ -52,10 +52,7 @@ public class IteNode extends StatementNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        ArrayList<SemanticError> err = new ArrayList<>();
-
-        err.addAll(exp.checkSemantics(env));
-
+        ArrayList<SemanticError> err = exp.checkSemantics(env);
 
         if(this.stm2 == null) {     // else branch empty
             err.addAll(stm1.checkSemantics(env));
@@ -65,6 +62,10 @@ public class IteNode extends StatementNode {
 
             Environment elseBranchEnv = new Environment(env);   // copy of env for else branch eval
             err.addAll(stm2.checkSemantics(elseBranchEnv));
+
+            // bin fra thenbranch e elsebranch
+            // replace env con risultato bin
+            env.replace(thenBranchEnv.bin(elseBranchEnv));
         }
 
         return err;

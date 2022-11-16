@@ -1,8 +1,7 @@
 package it.ghellimanca.ast.exp;
 
 import it.ghellimanca.ast.IdNode;
-import it.ghellimanca.semanticanalysis.Environment;
-import it.ghellimanca.semanticanalysis.SemanticError;
+import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
@@ -26,7 +25,17 @@ public class DerExpNode extends ExpNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return id.checkSemantics(env);
+        // first checking the semantic errors
+        ArrayList<SemanticError> err = id.checkSemantics(env);
+
+        // setting the new and old status of the id in question
+        Effect oldStat = env.safeLookup(id.getId()).getStatus();
+        Effect newStat = new Effect(Effect.USED);
+
+        // checking if there are errors from the setting of the new status
+        err.addAll(id.checkEffects(env, newStat, oldStat));
+
+        return err;
     }
 
     @Override

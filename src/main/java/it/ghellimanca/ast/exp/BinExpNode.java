@@ -18,7 +18,7 @@ public class BinExpNode extends ExpNode {
     final String operator;
     final ExpNode rightExp;
 
-    //TODO: context contiene anche i seguenti attributi, controllare in futuro se servono
+    // TODO: context contiene anche i seguenti attributi, controllare in futuro se servono
     //final List<ExpNode> expList;
     //final ExpNode exp;
 

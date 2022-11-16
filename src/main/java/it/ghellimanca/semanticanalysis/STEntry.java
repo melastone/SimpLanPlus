@@ -37,6 +37,13 @@ public class STEntry {
         this.offset = offset;
     }
 
+    public STEntry(Effect status) {
+        this.status = status;
+        this.type = null;
+        this.nestingLevel = -1;
+        this.offset = -1;
+    }
+
     /**
      * Copy constructor for {@code STEntry}
      *

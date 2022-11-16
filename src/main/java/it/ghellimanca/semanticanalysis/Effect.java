@@ -7,10 +7,10 @@ package it.ghellimanca.semanticanalysis;
  */
 public class Effect {
 
-    private static final int DECLARED = 0;  //  ⊥
-    private static final int INIT = 1;
-    private static final int USED = 2;
-    private static final int ERROR = 3;     // ⊤
+    public static final int DECLARED = 0;  //  ⊥
+    public static final int INIT = 1;
+    public static final int USED = 2;
+    public static final int ERROR = 3;     // ⊤
 
     private final int status;
 
