@@ -1,6 +1,7 @@
 package it.ghellimanca.ast.exp;
 
 import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.MissingInitializationException;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.type.BoolTypeNode;
 import it.ghellimanca.ast.type.TypeNode;
@@ -26,7 +27,7 @@ public class NotExpNode extends ExpNode {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException {
         return exp.checkSemantics(env);
     }
 

@@ -43,7 +43,7 @@ public class DecVarNode extends DeclarationNode {
     public String toString() { return toPrint("");}
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException {
 
         ArrayList<SemanticError> err = new ArrayList<>();
 

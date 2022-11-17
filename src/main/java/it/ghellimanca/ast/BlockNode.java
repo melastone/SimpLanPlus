@@ -4,15 +4,15 @@ import it.ghellimanca.ast.declaration.DecVarNode;
 import it.ghellimanca.ast.statement.IteNode;
 import it.ghellimanca.ast.statement.ReturnNode;
 import it.ghellimanca.ast.type.VoidTypeNode;
-import it.ghellimanca.semanticanalysis.Environment;
-import it.ghellimanca.semanticanalysis.SemanticError;
+import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.ast.declaration.DeclarationNode;
 import it.ghellimanca.ast.statement.StatementNode;
 import it.ghellimanca.ast.type.TypeNode;
-import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -60,8 +60,9 @@ public class BlockNode extends StatementNode {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException {
         ArrayList<SemanticError> err = new ArrayList<>();
+        Map<String, STEntry> currentScope;
 
         env.newScope();
 
@@ -77,6 +78,21 @@ public class BlockNode extends StatementNode {
             }
         }
 
+        // CHECK ERRORS IN BLOCK FOR EFFECT ANALYSIS
+
+        // getting sigma_1'' from sigma'' = sigma_0'' ⋅ sigma_1''
+        currentScope = env.currentScope();
+
+        // for every x_i in dom(sigma_1'')
+        for (var id : currentScope.keySet()) {
+
+            // sigma_1''(x) has to be <= USED otherwise there was an error
+            if (currentScope.get(id).getStatus().equals(new Effect(Effect.ERROR))) {
+                throw new MissingInitializationException("Error in the effect analysis: " + id + " was used before initialization.");
+            }
+        }
+
+        // returning just sigma_0''
         env.exitScope();
 
         return err;

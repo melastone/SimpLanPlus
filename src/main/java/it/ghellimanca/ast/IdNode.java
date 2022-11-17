@@ -68,25 +68,4 @@ public class IdNode implements Node {
         return stEntry.getType();
     }
 
-    public ArrayList<SemanticError> checkEffects(Environment env, Effect statusNew, Effect statusOld) {
-        ArrayList<SemanticError> err = new ArrayList<>();
-        Environment newEnv = new Environment();
-
-        // dummy environment for status change of the id
-        newEnv.newScope();
-        newEnv.addDeclarationSafe(id, stEntry.getType(), statusNew);
-
-        // calculate seq between old env and dummy env
-        // replace old env with seq env
-        env.replace(env.seq(newEnv));
-
-        // check if new status of the var is an error
-        stEntry = env.safeLookup(id);
-        if (stEntry.getStatus().equals(new Effect(Effect.ERROR))) {
-            err.add(new SemanticError("Error: variable: "+ id + " previously was on "+ statusOld + " status, and now is of " + statusNew + " status.\n"));
-        }
-
-        return err;
-    }
-
 }

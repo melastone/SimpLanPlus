@@ -25,15 +25,23 @@ public class DerExpNode extends ExpNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
+
         // first checking the semantic errors
         ArrayList<SemanticError> err = id.checkSemantics(env);
 
-        // setting the new and old status of the id in question
-        Effect oldStat = env.safeLookup(id.getId()).getStatus();
+        // setting the new status of the id in question
         Effect newStat = new Effect(Effect.USED);
 
-        // checking if there are errors from the setting of the new status
-        err.addAll(id.checkEffects(env, newStat, oldStat));
+        // dummy environment for status change of the id
+        Environment newEnv = new Environment();
+        newEnv.newScope();
+        newEnv.addDeclarationSafe(id.getId(), id.getStEntry().getType(), newStat);
+
+        // replace old env with seq of old env and dummy env
+        env.replace(env.seq(newEnv));
+
+        // set new status in the entry inside idnode
+        id.setStEntry(env.safeLookup(id.getId()));
 
         return err;
     }

@@ -3,12 +3,9 @@ package it.ghellimanca.ast.statement;
 
 import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.ast.type.VoidTypeNode;
-import it.ghellimanca.semanticanalysis.Effect;
-import it.ghellimanca.semanticanalysis.Environment;
-import it.ghellimanca.semanticanalysis.SemanticError;
+import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.ast.exp.ExpNode;
 import it.ghellimanca.ast.type.TypeNode;
-import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
 
@@ -41,22 +38,26 @@ public class AssignmentNode extends StatementNode {
 
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException {
         ArrayList<SemanticError> err = new ArrayList<>();
+        Environment newEnv = new Environment();
 
-        // setting the new and old status of the id in question
+        // setting the new status of the id in question
         Effect newStat = new Effect(Effect.INIT);
-        Effect oldStat;
 
         // first checking the semantic errors
         err.addAll(exp.checkSemantics(env));
         err.addAll(id.checkSemantics(env));
 
-        // setting the old status of the id in question
-        oldStat = env.safeLookup(id.getId()).getStatus();
+        // dummy environment for status change of the id
+        newEnv.newScope();
+        newEnv.addDeclarationSafe(id.getId(), id.getStEntry().getType(), newStat);
 
-        // checking if there are errors from the setting of the new status
-        err.addAll(id.checkEffects(env, newStat, oldStat));
+        // replace old env with seq of old env and dummy env
+        env.replace(env.seq(newEnv));
+
+        // set new status in the entry inside idnode
+        id.setStEntry(env.safeLookup(id.getId()));
 
         return err;
     }

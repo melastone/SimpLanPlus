@@ -1,15 +1,12 @@
 package it.ghellimanca.ast.declaration;
 
 import it.ghellimanca.ast.type.ArrowTypeNode;
-import it.ghellimanca.semanticanalysis.Environment;
-import it.ghellimanca.semanticanalysis.MultipleDeclarationException;
-import it.ghellimanca.semanticanalysis.SemanticError;
+import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.ast.ArgNode;
 import it.ghellimanca.ast.BlockNode;
 import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.type.TypeNode;
-import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,8 +62,8 @@ public class DecFunNode extends DeclarationNode {
     public String toString() { return toPrint("");}
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
-        ArrayList<SemanticError> err = new ArrayList<SemanticError>();
+    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException {
+        ArrayList<SemanticError> err = new ArrayList<>();
 
         try {
             List<TypeNode> argsType = arguments.stream().map(ArgNode::getType).collect(Collectors.toList());

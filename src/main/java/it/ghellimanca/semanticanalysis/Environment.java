@@ -70,7 +70,7 @@ public class Environment {
     /**
      * @return the current active scope.
      */
-    private Map<String, STEntry> currentScope() {
+    public Map<String, STEntry> currentScope() {
         return symbolTable.get(nestingLevel);
     }
 
