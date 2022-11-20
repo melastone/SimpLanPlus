@@ -1,5 +1,6 @@
 package it.ghellimanca.ast.exp;
 
+import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.type.BoolTypeNode;
@@ -7,6 +8,7 @@ import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -38,5 +40,10 @@ public class NotExpNode extends ExpNode {
             throw new TypeCheckingException("Expression must be of type bool to be negated with the NOT operator.");
 
         return new BoolTypeNode();
+    }
+
+    @Override
+    public List<IdNode> variables() {
+        return exp.variables();
     }
 }

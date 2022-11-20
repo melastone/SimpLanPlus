@@ -1,11 +1,13 @@
 package it.ghellimanca.ast.exp;
 
+import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.type.BoolTypeNode;
 import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a boolean expression node in the AST.
@@ -33,5 +35,10 @@ public class BoolExpNode extends ExpNode {
     @Override
     public TypeNode typeCheck() {
         return new BoolTypeNode();
+    }
+
+    @Override
+    public List<IdNode> variables() {
+        return new ArrayList<>();
     }
 }

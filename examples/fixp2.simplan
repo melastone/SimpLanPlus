@@ -1,0 +1,18 @@
+{
+    /*
+    Questo esempio mostra l'esecuzione ricorsiva di una funzione, per cui è necessario utilizzare il punto fisso.
+    L'analisi degli effetti deve ritornare con ERRORE.
+    */
+
+    int a = 2;
+
+    int f(int x, int n) {
+        if (n==0) {
+            return x + 1;
+        } else {
+            int y; f(y, n-1);
+        }
+    }
+
+    f(a, 3);
+}

@@ -28,6 +28,7 @@ public class Environment {
     private int offset;
 
 
+
     /**
      * Constructor for {@code Environment}
      *
@@ -64,6 +65,20 @@ public class Environment {
             }
             this.symbolTable.add(copyScope);
         }
+    }
+
+
+
+    public List<Map<String, STEntry>> getSymbolTable() {
+        return symbolTable;
+    }
+
+    public int getNestingLevel() {
+        return nestingLevel;
+    }
+
+    public int getOffset() {
+        return offset;
     }
 
 
@@ -106,24 +121,42 @@ public class Environment {
         return this.symbolTable;
     }
 
-    public List<Map<String, STEntry>> getSymbolTable() {
-        return symbolTable;
+
+    /**
+     * Pushes new scope in the Symbol Table stack. Increments the nesting level.
+     * Sets the offset to 0.
+     */
+    public void pushNewScope() {
+        symbolTable.add(new HashMap<>());
+        nestingLevel += 1;
+        offset = 0;
     }
 
-    public int getNestingLevel() {
-        return nestingLevel;
+    /**
+     * Adds a new scope to the environment.
+     *
+     * @param scope the scope to add to the Symbol Table stack
+     */
+    private void pushNewScope(Map<String, STEntry> scope) {
+        symbolTable.add(scope);
+        nestingLevel += 1;
+        offset = 0;
     }
 
-    public void setNestingLevel(int nestingLevel) {
-        this.nestingLevel = nestingLevel;
-    }
 
-    public int getOffset() {
-        return offset;
-    }
+    /**
+     * Pops the current active scope from the Symbol Table stack. Decrements the
+     * nesting level. Sets the offset to the maximum offset in the previous scope +
+     * 1.
+     */
+    public void popScope() {
+        symbolTable.remove(nestingLevel);
+        nestingLevel--;
 
-    public void setOffset(int offset) {
-        this.offset = offset;
+        if (nestingLevel >= 0) {
+            var stEntry = symbolTable.get(nestingLevel).values().stream().max(Comparator.comparing(STEntry::getOffset));
+            offset = stEntry.map(entry -> entry.getOffset() + 1).orElse(0);
+        }
     }
 
 
@@ -132,8 +165,9 @@ public class Environment {
      * Adds id ⟼ t into the table, where id is the label of the variable (or function) and t is its type
      * If it finds a collision throws a MultipleDeclarationException
      *
-     * @param id   the identifier of the variable or function.
-     * @param type the type of the variable or function.
+     * @param id     the identifier of the variable or function.
+     * @param type   the type of the variable or function.
+     * @param status a positive integer which will become the Effect status
      * @throws MultipleDeclarationException when [id] is already present in the head
      *                                      of the Symbol Table.
      * @return the updated Symbol Table
@@ -151,6 +185,45 @@ public class Environment {
         offset += 1;    // 1 = 4 Byte, for integers and boolean (1/0)
 
         return this.symbolTable;
+    }
+
+    public void addDeclarationSafe(String id, TypeNode type, Effect effect) {
+        STEntry stentry = new STEntry(type, nestingLevel, offset, effect);
+
+        currentScope().put(id, stentry);
+        offset += 1;
+    }
+
+    /**
+     * Process a new declaration by adding its entry in the Symbol Table.
+     * Adds id ⟼ t into the table, where id is the label of the variable (or function) and t is its type
+     * If it finds a collision throws a MultipleDeclarationException
+     *
+     * @param id   the identifier of the variable or function.
+     * @param type the type of the variable or function.
+     * @throws MultipleDeclarationException when [id] is already present in the head
+     *                                      of the Symbol Table.
+     * @return the updated Symbol Table
+     */
+    public List<Map<String, STEntry>> addDeclaration(String id, TypeNode type) throws MultipleDeclarationException{
+        STEntry stentry = new STEntry(type, nestingLevel, offset);
+
+        STEntry declaration = currentScope().put(id, stentry);
+        if (declaration != null) {
+            throw new MultipleDeclarationException("Multiple declaration for ID: " + id
+                    + ". It was previously defined of type: " + declaration.getType() + ".");
+        }
+
+        offset += 1;
+
+        return this.symbolTable;
+    }
+
+    public void addDeclarationSafe(String id, TypeNode type) {
+        STEntry stentry = new STEntry(type, nestingLevel, offset);
+
+        currentScope().put(id, stentry);
+        offset += 1;
     }
 
 
@@ -204,27 +277,32 @@ public class Environment {
         }
     }
 
+
     //MAX
     public Environment max(Environment env1, Environment env2) {
         return operationsOnEnvironments(env1, env2, Effect::max);
     }
+
 
     //SEQ
     public Environment seq(Environment env1, Environment env2) {
         return operationsOnEnvironments(env1, env2, Effect::seq);
     }
 
+
     //PAR
     public Environment par(Environment env1, Environment env2) {
         return operationsOnEnvironments(env1, env2, Effect::par);
     }
+
 
     //BIN
     public Environment bin(Environment env1, Environment env2) {
         return operationsOnEnvironments(env1, env2, Effect::bin);
     }
 
-    Environment operationsOnEnvironments(Environment env1, Environment env2, BiFunction<Effect, Effect, Effect> operator) {
+
+    public Environment operationsOnEnvironments(Environment env1, Environment env2, BiFunction<Effect, Effect, Effect> operator) {
         Environment resEnv = new Environment(new ArrayList<>(), env1.getNestingLevel(), env1.getOffset());
 
         for (int i = (env1.getSymbolTable().size() - 1); i >= 0; i--) {
@@ -244,7 +322,7 @@ public class Environment {
                 }
                 else {
                     var entryOp = new STEntry(entry1.getType(), entry1.getNestingLevel(), entry1.getOffset());
-                    entryOp.setStatus(operator.apply(entry1.getStatus(), entry2.getStatus()));
+                    entryOp.setVarStatus(operator.apply(entry1.getVarStatus(), entry2.getVarStatus()));
                     resScope.put(id, entryOp);
                 }
             }
@@ -254,7 +332,48 @@ public class Environment {
         return resEnv;
     }
 
-    //Update
+
+    public static Environment update (Environment env1, Environment env2) {
+        Environment finalEnv = new Environment();
+
+        if (env2.symbolTable.size()==0) {
+            return new Environment(env1);
+        }
+
+        Map<String, STEntry> headScope1 = env1.symbolTable.get(env1.symbolTable.size()-1);
+        Map<String, STEntry> headScope2 = env2.symbolTable.get(env2.symbolTable.size()-1);
+
+        Map.Entry<String, STEntry> u = headScope2.entrySet().stream().findFirst().get();
+        env2.removeFirstIdentifier(u.getKey());
+
+        if(headScope1.containsKey(u.getKey())) {
+            headScope1.put(u.getKey(),u.getValue());
+
+            finalEnv = update(env1,env2);
+        } else {
+            Environment uEnv = new Environment();
+            uEnv.newScope();
+
+            uEnv.addDeclarationSafe(u.getKey(), u.getValue().getType(), u.getValue().getVarStatus());
+
+            env1.popScope();
+            Environment intermUpdateEnv = update(env1, uEnv);
+            intermUpdateEnv.pushNewScope(headScope1);
+
+            finalEnv = update(intermUpdateEnv, env2)
+
+        }
+
+        return finalEnv;
+    }
 
 
+    private void removeFirstIdentifier(String id) {
+        for (int i = symbolTable.size() - 1; i >= 0; i--) {
+            if (symbolTable.get(i).containsKey(id)) {
+                symbolTable.get(i).remove(id);
+                return;
+            }
+        }
+    }
 }

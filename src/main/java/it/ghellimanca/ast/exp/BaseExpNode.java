@@ -1,11 +1,13 @@
 package it.ghellimanca.ast.exp;
 
+import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a base expression '(' exp ')' node  in the AST.
@@ -35,4 +37,8 @@ public class BaseExpNode extends ExpNode {
         return exp.typeCheck();
     }
 
+    @Override
+    public List<IdNode> variables() {
+        return exp.variables();
+    }
 }

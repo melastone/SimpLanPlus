@@ -1,5 +1,6 @@
 package it.ghellimanca.ast.exp;
 
+import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.type.BoolTypeNode;
@@ -8,6 +9,7 @@ import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a binary expression left=exp op right=exp node in the AST.
@@ -53,7 +55,7 @@ public class BinExpNode extends ExpNode {
 
         // checking that the expression have the same type
         if (!left.equals(right)) {
-            throw new TypeCheckingException("Left expression: " + leftExp.toPrint("\t") + " \nand right expression: " + rightExp.toPrint("\t") + " \nhave incompatible types.");
+            throw new TypeCheckingException("Left expression: " + leftExp.toPrint("\t") + " of type " + left + " \nand right expression: " + rightExp.toPrint("\t") + " of type " + right + " \nhave incompatible types.");
         }
 
         switch (operator) {
@@ -94,5 +96,15 @@ public class BinExpNode extends ExpNode {
             default:
                 return null;
         }
+    }
+
+    @Override
+    public List<IdNode> variables() {
+        List<IdNode> variables = new ArrayList<>();
+
+        variables.addAll(leftExp.variables());
+        variables.addAll(rightExp.variables());
+
+        return variables;
     }
 }

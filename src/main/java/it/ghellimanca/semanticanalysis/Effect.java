@@ -38,6 +38,12 @@ public class Effect {
     /**
      * Implements the sequential binary operator
      *
+     * SEQ | ⊥ | 1 | 2 | ⊤
+     *   ⊥ | ⊥ | 1 | T | ⊤
+     *   1 | 1 | 1 | 2 | ⊤
+     *   2 | 2 | 2 | 2 | ⊤
+     *   ⊤ | ⊤ | ⊤ | ⊤ | ⊤
+     *
      * @param e1 previous effect
      * @param e2 new effect to assign
      * @return the result effect of the update

@@ -1,5 +1,6 @@
 package it.ghellimanca.ast.exp;
 
+import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.Node;
@@ -7,6 +8,7 @@ import it.ghellimanca.ast.type.IntTypeNode;
 import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a integer expression node in the AST.
@@ -32,5 +34,10 @@ public class ValExpNode extends ExpNode {
     @Override
     public TypeNode typeCheck() {
         return new IntTypeNode();
+    }
+
+    @Override
+    public List<IdNode> variables() {
+        return new ArrayList<>();
     }
 }

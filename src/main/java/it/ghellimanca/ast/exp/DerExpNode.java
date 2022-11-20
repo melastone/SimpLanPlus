@@ -6,6 +6,7 @@ import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents the result of dereferencing something as a node in the AST.
@@ -32,5 +33,13 @@ public class DerExpNode extends ExpNode {
     @Override
     public TypeNode typeCheck() {
         return id.typeCheck();
+    }
+
+    @Override
+    public List<IdNode> variables() {
+        List<IdNode> variables = new ArrayList<>();
+
+        variables.add(id);
+        return variables;
     }
 }

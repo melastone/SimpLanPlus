@@ -2,6 +2,7 @@ package it.ghellimanca.ast;
 
 
 import it.ghellimanca.ast.type.TypeNode;
+import it.ghellimanca.ast.type.VarTypeNode;
 import it.ghellimanca.semanticanalysis.*;
 
 import java.util.ArrayList;
@@ -26,6 +27,10 @@ public class IdNode implements Node {
 
     public String getIdentifier() {
         return id;
+    }
+
+    public STEntry getStEntry() {
+        return stEntry;
     }
 
     @Override
@@ -54,7 +59,11 @@ public class IdNode implements Node {
 
     @Override
     public TypeNode typeCheck() {
-        return stEntry.getType();
+        TypeNode type = stEntry.getType();
+
+        if (type instanceof VarTypeNode) type = ((VarTypeNode) type).getType();
+
+        return type;
     }
 
 }

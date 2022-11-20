@@ -2,6 +2,9 @@ package it.ghellimanca.semanticanalysis;
 
 import it.ghellimanca.ast.type.TypeNode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents an entry of the symbol table.
  *
@@ -14,27 +17,40 @@ public class STEntry {
 
     private final int offset;
 
-    private Effect status;
+    private Effect varStatus;
+
+    private List<List<Effect>> funStatus;
 
 
     /**
      * Constructor for {@code STEntry}
      *
-     * @param nestingLevel  a positive integer
      * @param type          a TypeNode
+     * @param nestingLevel  a positive integer
      * @param offset        a positive integer
+     */
+    public STEntry(TypeNode type, int nestingLevel, int offset) {
+        this.type = type;
+        this.nestingLevel = nestingLevel;
+        this.offset = offset;
+        this.varStatus = new Effect();
+        this.funStatus = new ArrayList<>();
+    }
+
+    /**
+     * Constructor for {@code STEntry}
+     *
+     * @param type          a TypeNode
+     * @param nestingLevel  a positive integer
+     * @param offset        a positive integer
+     * @param status        instance of Effect class
      */
     public STEntry(TypeNode type, int nestingLevel, int offset, Effect status) {
         this.type = type;
         this.nestingLevel = nestingLevel;
         this.offset = offset;
-        this.status = status;
-    }
-
-    public STEntry(TypeNode type, int nestingLevel, int offset) {
-        this.type = type;
-        this.nestingLevel = nestingLevel;
-        this.offset = offset;
+        this.varStatus = status;
+        this.funStatus = new ArrayList<>();
     }
 
     /**
@@ -43,17 +59,10 @@ public class STEntry {
      * @param e STEntry to be copied
      */
     public STEntry(STEntry e){
-        this(e.type, e.nestingLevel, e.offset, e.status);
+        this(e.type, e.nestingLevel, e.offset, e.varStatus);
     }
 
 
-    public int getNestingLevel() {
-        return nestingLevel;
-    }
-
-    public Effect getStatus() {
-        return status;
-    }
 
     public TypeNode getType() {
         return type;
@@ -63,12 +72,26 @@ public class STEntry {
         this.type = type;
     }
 
+    public int getNestingLevel() {
+        return nestingLevel;
+    }
+
     public int getOffset() {
         return offset;
     }
-    public void setStatus(Effect status) {
-        this.status = status;
+
+    public Effect getVarStatus() {
+        return varStatus;
     }
+
+    public void setVarStatus(Effect status) {
+        this.varStatus = status;
+    }
+
+    public List<List<Effect>> getFunStatus() {
+        return this.funStatus;
+    }
+
 
     @Override
     public String toString() {

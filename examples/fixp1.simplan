@@ -1,0 +1,18 @@
+{
+    /*
+    Questo esempio mostra l'esecuzione ricorsiva di una funzione, per cui è necessario utilizzare il punto fisso.
+    L'analisi degli effetti deve terminare con successo - i.e. le variabili non si troveranno in stato di errore.
+    Il punto fisso si stabilizzerà sul codominio [n -> used].
+    */
+
+    int x = 6;
+
+    int fact(int n) {
+        if (n==0){
+            return 1;
+        } else {
+            return n * fact(n-1);
+        }
+    }
+    fact(x);
+}

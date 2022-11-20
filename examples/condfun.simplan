@@ -1,0 +1,17 @@
+{
+
+    /* Questo esempio mostra il funzionamento di una funzione che contiene un condizonale, senza chiamate ricorsive.
+    E' utile a capire il funzionamento degli effetti sui parametri formali, che da bottom passano a used nella regola della definizione di funzione.
+    */
+
+    int a = 3;
+    void f(int x) {
+        if (x > 0) {
+            return x;
+        } else {
+            return;
+        }
+    }
+
+    f(a);
+}
