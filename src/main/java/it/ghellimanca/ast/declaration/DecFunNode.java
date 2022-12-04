@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
  * todo: aggiungi i controlli di subtyping per le regole di tipaggio (non sarebbero necessarie x questa grammatica, ma il prof le apprezza)
  * todo: testa la definizione di fun senza args
  * todo: stabilisci come viene utilizzato l'offset del corpo della funzione
+ * todo: verifica che nella costruzione di Sigma0 i parametri abbiano effettivamente tutti status INIT
  */
 public class DecFunNode extends DeclarationNode {
 
@@ -66,21 +67,45 @@ public class DecFunNode extends DeclarationNode {
         ArrayList<SemanticError> err = new ArrayList<SemanticError>();
 
         try {
+            // add function declaration in current scope
             List<TypeNode> argsType = arguments.stream().map(ArgNode::getType).collect(Collectors.toList());
             ArrowTypeNode funType = new ArrowTypeNode(argsType,type);
-            env.addDeclaration(id.getIdentifier(), funType, Effect.DECLARED);
+            id.setStEntry(env.addDeclaration(id.getIdentifier(), funType, Effect.DECLARED));
+            STEntry funEntry = id.getStEntry();
 
-            // creating an array of DecVar in order to add it to the body
-            // so that the variables declared as args are saved in the same scope as the function body
-            ArrayList<DecVarNode> params = new ArrayList<>();
-            for (ArgNode arg : arguments) {
-                DecVarNode dec = new DecVarNode(arg.getType(), arg.getId(), null);
-                params.add(dec);
+            // build Sigma0 - domain of the function and saving it in the STEntry of the function
+            List<Effect> Sigma0 = new ArrayList<>();
+            Effect bottom = new Effect(Effect.DECLARED);
+            for (int i = 0; i < arguments.size(); i++) {
+                Sigma0.add(bottom);
             }
-            body.addDeclarations(params);
+            funEntry.setFunStatus(0, Sigma0);
 
-            // it will create a new scope with both params and function body info
+            // open a new scope where to evaluate function body and calculating Sigma1
+            env.newScope();
+
+            // adding arguments declarations into the new scope. set them to INIT in order to correctly calculate Sigma1
+            for (ArgNode arg : arguments) {
+                arg.getId().setStEntry(env.addDeclaration(arg.getId().getIdentifier(), arg.getType(),Effect.INIT));
+            }
+
+            // it will create a new scope with function body info only
             err.addAll(body.checkSemantics(env));
+
+            // build both Sigma1 and initPars
+            List<Effect> Sigma1 = new ArrayList<>();
+            List<Boolean> initPars = new ArrayList<>();
+            for (int argIndex = 0; argIndex < arguments.size(); argIndex++) {
+                STEntry argEntry = arguments.get(argIndex).getId().getStEntry();
+                Sigma1.add(argIndex, argEntry.getVarStatus());
+                initPars.add(argIndex, argEntry.isInitAfterDec());
+            }
+
+            // saving both Sigma1 and initPars in the STEntry of the function
+            funEntry.setFunStatus(1,Sigma1);
+            funEntry.setInitPars(initPars);
+
+            env.popScope();
 
         } catch (MultipleDeclarationException e) {
             err.add(new SemanticError(e.getMessage()));
@@ -88,6 +113,7 @@ public class DecFunNode extends DeclarationNode {
 
         return err;
     }
+
 
     @Override
     public TypeNode typeCheck() throws TypeCheckingException {

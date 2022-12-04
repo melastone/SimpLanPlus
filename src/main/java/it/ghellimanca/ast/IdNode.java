@@ -19,7 +19,6 @@ public class IdNode implements Node {
     private STEntry stEntry;
 
 
-
     public IdNode(String id) {
         this.id = id;
     }
@@ -31,6 +30,10 @@ public class IdNode implements Node {
 
     public STEntry getStEntry() {
         return stEntry;
+    }
+
+    public void setStEntry(STEntry stEntry) {
+        this.stEntry = stEntry;
     }
 
     @Override

@@ -24,6 +24,11 @@ public class Effect {
     }
 
 
+    public int getStatus() {
+        return status;
+    }
+
+
     /**
      * Implements the max binary operator
      *

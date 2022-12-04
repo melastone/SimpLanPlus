@@ -19,7 +19,11 @@ public class STEntry {
 
     private Effect varStatus;
 
+    private boolean initAfterDec;
+
     private List<List<Effect>> funStatus;
+
+    private List<Boolean> initPars;
 
 
     /**
@@ -34,11 +38,14 @@ public class STEntry {
         this.nestingLevel = nestingLevel;
         this.offset = offset;
         this.varStatus = new Effect();
+        this.initAfterDec= false;   // default value
         this.funStatus = new ArrayList<>();
+        this.initPars = new ArrayList<>();
     }
 
     /**
-     * Constructor for {@code STEntry}
+     * Constructor for {@code STEntry}.
+     * Typically used by DeclarationNodes, which choose between declared and init statuses.
      *
      * @param type          a TypeNode
      * @param nestingLevel  a positive integer
@@ -50,7 +57,9 @@ public class STEntry {
         this.nestingLevel = nestingLevel;
         this.offset = offset;
         this.varStatus = status;
+        this.initAfterDec = false;  // default, cause this constructor is used by DeclarationNodes
         this.funStatus = new ArrayList<>();
+        this.initPars = new ArrayList<>();
     }
 
     /**
@@ -88,8 +97,28 @@ public class STEntry {
         this.varStatus = status;
     }
 
+    public void setInitAfterDec(boolean initAfterDec) {
+        this.initAfterDec = initAfterDec;
+    }
+
+    public boolean isInitAfterDec() {
+        return initAfterDec;
+    }
+
     public List<List<Effect>> getFunStatus() {
         return this.funStatus;
+    }
+
+    public void setFunStatus(int index, List<Effect> statuses) {
+        this.funStatus.add(index, statuses);
+    }
+
+    public List<Boolean> getInitPars() {
+        return initPars;
+    }
+
+    public void setInitPars(List<Boolean> initPars) {
+        this.initPars = initPars;
     }
 
 

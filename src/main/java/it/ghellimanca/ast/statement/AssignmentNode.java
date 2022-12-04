@@ -46,6 +46,8 @@ public class AssignmentNode extends StatementNode {
         err.addAll(id.checkSemantics(env));
         err.addAll(exp.checkSemantics(env));
 
+        id.getStEntry().setInitAfterDec(true);
+
         return err;
     }
 

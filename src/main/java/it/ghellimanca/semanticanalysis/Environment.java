@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import it.ghellimanca.ast.type.ArrowTypeNode;
 import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.semanticanalysis.*;
 
@@ -172,7 +173,7 @@ public class Environment {
      *                                      of the Symbol Table.
      * @return the updated Symbol Table
      */
-    public List<Map<String, STEntry>> addDeclaration(String id, TypeNode type, int status) throws MultipleDeclarationException{
+    public STEntry addDeclaration(String id, TypeNode type, int status) throws MultipleDeclarationException{
         Effect effect = new Effect(status);
         STEntry stentry = new STEntry(type, nestingLevel, offset, effect);
 
@@ -184,15 +185,9 @@ public class Environment {
 
         offset += 1;    // 1 = 4 Byte, for integers and boolean (1/0)
 
-        return this.symbolTable;
+        return stentry;
     }
 
-    public void addDeclarationSafe(String id, TypeNode type, Effect effect) {
-        STEntry stentry = new STEntry(type, nestingLevel, offset, effect);
-
-        currentScope().put(id, stentry);
-        offset += 1;
-    }
 
     /**
      * Process a new declaration by adding its entry in the Symbol Table.
@@ -205,7 +200,7 @@ public class Environment {
      *                                      of the Symbol Table.
      * @return the updated Symbol Table
      */
-    public List<Map<String, STEntry>> addDeclaration(String id, TypeNode type) throws MultipleDeclarationException{
+    public STEntry addDeclaration(String id, TypeNode type) throws MultipleDeclarationException{
         STEntry stentry = new STEntry(type, nestingLevel, offset);
 
         STEntry declaration = currentScope().put(id, stentry);
@@ -216,10 +211,43 @@ public class Environment {
 
         offset += 1;
 
-        return this.symbolTable;
+        return stentry;
     }
 
-    public void addDeclarationSafe(String id, TypeNode type) {
+
+    /**
+     * Process a new declaration by adding its entry in the Symbol Table.
+     * Used when it is certain that [id] has not been declared before.
+     * If it does unexpected behaviour could occur.
+     *
+     * @param id     the identifier of the variable or function.
+     * @param type   the type of the variable or function.
+     * @param status a positive integer which will become the Effect status
+     * @throws MultipleDeclarationException when [id] is already present in the head
+     *                                      of the Symbol Table.
+     * @return the updated Symbol Table
+     */
+    public void safeAddDeclaration(String id, TypeNode type, int status) {
+        Effect effect = new Effect(status);
+        STEntry stentry = new STEntry(type, nestingLevel, offset, effect);
+
+        currentScope().put(id, stentry);
+        offset += 1;
+    }
+
+
+    /**
+     * Process a new declaration by adding its entry in the Symbol Table.
+     * Used when it is certain that [id] has not been declared before.
+     * If it does unexpected behaviour could occur.
+     *
+     * @param id   the identifier of the variable or function.
+     * @param type the type of the variable or function.
+     * @throws MultipleDeclarationException when [id] is already present in the head
+     *                                      of the Symbol Table.
+     * @return the updated Symbol Table
+     */
+    public void safeAddDeclaration(String id, TypeNode type) {
         STEntry stentry = new STEntry(type, nestingLevel, offset);
 
         currentScope().put(id, stentry);
@@ -228,7 +256,24 @@ public class Environment {
 
 
     /**
-     * Looks for the type of id in ST, if any
+     * Adds an entry to the current scope of the Symbol Table.
+     * Used if sure that [id] has not been declared before.
+     *
+     * @param id        identifier of variable or function
+     * @param stEntry   Symbol Table Entry associated to [id]
+     */
+    public void addEntry(String id, STEntry stEntry) {
+        if(!(stEntry.getType() instanceof ArrowTypeNode)) {
+            offset += 1;
+        }
+        currentScope().put(id,stEntry);
+    }
+
+
+    /**
+     * Looks for the type of id in ST, if any.
+     *
+     * @param id    identifier to look for
      *
      */
      public STEntry lookup(String id) throws MissingDeclarationException {
@@ -241,9 +286,27 @@ public class Environment {
         throw new MissingDeclarationException("Missing declaration for ID: " + id + ".");
      }
 
+    /**
+     * Looks for the type of id in ST, if any.
+     * Used when it is certain that [id] exists inside the Environment.
+     * If it does not unexpected behaviour could occur.
+     *
+     * @param id    identifier to look for
+     */
+     public STEntry safeLookup(String id) {
+         for (int i = nestingLevel; i >= 0; i--) {
+            Map<String, STEntry> scope = symbolTable.get(i);
+            STEntry stEntry = scope.get(id);
+            if (stEntry != null)
+                return stEntry;
+         }
+         System.err.println("Unexpected absence of ID " + id + " in the Symbol Table.");
+         return null;
+     }
+
 
      /**
-     * Replaces the current environment with another one
+     * Replaces the current environment with another one.
      *
      * @param env new environment that will replace the current one
      */
@@ -266,7 +329,8 @@ public class Environment {
 
 
     /**
-     * Exits the current scope
+     * Exits the current scope by popping the head of the stack and updating global variables.
+     *
      */
     public void exitScope() {
         symbolTable.remove(nestingLevel);
@@ -275,30 +339,6 @@ public class Environment {
             var stEntry = symbolTable.get(nestingLevel).values().stream().max(Comparator.comparing(STEntry::getOffset));
             offset = stEntry.map(entry -> entry.getOffset() + 1).orElse(0);
         }
-    }
-
-
-    //MAX
-    public Environment max(Environment env1, Environment env2) {
-        return operationsOnEnvironments(env1, env2, Effect::max);
-    }
-
-
-    //SEQ
-    public Environment seq(Environment env1, Environment env2) {
-        return operationsOnEnvironments(env1, env2, Effect::seq);
-    }
-
-
-    //PAR
-    public Environment par(Environment env1, Environment env2) {
-        return operationsOnEnvironments(env1, env2, Effect::par);
-    }
-
-
-    //BIN
-    public Environment bin(Environment env1, Environment env2) {
-        return operationsOnEnvironments(env1, env2, Effect::bin);
     }
 
 
@@ -318,7 +358,7 @@ public class Environment {
                 if (entry2 == null) {  // x non appartiene dom(sigma')
                     resScope.put(id, entry1);
                 } else if (entry1 == null) { // x non appartiene dom(sigma)
-                    resScope.put(id, entry2);
+                    resScope.put(id, entry2);   //TODO: non viene mai eseguito. se sto facendo for all'interno di scope1 non le trovo mai le nulle ma che stanno in scope2
                 }
                 else {
                     var entryOp = new STEntry(entry1.getType(), entry1.getNestingLevel(), entry1.getOffset());
@@ -333,7 +373,15 @@ public class Environment {
     }
 
 
-    public static Environment update (Environment env1, Environment env2) {
+    /**
+     * Updates [env1] with new entries contained in [env2], if any.
+     * It is used by CallNode for applying updates.
+     *
+     * @param env1  environment to be updated
+     * @param env2  environment with updates
+     * @return      updated environment
+     */
+    public static Environment update(Environment env1, Environment env2) {
         Environment finalEnv = new Environment();
 
         if (env2.symbolTable.size()==0) {
@@ -354,13 +402,13 @@ public class Environment {
             Environment uEnv = new Environment();
             uEnv.newScope();
 
-            uEnv.addDeclarationSafe(u.getKey(), u.getValue().getType(), u.getValue().getVarStatus());
+            uEnv.safeAddDeclaration(u.getKey(), u.getValue().getType(), u.getValue().getVarStatus().getStatus());
 
             env1.popScope();
             Environment intermUpdateEnv = update(env1, uEnv);
             intermUpdateEnv.pushNewScope(headScope1);
 
-            finalEnv = update(intermUpdateEnv, env2)
+            finalEnv = update(intermUpdateEnv, env2);
 
         }
 
@@ -368,6 +416,12 @@ public class Environment {
     }
 
 
+    /**
+     * Auxiliar function for {@link #update(Environment, Environment) update} method.
+     * Removes first occurrence of entry [id] -> [STEntry] from this Environment.
+     *
+     * @param id    identifier of the entry to be removed
+     */
     private void removeFirstIdentifier(String id) {
         for (int i = symbolTable.size() - 1; i >= 0; i--) {
             if (symbolTable.get(i).containsKey(id)) {
