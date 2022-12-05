@@ -20,7 +20,6 @@ import java.util.stream.IntStream;
  * A call statement has the form:
  * ID '(' (exp(',' exp)*)? ')'
  *
- * todo: aggiungere il controllo giusto sui tipi nel caso di VarTypeNode
  */
 public class CallNode extends StatementNode {
 
@@ -49,7 +48,7 @@ public class CallNode extends StatementNode {
     public String toString() { return toPrint("");}
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException{
         ArrayList<SemanticError> err = new ArrayList<>();
 
         err.addAll(id.checkSemantics(env));
@@ -62,6 +61,8 @@ public class CallNode extends StatementNode {
 
         List<Effect> domainStatus = id.getStEntry().getFunStatus().get(0);
         List<Effect> codomainStatus = id.getStEntry().getFunStatus().get(1);
+
+        List<Boolean> initPars = id.getStEntry().getInitPars();
 
         //todo: gestire il caso in cui params.size != funType.getArgs().size().. non abbiamo ancora fatto type check!!!
         TypeNode funType = id.getStEntry().getType();
@@ -76,14 +77,23 @@ public class CallNode extends StatementNode {
                 .boxed()
                 .collect(Collectors.toList());
 
-        //Check that params passed by value have not an error status
+        // check that params passed by value have not an error status
         for (int i : indexOfPassedByValue) {
             if (codomainStatus.get(i).equals(Effect.ERROR)) {
-                //Print Error here
+                throw new MissingInitializationException("Error in the effect analysis: function argument " + id.getStEntry().getFunNode().getArgument(i) + " was used before initialization inside function body.");
             }
         }
 
-        //Update status of params passed by value
+        // set to init status of params initialized inside the function body
+        for (int i : indexOfPassedByReference) {
+            if (initPars.get(i)){
+                IdNode u_iId = params.get(i).variables().get(0);
+                STEntry u_iEntry = env.safeLookup(u_iId.getIdentifier());
+                u_iEntry.setVarStatus(Effect.seq(u_iEntry.getVarStatus(), new Effect(Effect.INIT)));
+            }
+        }
+
+        // update status of params passed by value
         Environment Sigma1 = new Environment(env);
 
         List<IdNode> varsInExpressions = IntStream
@@ -97,9 +107,11 @@ public class CallNode extends StatementNode {
         for (IdNode var : varsInExpressions) {
             System.out.println(var.getIdentifier());
             //get access to Id entry in Sigma1 and set status with seq(Sigma1(var),used)
+            STEntry varEntry = Sigma1.safeLookup(var.getIdentifier());
+            varEntry.setVarStatus(Effect.seq(varEntry.getVarStatus(), new Effect(Effect.USED)));
         }
 
-        //Update status of params passed by reference
+        // update status of params passed by reference
         Environment Sigma2 = new Environment();
         List<Environment> res = new ArrayList<>();
 
@@ -108,7 +120,7 @@ public class CallNode extends StatementNode {
             u_iEnv.newScope();
 
             IdNode u_iId = params.get(i).variables().get(0);
-            u_iEnv.addDeclarationSafe(u_iId.getIdentifier(), u_iId.getStEntry().getType());
+            u_iEnv.safeAddDeclaration(u_iId.getIdentifier(), u_iId.getStEntry().getType());
 
             Effect u_iStatus = u_iId.getStEntry().getVarStatus();
             Effect x_iStatus = codomainStatus.get(i);
@@ -119,13 +131,12 @@ public class CallNode extends StatementNode {
 
         if (res.size() > 0) {
             Sigma2 = res.get(0);
-            for (int i = 0; i < res.size(); i++) {
-                // fare la max a due a due..
-                //sigma2 = Environment::operationsOnEnvironments(sigma2, res.get(i), Effect::max);
+            for (int i = 1; i < res.size(); i++) {
+                Sigma2 = Environment.max(Sigma2, res.get(i));
             }
         }
 
-        //Update environment to be returned
+        // update environment to be returned
         Environment updatedEnv = Environment.update(Sigma1,Sigma2);
         env.replace(updatedEnv);
 
@@ -199,6 +210,11 @@ public class CallNode extends StatementNode {
 //        return ((ArrowTypeNode) funType).getRet();
 //    }
 
+    /**
+     * Gets all the variables used as parameters or inside them.
+     *
+     * @return  list of IdNodes, each for one variable
+     */
     public List<IdNode> variables() {
         return params.stream().flatMap(exp -> exp.variables().stream()).collect(Collectors.toList());
     }

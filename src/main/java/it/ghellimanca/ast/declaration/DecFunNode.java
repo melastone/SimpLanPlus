@@ -32,6 +32,7 @@ public class DecFunNode extends DeclarationNode {
     final private BlockNode body;
 
 
+
     public DecFunNode(TypeNode type, IdNode id, List<ArgNode> arguments, BlockNode body) {
 
         this.type = (TypeNode) type;    // Explicit cast cause type could also be VoidTypeNode, subclass of TypeNode
@@ -40,6 +41,10 @@ public class DecFunNode extends DeclarationNode {
         this.body = body;
     }
 
+
+    public ArgNode getArgument(int index) {
+        return arguments.get(index);
+    }
 
     @Override
     public String toPrint(String indent) {
@@ -59,8 +64,10 @@ public class DecFunNode extends DeclarationNode {
         return res;
     }
 
+
     @Override
     public String toString() { return toPrint("");}
+
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
@@ -71,6 +78,8 @@ public class DecFunNode extends DeclarationNode {
             List<TypeNode> argsType = arguments.stream().map(ArgNode::getType).collect(Collectors.toList());
             ArrowTypeNode funType = new ArrowTypeNode(argsType,type);
             id.setStEntry(env.addDeclaration(id.getIdentifier(), funType, Effect.DECLARED));
+            id.getStEntry().setFunNode(this);   // adding reference to this node in order to access arguments during effects analysis
+
             STEntry funEntry = id.getStEntry();
 
             // build Sigma0 - domain of the function and saving it in the STEntry of the function

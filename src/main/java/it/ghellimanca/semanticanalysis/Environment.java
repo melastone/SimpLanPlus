@@ -342,12 +342,35 @@ public class Environment {
     }
 
 
-    public Environment operationsOnEnvironments(Environment env1, Environment env2, BiFunction<Effect, Effect, Effect> operator) {
-        Environment resEnv = new Environment(new ArrayList<>(), env1.getNestingLevel(), env1.getOffset());
+    //MAX
+    public static Environment max(final Environment env1, final Environment env2) {
+        return operationsOnEnvironments(env1, env2, Effect::max);
+    }
 
-        for (int i = (env1.getSymbolTable().size() - 1); i >= 0; i--) {
+    //SEQ
+    public static Environment seq(final Environment env1, final Environment env2) {
+        return operationsOnEnvironments(env1, env2, Effect::seq);
+    }
+
+    //PAR
+    public static Environment par(final Environment env1, final Environment env2) {
+        return operationsOnEnvironments(env1, env2, Effect::par);
+    }
+
+    //BIN
+    public static Environment bin(final Environment env1, final Environment env2) {
+        return operationsOnEnvironments(env1, env2, Effect::bin);
+    }
+
+
+    public static Environment operationsOnEnvironments(final Environment env1, final Environment env2, BiFunction<Effect, Effect, Effect> operator) {
+        Environment resEnv = new Environment(new ArrayList<>(), env1.nestingLevel, env1.offset);
+        Environment tmp2 = new Environment(env2);
+
+        // assuming dom(env2) is in dom(env1)
+        for (int i = 0; i < env1.symbolTable.size() ; i++) {
             var scope1 = env1.symbolTable.get(i);
-            var scope2 = env2.symbolTable.get(i);
+            var scope2 = tmp2.symbolTable.get(i);
 
             HashMap<String, STEntry> resScope = new HashMap<>();
 
@@ -357,16 +380,29 @@ public class Environment {
 
                 if (entry2 == null) {  // x non appartiene dom(sigma')
                     resScope.put(id, entry1);
-                } else if (entry1 == null) { // x non appartiene dom(sigma)
-                    resScope.put(id, entry2);   //TODO: non viene mai eseguito. se sto facendo for all'interno di scope1 non le trovo mai le nulle ma che stanno in scope2
-                }
-                else {
+//                } else if (entry1 == null) { // x non appartiene dom(sigma)
+//                    resScope.put(id, entry2);   //Tnon viene mai eseguito. se sto facendo for all'interno di scope1 non le trovo mai le nulle ma che stanno in scope2
+//                }
+                } else {    // id è anche in sigma2
                     var entryOp = new STEntry(entry1.getType(), entry1.getNestingLevel(), entry1.getOffset());
                     entryOp.setVarStatus(operator.apply(entry1.getVarStatus(), entry2.getVarStatus()));
                     resScope.put(id, entryOp);
+                    tmp2.removeFirstIdentifier(id);
                 }
             }
             resEnv.symbolTable.add(resScope);
+        }
+
+        // checking if there are elements left in env2
+        for (int j = 0; j < tmp2.symbolTable.size() ; j++) {
+            var scope = tmp2.symbolTable.get(j);
+
+            if(scope.keySet().size() > 0) {
+                for (var id : scope.keySet()) {
+                    resEnv.symbolTable.get(j).put(id, scope.get(id));
+                    tmp2.removeFirstIdentifier(id);
+                }
+            }
         }
 
         return resEnv;

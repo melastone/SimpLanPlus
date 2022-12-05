@@ -1,5 +1,6 @@
 package it.ghellimanca.semanticanalysis;
 
+import it.ghellimanca.ast.declaration.DecFunNode;
 import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 /**
  * Represents an entry of the symbol table.
  *
+ * TODO: rimettere a posto i costruttori (quello copia non funziona, bisogna capire quali attributi possono essere non inizializzati..)
  */
 public class STEntry {
 
@@ -24,6 +26,8 @@ public class STEntry {
     private List<List<Effect>> funStatus;
 
     private List<Boolean> initPars;
+
+    private DecFunNode funNode;
 
 
     /**
@@ -121,6 +125,13 @@ public class STEntry {
         this.initPars = initPars;
     }
 
+    public DecFunNode getFunNode() {
+        return funNode;
+    }
+
+    public void setFunNode(DecFunNode funNode) {
+        this.funNode = funNode;
+    }
 
     @Override
     public String toString() {
