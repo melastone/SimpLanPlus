@@ -154,6 +154,7 @@ public class SimpLanPlus {
 
             System.exit(1);
         }
+
         // Checking for type errors
         try {
             TypeNode finalType = AST.typeCheck();

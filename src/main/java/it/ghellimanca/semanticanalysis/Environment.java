@@ -227,12 +227,14 @@ public class Environment {
      *                                      of the Symbol Table.
      * @return the updated Symbol Table
      */
-    public void safeAddDeclaration(String id, TypeNode type, int status) {
+    public STEntry safeAddDeclaration(String id, TypeNode type, int status) {
         Effect effect = new Effect(status);
         STEntry stentry = new STEntry(type, nestingLevel, offset, effect);
 
         currentScope().put(id, stentry);
         offset += 1;
+
+        return stentry;
     }
 
 
@@ -247,11 +249,13 @@ public class Environment {
      *                                      of the Symbol Table.
      * @return the updated Symbol Table
      */
-    public void safeAddDeclaration(String id, TypeNode type) {
+    public STEntry safeAddDeclaration(String id, TypeNode type) {
         STEntry stentry = new STEntry(type, nestingLevel, offset);
 
         currentScope().put(id, stentry);
         offset += 1;
+
+        return stentry;
     }
 
 
@@ -412,13 +416,14 @@ public class Environment {
     /**
      * Updates [env1] with new entries contained in [env2], if any.
      * It is used by CallNode for applying updates.
+     * todo: controlla se il passo base viene eseguito in caso di env2 non vuoto
      *
      * @param env1  environment to be updated
      * @param env2  environment with updates
      * @return      updated environment
      */
     public static Environment update(Environment env1, Environment env2) {
-        Environment finalEnv = new Environment();
+        Environment finalEnv;
 
         if (env2.symbolTable.size()==0) {
             return new Environment(env1);

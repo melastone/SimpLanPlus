@@ -11,6 +11,7 @@ import it.ghellimanca.ast.type.TypeNode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Node of the AST for a function declaration.
@@ -77,7 +78,7 @@ public class DecFunNode extends DeclarationNode {
             // add function declaration in current scope
             List<TypeNode> argsType = arguments.stream().map(ArgNode::getType).collect(Collectors.toList());
             ArrowTypeNode funType = new ArrowTypeNode(argsType,type);
-            id.setStEntry(env.addDeclaration(id.getIdentifier(), funType, Effect.DECLARED));
+            id.setStEntry(env.addDeclaration(id.getIdentifier(), funType, Effect.INIT));
             id.getStEntry().setFunNode(this);   // adding reference to this node in order to access arguments during effects analysis
 
             STEntry funEntry = id.getStEntry();
@@ -91,27 +92,56 @@ public class DecFunNode extends DeclarationNode {
             funEntry.setFunStatus(0, Sigma0);
 
             // open a new scope where to evaluate function body and calculating Sigma1
-            env.newScope();
+            env.newScope(); // todo: verifica se aprire un nuovo environment (effect analysis) si puà sost con aprire un nuovo scope (scope checking)
 
             // adding arguments declarations into the new scope. set them to INIT in order to correctly calculate Sigma1
             for (ArgNode arg : arguments) {
-                arg.getId().setStEntry(env.addDeclaration(arg.getId().getIdentifier(), arg.getType(),Effect.INIT));
+                arg.getId().setStEntry(env.safeAddDeclaration(arg.getId().getIdentifier(), arg.getType(),Effect.INIT));
             }
+
+            // adding function declaration into the new scope in order to enable recursive calls
+            STEntry localFunEntry = env.safeAddDeclaration(id.getIdentifier(), type);
+            localFunEntry.setFunNode(this);
+
+            // adding funStatus to innerEntry
+            localFunEntry.setFunStatus(0, Sigma0);
+            localFunEntry.setFunStatus(1, Sigma0);
+
+            // saving current Sigma1 in order to verify wheter if it changes or not
+            List<Effect> oldSigma1 = localFunEntry.getFunStatus().get(1);
 
             // it will create a new scope with function body info only
             err.addAll(body.checkSemantics(env));
 
-            // build both Sigma1 and initPars
-            List<Effect> Sigma1 = new ArrayList<>();
+            // update Sigma1 in innerFunEntry with changes made by body evaluation
+            List<Effect> updatedStatuses = arguments.stream().map(argNode -> env.safeLookup(argNode.getId().getIdentifier()).getVarStatus())
+                    .collect(Collectors.toList());
+            localFunEntry.setFunStatus(1, updatedStatuses);
+
+            boolean hasCodomainChanged = !localFunEntry.getFunStatus().get(1).equals(oldSigma1);
+
+            while (hasCodomainChanged) {
+
+                oldSigma1 = localFunEntry.getFunStatus().get(1);
+
+                err.addAll(body.checkSemantics(env));
+
+                localFunEntry.setFunStatus(1, arguments.stream().map(argument -> env.safeLookup(argument.getId().getIdentifier()).getVarStatus())
+                    .collect(Collectors.toList()));
+
+                hasCodomainChanged = !localFunEntry.getFunStatus().get(1).equals(oldSigma1);
+            }
+
+            // build initPars
             List<Boolean> initPars = new ArrayList<>();
             for (int argIndex = 0; argIndex < arguments.size(); argIndex++) {
-                STEntry argEntry = arguments.get(argIndex).getId().getStEntry();
-                Sigma1.add(argIndex, argEntry.getVarStatus());
+//                STEntry argEntry = arguments.get(argIndex).getId().getStEntry();
+                STEntry argEntry = env.safeLookup(arguments.get(argIndex).getId().getIdentifier());
                 initPars.add(argIndex, argEntry.isInitAfterDec());
             }
 
             // saving both Sigma1 and initPars in the STEntry of the function
-            funEntry.setFunStatus(1,Sigma1);
+            funEntry.setFunStatus(1,localFunEntry.getFunStatus().get(1));
             funEntry.setInitPars(initPars);
 
             env.popScope();
