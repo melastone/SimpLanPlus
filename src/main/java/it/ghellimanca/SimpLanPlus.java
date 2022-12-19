@@ -6,6 +6,7 @@ import it.ghellimanca.gen.SimpLanPlusLexer;
 import it.ghellimanca.gen.SimpLanPlusParser;
 import it.ghellimanca.SimpLanPlusPTVisitor;
 import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.MissingInitializationException;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.semanticanalysis.TypeCheckingException;
 import org.antlr.v4.runtime.CharStreams;
@@ -144,15 +145,20 @@ public class SimpLanPlus {
 
 
         // Checking for semantic errors
-        ArrayList<SemanticError> semanticErrors = AST.checkSemantics(environment);
-        if (!semanticErrors.isEmpty()) {
-            System.err.println("Semantic errors:");
+        try {
+            ArrayList<SemanticError> semanticErrors = AST.checkSemantics(environment);
 
-            for (SemanticError err : semanticErrors) {
-                System.err.println(err);
+            if (!semanticErrors.isEmpty()) {
+                System.err.println("Semantic errors:");
+
+                for (SemanticError err : semanticErrors) {
+                    System.err.println(err);
+                }
+
+                System.exit(1);
             }
-
-            System.exit(1);
+        } catch (MissingInitializationException e) {
+            throw new RuntimeException(e);
         }
         // Checking for type errors
         try {
