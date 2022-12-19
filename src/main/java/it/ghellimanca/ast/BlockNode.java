@@ -4,13 +4,10 @@ import it.ghellimanca.ast.declaration.DecVarNode;
 import it.ghellimanca.ast.statement.IteNode;
 import it.ghellimanca.ast.statement.ReturnNode;
 import it.ghellimanca.ast.type.VoidTypeNode;
-import it.ghellimanca.semanticanalysis.Environment;
-import it.ghellimanca.semanticanalysis.MissingInitializationException;
-import it.ghellimanca.semanticanalysis.SemanticError;
+import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.ast.declaration.DeclarationNode;
 import it.ghellimanca.ast.statement.StatementNode;
 import it.ghellimanca.ast.type.TypeNode;
-import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +58,7 @@ public class BlockNode extends StatementNode {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException {
+    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
         ArrayList<SemanticError> err = new ArrayList<>();
 
         env.newScope();

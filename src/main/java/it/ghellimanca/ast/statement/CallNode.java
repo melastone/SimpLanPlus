@@ -20,7 +20,6 @@ import java.util.stream.IntStream;
  * A call statement has the form:
  * ID '(' (exp(',' exp)*)? ')'
  *
- * TODO: agg gestione effect analysis per funzioni senza argomenti
  */
 public class CallNode extends StatementNode {
 
@@ -49,10 +48,17 @@ public class CallNode extends StatementNode {
     public String toString() { return toPrint("");}
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException{
+    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException{
         ArrayList<SemanticError> err = new ArrayList<>();
 
         err.addAll(id.checkSemantics(env));
+
+        // setting fun effect to used
+        Environment updatedFunEnv = new Environment();
+        updatedFunEnv.newScope();
+        updatedFunEnv.safeAddDeclaration(id.getIdentifier(), id.getStEntry().getType(), Effect.USED);
+
+        env.seq(updatedFunEnv); // env ▷ [funId → USED]
 
         if (this.params != null) {
 
@@ -65,11 +71,15 @@ public class CallNode extends StatementNode {
                 err.addAll(var.checkSemantics(env));
             }
 
-            List<Effect> codomainStatus = id.getStEntry().getFunStatus().get(1);
+            List<TypeNode> formalParamsTypes = ((ArrowTypeNode) id.getStEntry().getType()).getArgs();
+            int size = formalParamsTypes.size();
+            if (params.size() != size) {
+                throw new ParametersCountException("Function " + id.getIdentifier() + ": expecting " + size + " number of parameters but got " + params.size()  + " instead.");
+            }
 
+            List<Effect> codomainStatus = id.getStEntry().getFunStatus().get(1);
             List<Boolean> initPars = id.getStEntry().getInitPars();
 
-            //todo: gestire il caso in cui params.size != funType.getArgs().size().. non abbiamo ancora fatto type check!!!
             TypeNode funType = id.getStEntry().getType();
             List<Integer> indexOfPassedByValue = IntStream
                     .range(0, params.size())
@@ -89,7 +99,7 @@ public class CallNode extends StatementNode {
                 }
             }
 
-            // set to init status of params initialized inside the function body
+            // set to init statuses of params initialized inside the function body
             for (int i : indexOfPassedByReference) {
                 if (initPars.get(i)){
                     IdNode u_iId = params.get(i).variables().get(0);
@@ -98,7 +108,7 @@ public class CallNode extends StatementNode {
                 }
             }
 
-            // update status of params passed by value
+            // update statuses of params passed by value
             Environment Sigma1 = new Environment(env);
 
             List<IdNode> varsInExpressions = IntStream
@@ -116,7 +126,7 @@ public class CallNode extends StatementNode {
                 varEntry.setVarStatus(Effect.seq(varEntry.getVarStatus(), new Effect(Effect.USED)));
             }
 
-            // update status of params passed by reference
+            // update statuses of params passed by reference
             Environment Sigma2 = new Environment();
             List<Environment> res = new ArrayList<>();
 
@@ -137,7 +147,7 @@ public class CallNode extends StatementNode {
             if (res.size() > 0) {
                 Sigma2 = res.get(0);
                 for (int i = 1; i < res.size(); i++) {
-                    Sigma2 = Environment.max(Sigma2, res.get(i));
+                    Sigma2.par(res.get(i));
                 }
             }
 
@@ -160,11 +170,7 @@ public class CallNode extends StatementNode {
         }
 
         List<TypeNode> formalParamsTypes = ((ArrowTypeNode) funType).getArgs();
-
         int size = formalParamsTypes.size();
-        if (params.size() != size) {
-            throw new TypeCheckingException("Function " + id.getIdentifier() + ": expecting " + size + " number of parameters but got " + params.size()  + " instead.");
-        }
 
         for (int i = 0; i < size; i++) {
             TypeNode expType = params.get(i).typeCheck();

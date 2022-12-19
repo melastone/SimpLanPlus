@@ -21,7 +21,7 @@ public interface Node {
     /**
      * Check for errors in the node.
      * */
-    ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException;
+    ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException;
 
 
 

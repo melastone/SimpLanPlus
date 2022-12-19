@@ -1,12 +1,10 @@
 package it.ghellimanca.ast.exp;
 
 import it.ghellimanca.ast.IdNode;
-import it.ghellimanca.semanticanalysis.Environment;
-import it.ghellimanca.semanticanalysis.SemanticError;
+import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.ast.type.BoolTypeNode;
 import it.ghellimanca.ast.type.IntTypeNode;
 import it.ghellimanca.ast.type.TypeNode;
-import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +37,7 @@ public class BinExpNode extends ExpNode {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
         ArrayList<SemanticError> err = new ArrayList<>();
 
         err.addAll(leftExp.checkSemantics(env));

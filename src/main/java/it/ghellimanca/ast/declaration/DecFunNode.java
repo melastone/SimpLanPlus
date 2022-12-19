@@ -71,7 +71,7 @@ public class DecFunNode extends DeclarationNode {
 
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
         ArrayList<SemanticError> err = new ArrayList<SemanticError>();
 
         try {
@@ -155,7 +155,7 @@ public class DecFunNode extends DeclarationNode {
 
             env.popScope();
 
-        } catch (MultipleDeclarationException | MissingInitializationException e) {
+        } catch (MultipleDeclarationException e) {
             err.add(new SemanticError(e.getMessage()));
         }
 

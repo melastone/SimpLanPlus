@@ -43,7 +43,7 @@ public class DecVarNode extends DeclarationNode {
     public String toString() { return toPrint("");}
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
 
         ArrayList<SemanticError> err = new ArrayList<>();
 
@@ -55,7 +55,7 @@ public class DecVarNode extends DeclarationNode {
             } else {
                 env.addDeclaration(id.getIdentifier(), type, Effect.DECLARED);
             }
-        } catch (MultipleDeclarationException | MissingInitializationException e) {
+        } catch (MultipleDeclarationException e) {
             err.add(new SemanticError(e.getMessage()));
         }
 

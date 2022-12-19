@@ -347,23 +347,23 @@ public class Environment {
 
 
     //MAX
-    public static Environment max(final Environment env1, final Environment env2) {
-        return operationsOnEnvironments(env1, env2, Effect::max);
+    public void max(final Environment env2) {
+        this.replace(operationsOnEnvironments(this, env2, Effect::max));
     }
 
     //SEQ
-    public static Environment seq(final Environment env1, final Environment env2) {
-        return operationsOnEnvironments(env1, env2, Effect::seq);
+    public void seq(final Environment env2) {
+        this.replace(operationsOnEnvironments(this, env2, Effect::seq));
     }
 
     //PAR
-    public static Environment par(final Environment env1, final Environment env2) {
-        return operationsOnEnvironments(env1, env2, Effect::par);
+    public void par(final Environment env2) {
+        this.replace(operationsOnEnvironments(this, env2, Effect::par));
     }
 
     //BIN
-    public static Environment bin(final Environment env1, final Environment env2) {
-        return operationsOnEnvironments(env1, env2, Effect::bin);
+    public void bin(final Environment env2) {
+        this.replace(operationsOnEnvironments(this, env2, Effect::bin));
     }
 
 

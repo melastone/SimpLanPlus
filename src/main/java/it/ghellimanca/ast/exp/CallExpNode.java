@@ -1,11 +1,9 @@
 package it.ghellimanca.ast.exp;
 
 import it.ghellimanca.ast.IdNode;
-import it.ghellimanca.semanticanalysis.Environment;
-import it.ghellimanca.semanticanalysis.SemanticError;
+import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.ast.statement.CallNode;
 import it.ghellimanca.ast.type.TypeNode;
-import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +28,7 @@ public class CallExpNode extends ExpNode {
     }
 
 
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
         return call.checkSemantics(env);
     }
 
