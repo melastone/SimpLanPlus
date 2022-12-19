@@ -92,7 +92,7 @@ public class DecFunNode extends DeclarationNode {
             funEntry.setFunStatus(0, Sigma0);
 
             // open a new scope where to evaluate function body and calculating Sigma1
-            env.newScope(); // todo: verifica se aprire un nuovo environment (effect analysis) si puà sost con aprire un nuovo scope (scope checking)
+            env.newScope();
 
             // adding arguments declarations into the new scope. set them to INIT in order to correctly calculate Sigma1
             for (ArgNode arg : arguments) {
@@ -107,7 +107,9 @@ public class DecFunNode extends DeclarationNode {
             localFunEntry.setFunStatus(0, Sigma0);
             localFunEntry.setFunStatus(1, Sigma0);
 
-            // saving current Sigma1 in order to verify wheter if it changes or not
+            // saving current Environment in order to use it for eventual iterations of Fixed Point Algorithm
+            Environment oldEnv = new Environment(env);
+            // saving current Sigma1 in order to verify whether if it changes or not
             List<Effect> oldSigma1 = localFunEntry.getFunStatus().get(1);
 
             // it will create a new scope with function body info only
@@ -121,6 +123,13 @@ public class DecFunNode extends DeclarationNode {
             boolean hasCodomainChanged = !localFunEntry.getFunStatus().get(1).equals(oldSigma1);
 
             while (hasCodomainChanged) {
+
+                // we do not want to keep statuses as they were update by previous iteration of the algorithm,
+                // so we restore the environment as it was before
+                env.replace(oldEnv);
+
+                // after replacement, funEntry has Sigma1 = Sigma0, so we restore it to last iteration Sigma1
+                env.safeLookup(id.getIdentifier()).setFunStatus(1, localFunEntry.getFunStatus().get(1));
 
                 oldSigma1 = localFunEntry.getFunStatus().get(1);
 
@@ -146,7 +155,7 @@ public class DecFunNode extends DeclarationNode {
 
             env.popScope();
 
-        } catch (MultipleDeclarationException e) {
+        } catch (MultipleDeclarationException | MissingInitializationException e) {
             err.add(new SemanticError(e.getMessage()));
         }
 

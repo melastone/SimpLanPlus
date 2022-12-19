@@ -4,6 +4,7 @@ package it.ghellimanca.ast.statement;
 import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.ast.type.VoidTypeNode;
 import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.MissingInitializationException;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.exp.ExpNode;
 import it.ghellimanca.ast.type.TypeNode;
@@ -40,7 +41,7 @@ public class AssignmentNode extends StatementNode {
 
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException {
         ArrayList<SemanticError> err = new ArrayList<>();
 
         err.addAll(id.checkSemantics(env));

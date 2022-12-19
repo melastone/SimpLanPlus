@@ -2,6 +2,7 @@ package it.ghellimanca.ast.statement;
 
 import it.ghellimanca.ast.type.VoidTypeNode;
 import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.MissingInitializationException;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.exp.ExpNode;
@@ -42,7 +43,7 @@ public class ReturnNode extends StatementNode {
     public String toString() { return toPrint("");}
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException {
         if (this.exp != null) {
             return exp.checkSemantics(env);
         }

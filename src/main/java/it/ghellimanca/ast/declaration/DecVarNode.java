@@ -55,7 +55,7 @@ public class DecVarNode extends DeclarationNode {
             } else {
                 env.addDeclaration(id.getIdentifier(), type, Effect.DECLARED);
             }
-        } catch (MultipleDeclarationException e) {
+        } catch (MultipleDeclarationException | MissingInitializationException e) {
             err.add(new SemanticError(e.getMessage()));
         }
 

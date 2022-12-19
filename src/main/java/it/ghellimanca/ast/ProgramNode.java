@@ -7,6 +7,7 @@ import it.ghellimanca.ast.statement.StatementNode;
 import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.ast.type.VoidTypeNode;
 import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.MissingInitializationException;
 import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.semanticanalysis.TypeCheckingException;
 
@@ -50,7 +51,7 @@ public class ProgramNode implements Node {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException {
         ArrayList<SemanticError> err = new ArrayList<>();
 
         env.newScope();
