@@ -26,10 +26,12 @@ public class NegExpNode extends ExpNode {
         return "\n" + indent + "NEG_EXP" + exp.toPrint(indent + "\t");
     }
 
+
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
         return exp.checkSemantics(env);
     }
+
 
     @Override
     public TypeNode typeCheck() throws TypeCheckingException {
@@ -40,6 +42,7 @@ public class NegExpNode extends ExpNode {
 
         return new IntTypeNode();
     }
+
 
     @Override
     public List<IdNode> variables() {

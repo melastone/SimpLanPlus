@@ -20,15 +20,19 @@ public class NotExpNode extends ExpNode {
         this.exp = exp;
     }
 
+
+
     @Override
     public String toPrint(String indent) {
         return "\n" + indent + "NOT_EXP" + exp.toPrint(indent + "\t");
     }
 
+
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
         return exp.checkSemantics(env);
     }
+
 
     @Override
     public TypeNode typeCheck() throws TypeCheckingException {
@@ -39,6 +43,7 @@ public class NotExpNode extends ExpNode {
 
         return new BoolTypeNode();
     }
+
 
     @Override
     public List<IdNode> variables() {

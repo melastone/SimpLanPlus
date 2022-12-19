@@ -1,6 +1,5 @@
 package it.ghellimanca.ast;
 
-
 import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.ast.type.VarTypeNode;
 import it.ghellimanca.semanticanalysis.*;
@@ -19,9 +18,11 @@ public class IdNode implements Node {
     private STEntry stEntry;
 
 
+
     public IdNode(String id) {
         this.id = id;
     }
+
 
 
     public String getIdentifier() {
@@ -36,10 +37,12 @@ public class IdNode implements Node {
         this.stEntry = stEntry;
     }
 
+
     @Override
     public String toPrint(String indent) {
         return "\n" + indent + "ID: " + id;
     }
+
 
     @Override
     public String toString() {
@@ -60,6 +63,7 @@ public class IdNode implements Node {
         return err;
     }
 
+
     @Override
     public TypeNode typeCheck() {
         TypeNode type = stEntry.getType();
@@ -68,5 +72,4 @@ public class IdNode implements Node {
 
         return type;
     }
-
 }

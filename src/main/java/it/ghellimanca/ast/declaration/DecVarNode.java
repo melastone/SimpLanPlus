@@ -2,7 +2,6 @@ package it.ghellimanca.ast.declaration;
 
 import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.ast.IdNode;
-import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.exp.ExpNode;
 import it.ghellimanca.ast.type.TypeNode;
 
@@ -24,11 +23,14 @@ public class DecVarNode extends DeclarationNode {
     final private ExpNode exp;
 
 
+
     public DecVarNode(TypeNode type, IdNode id, ExpNode exp) {
         this.type = type;
         this.id = id;
         this.exp = exp;
     }
+
+
 
     @Override
     public String toPrint(String indent) {
@@ -39,14 +41,15 @@ public class DecVarNode extends DeclarationNode {
         return res;
     }
 
+
     @Override
     public String toString() { return toPrint("");}
+
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
 
         ArrayList<SemanticError> err = new ArrayList<>();
-
 
         try {
             if (exp != null) {  // if the variable is also initialized
@@ -62,6 +65,7 @@ public class DecVarNode extends DeclarationNode {
         return err;
     }
 
+
     @Override
     public TypeNode typeCheck() throws TypeCheckingException {
         if (exp != null) {
@@ -74,22 +78,5 @@ public class DecVarNode extends DeclarationNode {
 
         return type;
     }
-
-//    @Override
-//    public ArrayList<SemanticError> checkEffects(Environment sigma) {
-//        ArrayList<SemanticError> err = new ArrayList<SemanticError>();
-//
-//        if (exp != null) {  // if the variable is also initialized
-//            err.addAll(exp.checkEffects(sigma));
-//            entry.setStatus(init)
-//        }
-//        //else
-//        // entry.setStatus(dec)
-//
-//        // ricomporre l'env
-//        // env.addEntry(id.getIdentifier(), entry)
-//
-//        return err;
-//    }
 
 }

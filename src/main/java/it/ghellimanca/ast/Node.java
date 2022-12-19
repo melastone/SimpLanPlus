@@ -19,10 +19,9 @@ public interface Node {
     String toPrint(String indent);
 
     /**
-     * Check for errors in the node.
+     * Check for semantic and effect analysis errors in the node.
      * */
     ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException;
-
 
 
     /**
@@ -30,8 +29,4 @@ public interface Node {
      * */
     TypeNode typeCheck() throws TypeCheckingException;
 
-    /**
-     * Check effects analysis errors.
-     */
-    //ArrayList<SemanticError> checkEffects(Environment env) throws MissingDeclarationException;
 }

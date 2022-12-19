@@ -9,6 +9,7 @@ import it.ghellimanca.ast.type.TypeNode;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Represents a binary expression left=exp op right=exp node in the AST.
  */
@@ -18,15 +19,14 @@ public class BinExpNode extends ExpNode {
     final String operator;
     final ExpNode rightExp;
 
-    //TODO: context contiene anche i seguenti attributi, controllare in futuro se servono
-    //final List<ExpNode> expList;
-    //final ExpNode exp;
+
 
     public BinExpNode(ExpNode leftExp, String operator, ExpNode rightExp) {
         this.leftExp = leftExp;
         this.operator = operator;
         this.rightExp = rightExp;
     }
+
 
 
     @Override
@@ -36,8 +36,10 @@ public class BinExpNode extends ExpNode {
                     + rightExp.toPrint(indent + "\t");
     }
 
+
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
+
         ArrayList<SemanticError> err = new ArrayList<>();
 
         err.addAll(leftExp.checkSemantics(env));
@@ -45,6 +47,7 @@ public class BinExpNode extends ExpNode {
 
         return err;
     }
+
 
     @Override
     public TypeNode typeCheck() throws TypeCheckingException {
@@ -95,6 +98,7 @@ public class BinExpNode extends ExpNode {
                 return null;
         }
     }
+
 
     @Override
     public List<IdNode> variables() {

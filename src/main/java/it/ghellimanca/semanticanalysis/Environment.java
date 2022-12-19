@@ -2,15 +2,14 @@ package it.ghellimanca.semanticanalysis;
 
 import java.util.*;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import it.ghellimanca.ast.type.ArrowTypeNode;
 import it.ghellimanca.ast.type.TypeNode;
-import it.ghellimanca.semanticanalysis.*;
+
 
 /**
  * Represents the Symbol Table.
- * It is implemented as a list of hashtables.
+ * It is implemented as a list of hashtable.
  */
 
 public class Environment {
@@ -43,11 +42,16 @@ public class Environment {
         this.offset = offset;
     }
 
+
+    /**
+     *
+     */
     public Environment() {
         this.symbolTable = new ArrayList<>();
         this.nestingLevel = -1;
         this.offset = 0;
     }
+
 
     /**
      * Creates a copy of Environment env
@@ -59,7 +63,7 @@ public class Environment {
 
         // copying Symbol Table
         for (var scope : env.symbolTable) {
-            Map<String,STEntry> copyScope = new HashMap();
+            Map<String,STEntry> copyScope = new HashMap<>();
 
             for (var id : scope.keySet()) {
                 copyScope.put(id, new STEntry(scope.get(id)));
@@ -86,7 +90,7 @@ public class Environment {
     /**
      * @return the current active scope.
      */
-    private Map<String, STEntry> currentScope() {
+    public Map<String, STEntry> currentScope() {
         return symbolTable.get(nestingLevel);
     }
 
@@ -94,16 +98,11 @@ public class Environment {
     /**
      * Extends the symbolTable with a new empty scope
      *
-     * @return the updated Symbol Table
-
      */
-    public List<Map<String,STEntry>> newScope() {
-
+    public void newScope() {
         symbolTable.add(new HashMap<>());
         nestingLevel += 1;
         offset = 0;
-
-        return this.symbolTable;
     }
 
 
@@ -122,16 +121,6 @@ public class Environment {
         return this.symbolTable;
     }
 
-
-    /**
-     * Pushes new scope in the Symbol Table stack. Increments the nesting level.
-     * Sets the offset to 0.
-     */
-    public void pushNewScope() {
-        symbolTable.add(new HashMap<>());
-        nestingLevel += 1;
-        offset = 0;
-    }
 
     /**
      * Adds a new scope to the environment.
@@ -223,8 +212,6 @@ public class Environment {
      * @param id     the identifier of the variable or function.
      * @param type   the type of the variable or function.
      * @param status a positive integer which will become the Effect status
-     * @throws MultipleDeclarationException when [id] is already present in the head
-     *                                      of the Symbol Table.
      * @return the updated Symbol Table
      */
     public STEntry safeAddDeclaration(String id, TypeNode type, int status) {
@@ -245,8 +232,6 @@ public class Environment {
      *
      * @param id   the identifier of the variable or function.
      * @param type the type of the variable or function.
-     * @throws MultipleDeclarationException when [id] is already present in the head
-     *                                      of the Symbol Table.
      * @return the updated Symbol Table
      */
     public STEntry safeAddDeclaration(String id, TypeNode type) {
@@ -299,22 +284,23 @@ public class Environment {
      */
      public STEntry safeLookup(String id) {
          for (int i = nestingLevel; i >= 0; i--) {
-            Map<String, STEntry> scope = symbolTable.get(i);
+             Map<String, STEntry> scope = symbolTable.get(i);
             STEntry stEntry = scope.get(id);
             if (stEntry != null)
                 return stEntry;
-         }
-         System.err.println("Unexpected absence of ID " + id + " in the Symbol Table.");
-         return null;
-     }
+        }
+        System.err.println("Missing declaration for ID: " + id + ". This should not happen as this is a safe lookup.\n");
+
+        return null;
+    }
 
 
-     /**
-     * Replaces the current environment with another one.
+    /**
+     * Replaces the current environment with another one
      *
      * @param env new environment that will replace the current one
      */
-    public void replace (Environment env) {
+    public void replace(Environment env) {
         // copying env global variables (n, o); clearing Symbol Table
         this.symbolTable.clear();
         this.nestingLevel = env.getNestingLevel();
@@ -322,7 +308,7 @@ public class Environment {
 
         // copying Symbol Table
         for (var scope : env.symbolTable) {
-            Map<String,STEntry> copyScope = new HashMap();
+            Map<String,STEntry> copyScope = new HashMap<>();
 
             for (var id : scope.keySet()) {
                 copyScope.put(id, new STEntry(scope.get(id)));
@@ -384,9 +370,6 @@ public class Environment {
 
                 if (entry2 == null) {  // x non appartiene dom(sigma')
                     resScope.put(id, entry1);
-//                } else if (entry1 == null) { // x non appartiene dom(sigma)
-//                    resScope.put(id, entry2);   //Tnon viene mai eseguito. se sto facendo for all'interno di scope1 non le trovo mai le nulle ma che stanno in scope2
-//                }
                 } else {    // id è anche in sigma2
                     var entryOp = new STEntry(entry1.getType(), entry1.getNestingLevel(), entry1.getOffset());
                     entryOp.setVarStatus(operator.apply(entry1.getVarStatus(), entry2.getVarStatus()));

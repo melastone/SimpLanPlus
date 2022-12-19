@@ -30,6 +30,7 @@ public class STEntry {
     private DecFunNode funNode;
 
 
+
     /**
      * Constructor for {@code STEntry}
      *
@@ -46,6 +47,7 @@ public class STEntry {
         this.funStatus = new ArrayList<>();
         this.initPars = new ArrayList<>();
     }
+
 
     /**
      * Constructor for {@code STEntry}.
@@ -65,6 +67,15 @@ public class STEntry {
         this.funStatus = new ArrayList<>();
         this.initPars = new ArrayList<>();
     }
+
+
+//    public STEntry(Effect status) {
+//        this.status = status;
+//        this.type = null;
+//        this.nestingLevel = -1;
+//        this.offset = -1;
+//    }
+
 
     /**
      * Copy constructor for {@code STEntry}

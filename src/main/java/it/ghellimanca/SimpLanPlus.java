@@ -4,8 +4,11 @@ import it.ghellimanca.ast.ProgramNode;
 import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.gen.SimpLanPlusLexer;
 import it.ghellimanca.gen.SimpLanPlusParser;
-import it.ghellimanca.SimpLanPlusPTVisitor;
 import it.ghellimanca.semanticanalysis.*;
+import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.MissingInitializationException;
+import it.ghellimanca.semanticanalysis.SemanticError;
+import it.ghellimanca.semanticanalysis.TypeCheckingException;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
@@ -142,9 +145,8 @@ public class SimpLanPlus {
 
 
         // Checking for semantic errors
-        ArrayList<SemanticError> semanticErrors = null;
         try {
-            semanticErrors = AST.checkSemantics(environment);
+            ArrayList<SemanticError> semanticErrors = AST.checkSemantics(environment);
 
             if (!semanticErrors.isEmpty()) {
                 System.err.println("Semantic errors:");

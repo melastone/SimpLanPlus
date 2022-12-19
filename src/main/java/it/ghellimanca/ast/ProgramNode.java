@@ -10,6 +10,7 @@ import it.ghellimanca.semanticanalysis.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ProgramNode implements Node {
 
@@ -17,10 +18,12 @@ public class ProgramNode implements Node {
     final private List<StatementNode> statements;
 
 
+
     public ProgramNode(List<DeclarationNode> declarations, List<StatementNode> statements) {
         this.declarations = declarations;
         this.statements = statements;
     }
+
 
 
     @Override
@@ -42,14 +45,18 @@ public class ProgramNode implements Node {
         return res;
     }
 
+
     @Override
     public String toString() {
         return toPrint("");
     }
 
+
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
+
         ArrayList<SemanticError> err = new ArrayList<>();
+        Map<String, STEntry> currentScope;
 
         env.newScope();
 
@@ -65,10 +72,26 @@ public class ProgramNode implements Node {
             }
         }
 
+        // CHECK ERRORS IN BLOCK FOR EFFECT ANALYSIS
+
+        // getting sigma_1' from sigma' = sigma_0' ⋅ sigma_1'
+        currentScope = env.currentScope();
+
+        // for every x_i in dom(sigma_1')
+        for (var id : currentScope.keySet()) {
+
+            // sigma_1'(x) has to be <= USED otherwise there was an error
+            if (currentScope.get(id).getVarStatus().equals(new Effect(Effect.ERROR))) {
+                throw new MissingInitializationException("Error in the effect analysis: " + id + " was used before initialization.");
+            }
+        }
+
+        // returning just sigma_0'
         env.exitScope();
 
         return err;
     }
+
 
     @Override
     public TypeNode typeCheck() throws TypeCheckingException {
@@ -100,7 +123,7 @@ public class ProgramNode implements Node {
 
                     // we check that they are the same
                     if (!(stmTypesRet.get(i).equals(stmTypesRet.get(i + 1)))) {
-                        throw new TypeCheckingException("Different types to return."); //TODO maybe change the string error
+                        throw new TypeCheckingException("Different types to return.");
                     }
                 }
 
@@ -111,27 +134,4 @@ public class ProgramNode implements Node {
 
         return new VoidTypeNode();
     }
-
-//    @Override
-//    public ArrayList<SemanticError> checkEffects(Environment sigma) {
-//        ArrayList<SemanticError> err = new ArrayList<>();
-//
-//        sigma.newScope();
-//
-//        if (this.declarations != null) {
-//            for (DeclarationNode dec : declarations) {
-//                err.addAll(dec.checkEffects(sigma));
-//            }
-//        }
-//
-//        if (this.statements != null) {
-//            for (StatementNode stat : statements) {
-//                err.addAll(stat.checkEffects(sigma));
-//            }
-//        }
-//
-//        sigma.exitScope();
-//
-//        return err;
-//    }
 }

@@ -1,13 +1,12 @@
 package it.ghellimanca.ast.statement;
 
 import it.ghellimanca.ast.type.BoolTypeNode;
-import it.ghellimanca.ast.type.VoidTypeNode;
 import it.ghellimanca.semanticanalysis.*;
-import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.exp.ExpNode;
 import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
+
 
 /**
  * Node of the AST for an iteration statement
@@ -23,6 +22,7 @@ public class IteNode extends StatementNode {
     final private StatementNode stm2;
 
 
+
     public IteNode(ExpNode exp, StatementNode stm1, StatementNode stm2) {
         this.exp = exp;
         this.stm1 = stm1;
@@ -35,6 +35,8 @@ public class IteNode extends StatementNode {
         this.stm2 = null;
     }
 
+
+
     @Override
     public String toPrint(String indent) {
         String res = "\n" + indent + "ITE" + exp.toPrint(indent + "\t") + stm1.toPrint(indent + "\t");
@@ -45,8 +47,10 @@ public class IteNode extends StatementNode {
         return res;
     }
 
+
     @Override
     public String toString() { return toPrint("");}
+
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
@@ -63,11 +67,17 @@ public class IteNode extends StatementNode {
 
             Environment elseBranchEnv = new Environment(env);   // copy of env for else branch eval
             err.addAll(stm2.checkSemantics(elseBranchEnv));
+
+            // bin fra thenbranch e elsebranch
+            // replace env con risultato bin
+            thenBranchEnv.bin(elseBranchEnv);
+            env.replace(thenBranchEnv);
         }
 
         return err;
 
     }
+
 
     @Override
     public TypeNode typeCheck() throws TypeCheckingException {

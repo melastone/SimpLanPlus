@@ -2,11 +2,11 @@ package it.ghellimanca.ast.statement;
 
 import it.ghellimanca.ast.type.VoidTypeNode;
 import it.ghellimanca.semanticanalysis.*;
-import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.exp.ExpNode;
 import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
+
 
 /**
  * Node of the AST for a return statement
@@ -19,13 +19,18 @@ public class ReturnNode extends StatementNode {
 
     final private ExpNode exp;
 
+
+
     public ReturnNode() {
         this.exp = null;
     }
 
+
     public ReturnNode(ExpNode exp) {
         this.exp = exp;
     }
+
+
 
     @Override
     public String toPrint(String indent) {
@@ -36,8 +41,10 @@ public class ReturnNode extends StatementNode {
         return res;
     }
 
+
     @Override
     public String toString() { return toPrint("");}
+
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
@@ -47,6 +54,7 @@ public class ReturnNode extends StatementNode {
 
         return new ArrayList<>();
     }
+
 
     @Override
     public TypeNode typeCheck() throws TypeCheckingException {

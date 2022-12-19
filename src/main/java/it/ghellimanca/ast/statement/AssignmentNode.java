@@ -33,16 +33,30 @@ public class AssignmentNode extends StatementNode {
         return "\n" + indent + "ASSIGNMENT" + id.toPrint(indent + "\t") + exp.toPrint(indent + "\t");
     }
 
+
     @Override
     public String toString() { return toPrint("");}
 
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
-        ArrayList<SemanticError> err = new ArrayList<>();
 
-        err.addAll(id.checkSemantics(env));
+        ArrayList<SemanticError> err = new ArrayList<>();
+        Environment newEnv = new Environment();
+
+        // first checking the semantic errors
         err.addAll(exp.checkSemantics(env));
+        err.addAll(id.checkSemantics(env));
+
+        // dummy environment for status change of the id
+        newEnv.newScope();
+        newEnv.safeAddDeclaration(id.getIdentifier(), id.getStEntry().getType(), Effect.INIT);
+
+        // replace old env with seq of old env and dummy env
+        env.seq(newEnv);
+
+        // set new status in the entry inside idnode
+        id.setStEntry(env.safeLookup(id.getIdentifier()));
 
         id.getStEntry().setInitAfterDec(true);
 

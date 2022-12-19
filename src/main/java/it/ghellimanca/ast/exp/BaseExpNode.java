@@ -25,15 +25,18 @@ public class BaseExpNode extends ExpNode {
         return "\n" + indent + "BASE_EXP" + exp.toPrint(indent + "\t");
     }
 
+
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
         return exp.checkSemantics(env);
     }
 
+
     @Override
     public TypeNode typeCheck() throws TypeCheckingException {
         return exp.typeCheck();
     }
+
 
     @Override
     public List<IdNode> variables() {

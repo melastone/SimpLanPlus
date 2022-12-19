@@ -11,6 +11,7 @@ import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -24,13 +25,12 @@ public class BlockNode extends StatementNode {
     final private List<StatementNode> statements;
 
 
-    /*
-    Constructor
-     */
+
     public BlockNode(List<DecVarNode> variableDeclarations, List<StatementNode> statements) {
         this.variableDeclarations = variableDeclarations;
         this.statements = statements;
     }
+
 
 
     @Override
@@ -52,14 +52,18 @@ public class BlockNode extends StatementNode {
         return res;
     }
 
+
     @Override
     public String toString() {
         return toPrint("");
     }
 
+
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
+
         ArrayList<SemanticError> err = new ArrayList<>();
+        Map<String, STEntry> currentScope;
 
         env.newScope();
 
@@ -75,10 +79,26 @@ public class BlockNode extends StatementNode {
             }
         }
 
+        // CHECK ERRORS IN BLOCK FOR EFFECT ANALYSIS
+
+        // getting sigma_1'' from sigma'' = sigma_0'' ⋅ sigma_1''
+        currentScope = env.currentScope();
+
+        // for every x_i in dom(sigma_1'')
+        for (var id : currentScope.keySet()) {
+
+            // sigma_1''(x) has to be <= USED otherwise there was an error
+            if (currentScope.get(id).getVarStatus().equals(new Effect(Effect.ERROR))) {
+                throw new MissingInitializationException("Error in the effect analysis: " + id + " was used before initialization.");
+            }
+        }
+
+        // returning just sigma_0''
         env.exitScope();
 
         return err;
     }
+
 
     @Override
     public TypeNode typeCheck() throws TypeCheckingException {
@@ -110,7 +130,7 @@ public class BlockNode extends StatementNode {
 
                     // we check that they are the same
                     if (!(stmTypesRet.get(i).equals(stmTypesRet.get(i + 1)))) {
-                        throw new TypeCheckingException("Different types to return."); //TODO maybe change the string error
+                        throw new TypeCheckingException("Different types to return.");
                     }
                 }
 
@@ -120,34 +140,6 @@ public class BlockNode extends StatementNode {
         }
 
         return new VoidTypeNode();
-    }
-
-
-//    @Override
-//    public ArrayList<SemanticError> checkEffects(Environment sigma) {
-//        ArrayList<SemanticError> err = new ArrayList<>();
-//
-//        sigma.newScope();
-//
-//        if (this.variableDeclarations != null) {
-//            for (DeclarationNode dec : variableDeclarations) {
-//                err.addAll(dec.checkEffects(sigma));
-//            }
-//        }
-//
-//        if (this.statements != null) {
-//            for (StatementNode stat : statements) {
-//                err.addAll(stat.checkEffects(sigma));
-//            }
-//        }
-//
-//        sigma.exitScope();
-//
-//        return err;
-//    }
-
-    public void addDeclarations(List<DecVarNode> decs) {
-        this.variableDeclarations.addAll(decs);
     }
 
 }

@@ -5,13 +5,12 @@ import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.ast.ArgNode;
 import it.ghellimanca.ast.BlockNode;
 import it.ghellimanca.ast.IdNode;
-import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+
 
 /**
  * Node of the AST for a function declaration.
@@ -72,7 +71,7 @@ public class DecFunNode extends DeclarationNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
-        ArrayList<SemanticError> err = new ArrayList<SemanticError>();
+        ArrayList<SemanticError> err = new ArrayList<>();
 
         try {
             // add function declaration in current scope

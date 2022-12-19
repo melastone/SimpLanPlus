@@ -5,4 +5,5 @@ public class MissingInitializationException extends Exception {
     public MissingInitializationException(String message) {
         super(message);
     }
+
 }
