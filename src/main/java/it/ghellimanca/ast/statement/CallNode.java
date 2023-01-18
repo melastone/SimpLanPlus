@@ -104,7 +104,9 @@ public class CallNode extends StatementNode {
                 if (initPars.get(i)){
                     IdNode u_iId = params.get(i).variables().get(0);
                     STEntry u_iEntry = env.safeLookup(u_iId.getIdentifier());
-                    u_iEntry.setVarStatus(Effect.seq(u_iEntry.getVarStatus(), new Effect(Effect.INIT))); // todo aggiornare status degli idnode di params nell'env
+
+                    u_iEntry.setVarStatus(Effect.seq(u_iEntry.getVarStatus(), new Effect(Effect.INIT)));
+                    env.safeUpdateEntry(u_iId.getIdentifier(), u_iEntry);
                 }
             }
 
@@ -118,12 +120,14 @@ public class CallNode extends StatementNode {
                     .flatMap(par -> par.variables().stream())
                     .collect(Collectors.toList());
 
-            System.out.println("Variables in parameters expression are");
+            //System.out.println("Variables in parameters expression are");
             for (IdNode var : varsInExpressions) {
-                System.out.println(var.getIdentifier());
+                //System.out.println(var.getIdentifier());
                 // get access to Id entry in Sigma1 and set status with seq(Sigma1(var),used)
                 STEntry varEntry = Sigma1.safeLookup(var.getIdentifier());
-                varEntry.setVarStatus(Effect.seq(varEntry.getVarStatus(), new Effect(Effect.USED))); // todo rendere effettivo il cambiamento in Sigma1
+                varEntry.setVarStatus(Effect.seq(varEntry.getVarStatus(), new Effect(Effect.USED)));
+
+                Sigma1.safeUpdateEntry(var.getIdentifier(), varEntry);
             }
 
             // update statuses of params passed by reference
@@ -134,12 +138,16 @@ public class CallNode extends StatementNode {
                 Environment u_iEnv = new Environment();
                 u_iEnv.newScope();
 
-                IdNode u_iId = params.get(i).variables().get(0); // todo quando abbiamo nuova fun accediamo da env agli status e non da params
-                u_iEnv.safeAddDeclaration(u_iId.getIdentifier(), u_iId.getStEntry().getType());
+                IdNode u_iId = params.get(i).variables().get(0);
+                STEntry u_iEntry = env.safeLookup(u_iId.getIdentifier());
 
-                Effect u_iStatus = u_iId.getStEntry().getVarStatus();
+                u_iEnv.safeAddDeclaration(u_iId.getIdentifier(), u_iEntry.getType());
+
+                Effect u_iStatus = u_iEntry.getVarStatus();
                 Effect x_iStatus = codomainStatus.get(i);
-                u_iId.getStEntry().setVarStatus(Effect.seq(u_iStatus, x_iStatus)); // todo rendere effettivo il cambiamento in u_iEnv
+
+                u_iEntry.setVarStatus(Effect.seq(u_iStatus, x_iStatus));
+                u_iEnv.safeUpdateEntry(u_iId.getIdentifier(), u_iEntry);
 
                 res.add(u_iEnv);
             }

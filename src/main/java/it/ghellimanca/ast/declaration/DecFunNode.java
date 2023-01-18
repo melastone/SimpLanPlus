@@ -75,18 +75,17 @@ public class DecFunNode extends DeclarationNode {
 
         try {
 
-            // add function declaration in current scope
             List<TypeNode> argsType = arguments.stream().map(ArgNode::getType).collect(Collectors.toList());
             ArrowTypeNode funType = new ArrowTypeNode(argsType, type);
 
             /*id.setStEntry(env.addDeclaration(id.getIdentifier(), funType, Effect.INIT));
             id.getStEntry().setFunNode(this);   // adding reference to this node in order to access arguments during effects analysis*/
 
-            // AGGIUNTO
+            // add function declaration in current scope, set idnode's stentry
             id.setStEntry(env.addDeclaration(id.getIdentifier(), funType, Effect.INIT));
-            STEntry funEntryCopy = id.getStEntry(); //this is a copy
+            STEntry funEntryCopy = id.getStEntry();
 
-            // build Sigma0 - domain of the function and saving it in the STEntry of the function
+            // build Sigma0 - domain of the function and saving it in the copy of the STEntry of the function
             List<Effect> Sigma0 = new ArrayList<>();
             Effect bottom = new Effect(Effect.DECLARED);
             for (int i = 0; i < arguments.size(); i++) {
@@ -94,10 +93,8 @@ public class DecFunNode extends DeclarationNode {
             }
 
             /*funEntry.setFunStatus(0, Sigma0);*/
-
-            // AGGIUNTO
             funEntryCopy.setFunStatus(0, Sigma0);
-            id.setStEntry(funEntryCopy); // settato solo nella entry dell'idnode non nella tabella
+            id.setStEntry(funEntryCopy); // this only sets up the stentry of the idnode of the fun not the one in the env
 
             // open a new scope where to evaluate function body and calculating Sigma1
             env.newScope();
@@ -109,9 +106,9 @@ public class DecFunNode extends DeclarationNode {
 
             // adding function declaration into the new scope in order to enable recursive calls
             STEntry localFunEntry = env.safeAddDeclaration(id.getIdentifier(), funType);
-            // all after this will not be in the table info about funentry
+
+            // all that is after this will not be in the env info about stentry of the fun
             localFunEntry.setFunNode(this);
-            // adding funStatus to innerEntry
             localFunEntry.setFunStatus(0, Sigma0);
             localFunEntry.setFunStatus(1, Sigma0);
 
@@ -124,7 +121,7 @@ public class DecFunNode extends DeclarationNode {
             // it will create a new scope with function body info only
             err.addAll(body.checkSemantics(env));
 
-            // update Sigma1 in innerFunEntry with changes made by body evaluation
+            // update Sigma1 with changes made by body evaluation
             List<Effect> updatedStatuses = arguments.stream().map(argNode -> env.safeLookup(argNode.getId().getIdentifier()).getVarStatus())
                     .collect(Collectors.toList());
             localFunEntry.setFunStatus(1, updatedStatuses);
@@ -137,15 +134,18 @@ public class DecFunNode extends DeclarationNode {
                 // so we restore the environment as it was before
                 env.replace(oldEnv);
 
-                // after replacement, funEntry has Sigma1 = Sigma0, so we restore it to last iteration Sigma1
-
-                // TODO: this will not change the table and non dovrebbe essere necessario perchè neanche prima funstatus veniva settato nella tabell, valutare se cancellare
-                env.safeLookup(id.getIdentifier()).setFunStatus(1, localFunEntry.getFunStatus().get(1));
-
+                // and the old sigma1 is now the most recent one to continue the cycle
                 oldSigma1 = localFunEntry.getFunStatus().get(1);
 
+                /* // after replacement, funEntry has Sigma1 = Sigma0, so we restore it to last iteration Sigma1
+
+
+                env.safeLookup(id.getIdentifier()).setFunStatus(1, localFunEntry.getFunStatus().get(1));*/
+
+                // repeating the check of the body
                 err.addAll(body.checkSemantics(env));
 
+                // update Sigma1 with changes made by body evaluation
                 localFunEntry.setFunStatus(1, arguments.stream().map(argument -> env.safeLookup(argument.getId().getIdentifier()).getVarStatus())
                     .collect(Collectors.toList()));
 
@@ -155,7 +155,7 @@ public class DecFunNode extends DeclarationNode {
             // build initPars
             List<Boolean> initPars = new ArrayList<>();
             for (int argIndex = 0; argIndex < arguments.size(); argIndex++) {
-//                STEntry argEntry = arguments.get(argIndex).getId().getStEntry();
+                //STEntry argEntry = arguments.get(argIndex).getId().getStEntry();
                 STEntry argEntry = env.safeLookup(arguments.get(argIndex).getId().getIdentifier());
                 initPars.add(argIndex, argEntry.isInitAfterDec());
             }
@@ -164,11 +164,11 @@ public class DecFunNode extends DeclarationNode {
             funEntry.setFunStatus(1,localFunEntry.getFunStatus().get(1));
             funEntry.setInitPars(initPars);*/
 
-            //TODO: aggiornare nel modo giusto entry della funzione! valutare se fare primo o dopo popscope
             funEntryCopy.setFunStatus(1, localFunEntry.getFunStatus().get(1));
             funEntryCopy.setInitPars(initPars);
             id.setStEntry(funEntryCopy);
-            // QUI:     update id nella tabella dell'env
+
+            env.safeUpdateEntry(id.getIdentifier(), id.getStEntry()); // update function entry in the env table
 
             env.popScope();
 

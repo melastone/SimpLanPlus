@@ -285,15 +285,27 @@ public class Environment {
      public STEntry safeLookup(String id) {
          for (int i = nestingLevel; i >= 0; i--) {
              Map<String, STEntry> scope = symbolTable.get(i);
-            STEntry stEntry = scope.get(id);
-            if (stEntry != null)
-                return stEntry;
+             STEntry stEntry = scope.get(id);
+             if (stEntry != null)
+                 return stEntry;
         }
         System.err.println("Missing declaration for ID: " + id + ". This should not happen as this is a safe lookup.\n");
 
         return null;
     }
 
+
+    public STEntry safeUpdateEntry(String id, STEntry newEntry) {
+        for (int i = nestingLevel; i >= 0; i--) {
+            Map<String, STEntry> scope = symbolTable.get(i);
+            STEntry oldEntry = scope.put(id, newEntry);
+            if (oldEntry != null)
+                return oldEntry;
+        }
+        System.err.println("Missing declaration for ID: " + id + ". This should not happen as this is a safe update.\n");
+
+        return null;
+    }
 
     /**
      * Replaces the current environment with another one
