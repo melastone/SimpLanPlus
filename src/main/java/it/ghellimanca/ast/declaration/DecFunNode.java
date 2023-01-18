@@ -74,13 +74,17 @@ public class DecFunNode extends DeclarationNode {
         ArrayList<SemanticError> err = new ArrayList<>();
 
         try {
+
             // add function declaration in current scope
             List<TypeNode> argsType = arguments.stream().map(ArgNode::getType).collect(Collectors.toList());
-            ArrowTypeNode funType = new ArrowTypeNode(argsType,type);
-            id.setStEntry(env.addDeclaration(id.getIdentifier(), funType, Effect.INIT));
-            id.getStEntry().setFunNode(this);   // adding reference to this node in order to access arguments during effects analysis
+            ArrowTypeNode funType = new ArrowTypeNode(argsType, type);
 
-            STEntry funEntry = id.getStEntry();
+            /*id.setStEntry(env.addDeclaration(id.getIdentifier(), funType, Effect.INIT));
+            id.getStEntry().setFunNode(this);   // adding reference to this node in order to access arguments during effects analysis*/
+
+            // AGGIUNTO
+            id.setStEntry(env.addDeclaration(id.getIdentifier(), funType, Effect.INIT));
+            STEntry funEntryCopy = id.getStEntry(); //this is a copy
 
             // build Sigma0 - domain of the function and saving it in the STEntry of the function
             List<Effect> Sigma0 = new ArrayList<>();
@@ -88,26 +92,32 @@ public class DecFunNode extends DeclarationNode {
             for (int i = 0; i < arguments.size(); i++) {
                 Sigma0.add(bottom);
             }
-            funEntry.setFunStatus(0, Sigma0);
+
+            /*funEntry.setFunStatus(0, Sigma0);*/
+
+            // AGGIUNTO
+            funEntryCopy.setFunStatus(0, Sigma0);
+            id.setStEntry(funEntryCopy); // settato solo nella entry dell'idnode non nella tabella
 
             // open a new scope where to evaluate function body and calculating Sigma1
             env.newScope();
 
             // adding arguments declarations into the new scope. set them to INIT in order to correctly calculate Sigma1
             for (ArgNode arg : arguments) {
-                arg.getId().setStEntry(env.safeAddDeclaration(arg.getId().getIdentifier(), arg.getType(),Effect.INIT));
+                arg.getId().setStEntry(env.safeAddDeclaration(arg.getId().getIdentifier(), arg.getType(), Effect.INIT));
             }
 
             // adding function declaration into the new scope in order to enable recursive calls
-            STEntry localFunEntry = env.safeAddDeclaration(id.getIdentifier(), type);
+            STEntry localFunEntry = env.safeAddDeclaration(id.getIdentifier(), funType);
+            // all after this will not be in the table info about funentry
             localFunEntry.setFunNode(this);
-
             // adding funStatus to innerEntry
             localFunEntry.setFunStatus(0, Sigma0);
             localFunEntry.setFunStatus(1, Sigma0);
 
             // saving current Environment in order to use it for eventual iterations of Fixed Point Algorithm
             Environment oldEnv = new Environment(env);
+
             // saving current Sigma1 in order to verify whether if it changes or not
             List<Effect> oldSigma1 = localFunEntry.getFunStatus().get(1);
 
@@ -128,6 +138,8 @@ public class DecFunNode extends DeclarationNode {
                 env.replace(oldEnv);
 
                 // after replacement, funEntry has Sigma1 = Sigma0, so we restore it to last iteration Sigma1
+
+                // TODO: this will not change the table and non dovrebbe essere necessario perchè neanche prima funstatus veniva settato nella tabell, valutare se cancellare
                 env.safeLookup(id.getIdentifier()).setFunStatus(1, localFunEntry.getFunStatus().get(1));
 
                 oldSigma1 = localFunEntry.getFunStatus().get(1);
@@ -148,9 +160,15 @@ public class DecFunNode extends DeclarationNode {
                 initPars.add(argIndex, argEntry.isInitAfterDec());
             }
 
-            // saving both Sigma1 and initPars in the STEntry of the function
+            /* saving both Sigma1 and initPars in the STEntry of the function
             funEntry.setFunStatus(1,localFunEntry.getFunStatus().get(1));
-            funEntry.setInitPars(initPars);
+            funEntry.setInitPars(initPars);*/
+
+            //TODO: aggiornare nel modo giusto entry della funzione! valutare se fare primo o dopo popscope
+            funEntryCopy.setFunStatus(1, localFunEntry.getFunStatus().get(1));
+            funEntryCopy.setInitPars(initPars);
+            id.setStEntry(funEntryCopy);
+            // QUI:     update id nella tabella dell'env
 
             env.popScope();
 
