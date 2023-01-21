@@ -55,10 +55,15 @@ public class AssignmentNode extends StatementNode {
         // replace old env with seq of old env and dummy env
         env.seq(newEnv);
 
-        // set new status in the entry inside idnode
-        id.setStEntry(env.safeLookup(id.getIdentifier()));
+        // updating STEntry inside IdNode with both new status and initAfterDec boolean
+//        // set new status in the entry inside idnode
+//        id.setStEntry(env.safeLookup(id.getIdentifier()));
+//
+//        id.getStEntry().setInitAfterDec(true);
+        STEntry updatedEntry = env.safeLookup(id.getIdentifier());
+        updatedEntry.setInitAfterDec(true);
 
-        id.getStEntry().setInitAfterDec(true);
+        id.setStEntry(updatedEntry);
 
         return err;
     }

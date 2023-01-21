@@ -69,6 +69,26 @@ public class STEntry {
     }
 
 
+    /**
+     * Constructor for {@code STEntry}.
+     * This is the complete version, that takes as params all the STEntry fields.
+     *
+     * @param type          a TypeNode
+     * @param nestingLevel  a positive integer
+     * @param offset        a positive integer
+     * @param status        instance of Effect class
+     */
+    public STEntry(TypeNode type, int nestingLevel, int offset, Effect status, boolean isInitAfterDec, List<List<Effect>> funStatus, List initPars) {
+        this.type = type;
+        this.nestingLevel = nestingLevel;
+        this.offset = offset;
+        this.varStatus = status;
+        this.initAfterDec = isInitAfterDec;
+        this.funStatus = funStatus;
+        this.initPars = initPars;
+    }
+
+
 //    public STEntry(Effect status) {
 //        this.status = status;
 //        this.type = null;
@@ -83,7 +103,7 @@ public class STEntry {
      * @param e STEntry to be copied
      */
     public STEntry(STEntry e){
-        this(e.type, e.nestingLevel, e.offset, e.varStatus);
+        this(e.type, e.nestingLevel, e.offset, e.varStatus, e.initAfterDec, e.funStatus, e.initPars);
     }
 
 
@@ -146,11 +166,16 @@ public class STEntry {
 
     @Override
     public String toString() {
+
         return "STentry{" +
                 "nestingLevel=" + nestingLevel +
-                ", type=" + type +
-                ", offset=" + offset +
-                '}';
+                ",\n type=" + type +
+                ",\n offset=" + offset +
+                ",\n varStatus=" + varStatus +
+                ",\n initAfterDec=" + initAfterDec +
+                ",\n funStatus=" + funStatus +
+                ",\n initPars=" + initPars +
+                "}\n";
     }
 }
 

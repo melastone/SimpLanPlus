@@ -89,7 +89,7 @@ public class BlockNode extends StatementNode {
 
             // sigma_1''(x) has to be <= USED otherwise there was an error
             if (currentScope.get(id).getVarStatus().equals(new Effect(Effect.ERROR))) {
-                throw new MissingInitializationException("Error in the effect analysis: " + id + " was used before initialization.");
+                throw new MissingInitializationException(id + " was used before initialization.");
             }
         }
 

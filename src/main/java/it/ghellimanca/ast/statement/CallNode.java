@@ -20,6 +20,8 @@ import java.util.stream.IntStream;
  * A call statement has the form:
  * ID '(' (exp(',' exp)*)? ')'
  *
+ * todo: eliminare il controllo sulla dimensione di initPars
+ *
  */
 public class CallNode extends StatementNode {
 
@@ -53,10 +55,13 @@ public class CallNode extends StatementNode {
 
         err.addAll(id.checkSemantics(env));
 
+        // retrieve function STEntry from the Environment; we use safeLookup because checks have already been done by id.checkSemantics()
+        STEntry funEntry = env.safeLookup(id.getIdentifier());
+
         // setting fun effect to used
         Environment updatedFunEnv = new Environment();
         updatedFunEnv.newScope();
-        updatedFunEnv.safeAddDeclaration(id.getIdentifier(), id.getStEntry().getType(), Effect.USED);
+        updatedFunEnv.safeAddDeclaration(id.getIdentifier(), funEntry.getType(), Effect.USED);
 
         env.seq(updatedFunEnv); // env ▷ [funId → USED]
 
@@ -71,16 +76,16 @@ public class CallNode extends StatementNode {
                 err.addAll(var.checkSemantics(env));
             }
 
-            List<TypeNode> formalParamsTypes = ((ArrowTypeNode) id.getStEntry().getType()).getArgs();
+            List<TypeNode> formalParamsTypes = ((ArrowTypeNode) funEntry.getType()).getArgs();
             int size = formalParamsTypes.size();
             if (params.size() != size) {
                 throw new ParametersCountException("Function " + id.getIdentifier() + ": expecting " + size + " number of parameters but got " + params.size()  + " instead.");
             }
 
-            List<Effect> codomainStatus = id.getStEntry().getFunStatus().get(1);
-            List<Boolean> initPars = id.getStEntry().getInitPars();
+            List<Effect> codomainStatus = funEntry.getFunStatus().get(1);
+            List<Boolean> initPars = funEntry.getInitPars();
 
-            TypeNode funType = id.getStEntry().getType();
+            TypeNode funType = funEntry.getType();
             List<Integer> indexOfPassedByValue = IntStream
                     .range(0, params.size())
                     .filter(i -> !(((ArrowTypeNode) funType).getArgs().get(i) instanceof VarTypeNode))
@@ -95,16 +100,20 @@ public class CallNode extends StatementNode {
             // check that params passed by value have not an error status
             for (int i : indexOfPassedByValue) {
                 if (codomainStatus.get(i).equals(new Effect(Effect.ERROR))) {
-                    throw new MissingInitializationException("Error in the effect analysis: function argument " + id.getStEntry().getFunNode().getArgument(i) + " was used before initialization inside function body.");
+                    // can't use the following access to funNode, so we replace the message with a less accurate one
+                    // throw new MissingInitializationException("Error in the effect analysis: function argument " + id.getStEntry().getFunNode().getArgument(i) + " was used before initialization inside function body.");
+                    throw new MissingInitializationException("Error in the effect analysis: one argument of function " + id.getIdentifier() + " was used before initialization inside function body.");
                 }
             }
 
             // set to init statuses of params initialized inside the function body
             for (int i : indexOfPassedByReference) {
-                if (initPars.get(i)){
-                    IdNode u_iId = params.get(i).variables().get(0);
-                    STEntry u_iEntry = env.safeLookup(u_iId.getIdentifier());
-                    u_iEntry.setVarStatus(Effect.seq(u_iEntry.getVarStatus(), new Effect(Effect.INIT)));
+                if (initPars.size() > 0) {
+                    if (initPars.get(i)){
+                        IdNode u_iId = params.get(i).variables().get(0);
+                        STEntry u_iEntry = env.safeLookup(u_iId.getIdentifier());
+                        u_iEntry.setVarStatus(Effect.seq(u_iEntry.getVarStatus(), new Effect(Effect.INIT)));
+                    }
                 }
             }
 
@@ -118,12 +127,12 @@ public class CallNode extends StatementNode {
                     .flatMap(par -> par.variables().stream())
                     .collect(Collectors.toList());
 
-            System.out.println("Variables in parameters expression are");
+
             for (IdNode var : varsInExpressions) {
-                System.out.println(var.getIdentifier());
                 //get access to Id entry in Sigma1 and set status with seq(Sigma1(var),used)
                 STEntry varEntry = Sigma1.safeLookup(var.getIdentifier());
                 varEntry.setVarStatus(Effect.seq(varEntry.getVarStatus(), new Effect(Effect.USED)));
+                Sigma1.safeUpdateEntry(var.getIdentifier(), varEntry);
             }
 
             // update statuses of params passed by reference
@@ -135,11 +144,15 @@ public class CallNode extends StatementNode {
                 u_iEnv.newScope();
 
                 IdNode u_iId = params.get(i).variables().get(0);
-                u_iEnv.safeAddDeclaration(u_iId.getIdentifier(), u_iId.getStEntry().getType());
+                STEntry u_iEntry = env.safeLookup(u_iId.getIdentifier());
+
+                u_iEnv.safeAddDeclaration(u_iId.getIdentifier(), u_iEntry.getType());
 
                 Effect u_iStatus = u_iId.getStEntry().getVarStatus();
                 Effect x_iStatus = codomainStatus.get(i);
-                u_iId.getStEntry().setVarStatus(Effect.seq(u_iStatus,x_iStatus));
+
+                u_iEntry.setVarStatus(Effect.seq(u_iStatus,x_iStatus));
+                u_iEnv.safeUpdateEntry(u_iId.getIdentifier(), u_iEntry);
 
                 res.add(u_iEnv);
             }

@@ -10,27 +10,33 @@ import it.ghellimanca.ast.type.TypeNode;
 /**
  * Represents the Symbol Table.
  * It is implemented as a list of hashtable.
+ *
  */
 
 public class Environment {
-
-    /*
-     * Modifiers:
-     * final cause it's not supposed to be overridden
-     * private because outside of this class the code interacts
-     * with the table via Environment class methods.
-     *
-     */
-    final private List<Map<String,STEntry>> symbolTable;
 
     private int nestingLevel;
 
     private int offset;
 
+    final private List<Map<String,STEntry>> symbolTable;
+
 
 
     /**
-     * Constructor for {@code Environment}
+     * Constructor for {@code Environment}.
+     * Creates a new empty Environment.
+     *
+     */
+    public Environment() {
+        this.symbolTable = new ArrayList<>();
+        this.nestingLevel = -1;
+        this.offset = 0;
+    }
+
+
+    /**
+     * Constructor for {@code Environment}.
      *
      * @param symTable     a list of hashmaps (that can be empty)
      * @param nestingLevel a positive integer
@@ -44,17 +50,8 @@ public class Environment {
 
 
     /**
-     *
-     */
-    public Environment() {
-        this.symbolTable = new ArrayList<>();
-        this.nestingLevel = -1;
-        this.offset = 0;
-    }
-
-
-    /**
-     * Creates a copy of Environment env
+     * Constructor for {@code Environment}.
+     * Creates a copy of Environment env.
      *
      * @param env   environment to be copied
      */
@@ -285,11 +282,33 @@ public class Environment {
      public STEntry safeLookup(String id) {
          for (int i = nestingLevel; i >= 0; i--) {
              Map<String, STEntry> scope = symbolTable.get(i);
-            STEntry stEntry = scope.get(id);
-            if (stEntry != null)
-                return stEntry;
+             STEntry stEntry = scope.get(id);
+             if (stEntry != null)
+                 return stEntry;
+         }
+         System.err.println("Missing declaration for ID: " + id + ". This should not happen as this is a safe lookup.\n");
+
+         return null;
+    }
+
+
+    /**
+     * Updates STEntry associated to [id] with [newEntry].
+     * Used when it is certain that [id] exists inside the Environment.
+     * If it does not unexpected behaviour could occur.
+     *
+     * @param id        identifier associated to the STEntry to update
+     * @param newEntry  new STEntry, will update the old one
+     * @return          the old STEntry, now updated
+     */
+    public STEntry safeUpdateEntry(String id, STEntry newEntry) {
+        for (int i = nestingLevel; i >= 0; i--) {
+            Map<String, STEntry> scope = symbolTable.get(i);
+            STEntry oldEntry = scope.put(id, newEntry);
+            if (oldEntry != null)
+                return oldEntry;
         }
-        System.err.println("Missing declaration for ID: " + id + ". This should not happen as this is a safe lookup.\n");
+        System.err.println("Missing declaration for ID: " + id + ". This should not happen as this is a safe update.\n");
 
         return null;
     }
@@ -360,31 +379,60 @@ public class Environment {
         // assuming dom(env2) is in dom(env1)
         for (int i = 0; i < env1.symbolTable.size() ; i++) {
             var scope1 = env1.symbolTable.get(i);
-            var scope2 = tmp2.symbolTable.get(i);
+//            var scope2 = tmp2.symbolTable.get(i);
 
             HashMap<String, STEntry> resScope = new HashMap<>();
 
             for (var id : scope1.keySet()) {
                 var entry1 = scope1.get(id);
-                var entry2 = scope2.get(id);
 
-                if (entry2 == null) {  // x non appartiene dom(sigma')
-                    resScope.put(id, entry1);
-                } else {    // id è anche in sigma2
-                    var entryOp = new STEntry(entry1.getType(), entry1.getNestingLevel(), entry1.getOffset());
-                    entryOp.setVarStatus(operator.apply(entry1.getVarStatus(), entry2.getVarStatus()));
-                    resScope.put(id, entryOp);
-                    tmp2.removeFirstIdentifier(id);
+                // looking for id inside scope2
+                int j = 0;
+                var foundId = false;
+
+                while (!foundId && j < env2.symbolTable.size()) {
+                    var scope2 = tmp2.symbolTable.get(j);
+                    var entry2 = scope2.get(id);
+
+                    foundId = entry2 != null;
+
+                    if (foundId) {
+                        var entryOp = new STEntry(entry1);
+                        entryOp.setVarStatus(operator.apply(entry1.getVarStatus(), entry2.getVarStatus()));
+                        resScope.put(id, entryOp);
+                        tmp2.removeFirstIdentifier(id);
+                    }
+
+                    j++;
                 }
+
+                if (!foundId) {
+                    resScope.put(id, entry1);
+                }
+
+//                for (int j = 0; j < env2.symbolTable.size(); j++) {
+//                    var scope2 = tmp2.symbolTable.get(j);
+//                    var entry2 = scope2.get(id);
+//
+////                    if (entry2 == null) {  // x non appartiene dom(sigma')
+////                        resScope.put(id, entry1);
+//                    if (entry2 != null) {    // id è anche in sigma2
+//                        var entryOp = new STEntry(entry1.getType(), entry1.getNestingLevel(), entry1.getOffset());
+//                        entryOp.setVarStatus(operator.apply(entry1.getVarStatus(), entry2.getVarStatus()));
+//                        resScope.put(id, entryOp);
+//                        tmp2.removeFirstIdentifier(id);
+//                    }
+//                }
             }
             resEnv.symbolTable.add(resScope);
+
         }
 
         // checking if there are elements left in env2
-        for (int j = 0; j < tmp2.symbolTable.size() ; j++) {
+        for (int j = 0; j < tmp2.symbolTable.size(); j++) {
             var scope = tmp2.symbolTable.get(j);
 
-            if(scope.keySet().size() > 0) {
+            if (scope.keySet().size() > 0) {
                 for (var id : scope.keySet()) {
                     resEnv.symbolTable.get(j).put(id, scope.get(id));
                     tmp2.removeFirstIdentifier(id);
@@ -406,6 +454,7 @@ public class Environment {
      * @return      updated environment
      */
     public static Environment update(Environment env1, Environment env2) {
+
         Environment finalEnv;
 
         if (env2.symbolTable.size()==0) {
@@ -414,6 +463,10 @@ public class Environment {
 
         Map<String, STEntry> headScope1 = env1.symbolTable.get(env1.symbolTable.size()-1);
         Map<String, STEntry> headScope2 = env2.symbolTable.get(env2.symbolTable.size()-1);
+
+        if (headScope2.keySet().isEmpty()) {
+            return new Environment(env1);
+        }
 
         Map.Entry<String, STEntry> u = headScope2.entrySet().stream().findFirst().get();
         env2.removeFirstIdentifier(u.getKey());
@@ -446,6 +499,7 @@ public class Environment {
      *
      * @param id    identifier of the entry to be removed
      */
+
     private void removeFirstIdentifier(String id) {
         for (int i = symbolTable.size() - 1; i >= 0; i--) {
             if (symbolTable.get(i).containsKey(id)) {
@@ -453,5 +507,15 @@ public class Environment {
                 return;
             }
         }
+    }
+
+    @Override
+    public String toString() {
+
+        return "Environment{" +
+                "nestingLevel=" + nestingLevel +
+                ",\n offset=" + offset +
+                ",\n symbolTable=" + symbolTable +
+                "}\n";
     }
 }

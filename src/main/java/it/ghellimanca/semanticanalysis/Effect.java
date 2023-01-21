@@ -28,6 +28,12 @@ public class Effect {
         return status;
     }
 
+    @Override
+    public String toString() {
+        return "Effect{" +
+                "status=" + status +
+                '}';
+    }
 
     /**
      * Implements the max binary operator
@@ -55,7 +61,7 @@ public class Effect {
      */
     public static Effect seq(final Effect e1, final Effect e2) {
         Effect max = max(e1, e2);
-        if (((e1.status != DECLARED) && (e2.status != USED)) && (max.status <= USED)) {
+        if (!((e1.status == DECLARED) && (e2.status == USED)) && (max.status <= USED)) {
             return max;
         }
         else

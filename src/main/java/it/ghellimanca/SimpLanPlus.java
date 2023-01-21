@@ -158,7 +158,8 @@ public class SimpLanPlus {
                 System.exit(1);
             }
         } catch (MissingInitializationException | ParametersCountException e) {
-            e.printStackTrace();
+            System.err.println("Effect analysis error:\n" + e.getMessage());
+            System.exit(1);
         }
 
         // Checking for type errors

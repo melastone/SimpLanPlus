@@ -1,0 +1,45 @@
+{
+
+    /*
+n == 5
+    x: a -> INIT
+    y: b -> ERR
+    z: c
+
+n == 4
+    x: b -> ERR
+    y: c -> USED
+    z: a
+
+n == 3
+    x: c -> USED
+    y: a -> USED
+    z: b
+
+n == 2
+    x: a -> USED
+    y: b -> ERR
+    z: c
+
+n == 1
+    x: b -> ERR
+    y: c -> USED
+    z: a
+
+n == 0
+    return
+
+il controllo torna al ramo else della chiamata per n==1, e all'uscita dell'else il controllo sulle variabili non in ERR
+fallisce
+    */
+
+    int a; int b; int c = 1 ;
+    void h(int n, var int x, var int y, var int z){
+        if (n==0)
+            return ;
+        else {
+            x = y ; h(n-1,y,z,x) ;
+        }
+    }
+     h(5,a,b,c) ;
+}
