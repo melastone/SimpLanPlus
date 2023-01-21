@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
  * todo: testa la definizione di fun senza args
  * todo: stabilisci come viene utilizzato l'offset del corpo della funzione
  * todo: verifica che nella costruzione di Sigma0 i parametri abbiano effettivamente tutti status INIT
+ * todo: accertati che settare DecFunNode nella STEntry sia inutile a questo punto.
  */
 public class DecFunNode extends DeclarationNode {
 
@@ -74,8 +75,9 @@ public class DecFunNode extends DeclarationNode {
         ArrayList<SemanticError> err = new ArrayList<>();
 
         try {
-            // add function declaration in current scope
+
             List<TypeNode> argsType = arguments.stream().map(ArgNode::getType).collect(Collectors.toList());
+
             ArrowTypeNode funType = new ArrowTypeNode(argsType,type);
             id.setStEntry(env.addDeclaration(id.getIdentifier(), funType, Effect.INIT));
             // id.getStEntry().setFunNode(this);   // adding reference to this node in order to access arguments during call node effects analysis
@@ -88,6 +90,7 @@ public class DecFunNode extends DeclarationNode {
             for (int i = 0; i < arguments.size(); i++) {
                 Sigma0.add(bottom);
             }
+
             // saving Sigma0 in the STEntry of the function
             funEntryCopy.setFunStatus(0, Sigma0);
 
@@ -107,15 +110,17 @@ public class DecFunNode extends DeclarationNode {
             localFunEntryCopy.setFunStatus(0, Sigma0);
             localFunEntryCopy.setFunStatus(1, Sigma0);
 
+
             // saving current Environment in order to use it for eventual iterations of Fixed Point Algorithm
             Environment oldEnv = new Environment(env);
+
             // saving current Sigma1 in order to verify whether if it changes or not
             List<Effect> oldSigma1 = localFunEntryCopy.getFunStatus().get(1);
 
             // it will create a new scope with function body info only
             err.addAll(body.checkSemantics(env));
 
-            // update Sigma1 in innerFunEntry with changes made by body evaluation
+            // update Sigma1 with changes made by body evaluation
             List<Effect> updatedStatuses = arguments.stream().map(argNode -> env.safeLookup(argNode.getId().getIdentifier()).getVarStatus())
                     .collect(Collectors.toList());
             localFunEntryCopy.setFunStatus(1, updatedStatuses);
@@ -128,15 +133,9 @@ public class DecFunNode extends DeclarationNode {
                 // so we restore the environment as it was before
                 env.replace(oldEnv);
 
-                // we don't need to do this anymore, since Sigma1 has been updated only in the local copy!
-                // we will keep accessing it from the local copy, not from the STable
-//                // after replacement, funEntry has Sigma1 = Sigma0, so we restore it to last iteration Sigma1
-//                var restoredFunEntry = env.safeLookup(id.getIdentifier());
-//                restoredFunEntry.setFunStatus(0, localFunEntryCopy.getFunStatus().get(0));
-//                restoredFunEntry.setFunStatus(1, localFunEntryCopy.getFunStatus().get(1));
-
                 oldSigma1 = localFunEntryCopy.getFunStatus().get(1);
 
+                // repeating the check of the body
                 err.addAll(body.checkSemantics(env));
 
                 localFunEntryCopy.setFunStatus(1, arguments.stream().map(argument -> env.safeLookup(argument.getId().getIdentifier()).getVarStatus())
@@ -148,7 +147,7 @@ public class DecFunNode extends DeclarationNode {
             // build initPars
             List<Boolean> initPars = new ArrayList<>();
             for (int argIndex = 0; argIndex < arguments.size(); argIndex++) {
-//                STEntry argEntry = arguments.get(argIndex).getId().getStEntry();
+                //STEntry argEntry = arguments.get(argIndex).getId().getStEntry();
                 STEntry argEntry = env.safeLookup(arguments.get(argIndex).getId().getIdentifier());
                 initPars.add(argIndex, argEntry.isInitAfterDec());
             }

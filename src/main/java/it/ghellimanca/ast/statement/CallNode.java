@@ -121,17 +121,17 @@ public class CallNode extends StatementNode {
             Environment Sigma1 = new Environment(env);
 
             List<IdNode> varsInExpressions = IntStream
-                    .range(0,params.size())
+                    .range(0, params.size())
                     .filter(i -> indexOfPassedByValue.contains(i))
                     .mapToObj(j -> params.get(j))
                     .flatMap(par -> par.variables().stream())
                     .collect(Collectors.toList());
 
-
             for (IdNode var : varsInExpressions) {
                 //get access to Id entry in Sigma1 and set status with seq(Sigma1(var),used)
                 STEntry varEntry = Sigma1.safeLookup(var.getIdentifier());
                 varEntry.setVarStatus(Effect.seq(varEntry.getVarStatus(), new Effect(Effect.USED)));
+
                 Sigma1.safeUpdateEntry(var.getIdentifier(), varEntry);
             }
 
@@ -148,7 +148,7 @@ public class CallNode extends StatementNode {
 
                 u_iEnv.safeAddDeclaration(u_iId.getIdentifier(), u_iEntry.getType());
 
-                Effect u_iStatus = u_iId.getStEntry().getVarStatus();
+                Effect u_iStatus = u_iEntry.getVarStatus();
                 Effect x_iStatus = codomainStatus.get(i);
 
                 u_iEntry.setVarStatus(Effect.seq(u_iStatus,x_iStatus));
@@ -165,9 +165,8 @@ public class CallNode extends StatementNode {
             }
 
             // update environment to be returned
-            Environment updatedEnv = Environment.update(Sigma1,Sigma2);
+            Environment updatedEnv = Environment.update(Sigma1, Sigma2);
             env.replace(updatedEnv);
-
         }
 
         return err;
