@@ -166,6 +166,7 @@ public class CallNode extends StatementNode {
 
             // update environment to be returned
             Environment updatedEnv = Environment.update(Sigma1, Sigma2);
+            System.out.println("Function call updated Environment to:\n" + updatedEnv);
             env.replace(updatedEnv);
         }
 

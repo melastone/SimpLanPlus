@@ -1,6 +1,8 @@
 {
     /*
     Questo esempio mostra l'esecuzione ricorsiva di una funzione, per cui è necessario utilizzare il punto fisso.
+    Per n==0 viene incrementata una variabile non inizializzata. Tuttavia l'errore viene sollevato dopo prima Call-E,
+    in quanto la y passata come argomento viene settata a USED (regola per il passaggio per valore).
     L'analisi degli effetti deve ritornare con ERRORE.
     */
 

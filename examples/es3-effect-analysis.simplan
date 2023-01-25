@@ -1,36 +1,10 @@
 {
-
     /*
-n == 5
-    x: a -> INIT
-    y: b -> ERR
-    z: c
-
-n == 4
-    x: b -> ERR
-    y: c -> USED
-    z: a
-
-n == 3
-    x: c -> USED
-    y: a -> USED
-    z: b
-
-n == 2
-    x: a -> USED
-    y: b -> ERR
-    z: c
-
-n == 1
-    x: b -> ERR
-    y: c -> USED
-    z: a
-
-n == 0
-    return
-
-il controllo torna al ramo else della chiamata per n==1, e all'uscita dell'else il controllo sulle variabili non in ERR
-fallisce
+    Il seguente esempio è fornito con le specifiche del progetto. Vuole testare il corretto funzionamento dell'analisi degli effetti.
+    L'analisi degli effetti dovrebbe terminare con errore: nella chiamata di h(5,a,b,c) verrà fatto, sin dalla prima
+    chiamata ricorsiva, un assegnamento di una variabile non inizializzata.
+    L'algoritmo del punto fisso viene eseguito con successo, individuando come punto fisso [2,2,2,2].
+    L'errore deve essere sollevato dalla Invk-E, processata per l'ultima riga di codice.
     */
 
     int a; int b; int c = 1 ;
@@ -42,4 +16,5 @@ fallisce
         }
     }
      h(5,a,b,c) ;
+
 }

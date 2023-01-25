@@ -129,6 +129,8 @@ public class DecFunNode extends DeclarationNode {
 
             while (hasCodomainChanged) {
 
+                System.out.println("Performing another fix-point computation. Updating Sigma1 with Sigma1'.\n");
+
                 // we do not want to keep statuses as they were update by previous iteration of the algorithm,
                 // so we restore the environment as it was before
                 env.replace(oldEnv);
@@ -141,7 +143,11 @@ public class DecFunNode extends DeclarationNode {
                 localFunEntryCopy.setFunStatus(1, arguments.stream().map(argument -> env.safeLookup(argument.getId().getIdentifier()).getVarStatus())
                     .collect(Collectors.toList()));
 
-                hasCodomainChanged = !localFunEntryCopy.getFunStatus().get(1).equals(oldSigma1);
+                var newSigma1 = localFunEntryCopy.getFunStatus().get(1);
+
+                System.out.println("Sigma1:\n" + oldSigma1 + "\nSigma1':\n" + newSigma1 + '\n');
+
+                hasCodomainChanged = !newSigma1.equals(oldSigma1);
             }
 
             // build initPars
