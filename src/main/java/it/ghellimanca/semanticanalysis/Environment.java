@@ -435,7 +435,7 @@ public class Environment {
             if (scope.keySet().size() > 0) {
                 for (var id : scope.keySet()) {
                     resEnv.symbolTable.get(j).put(id, scope.get(id));
-                    tmp2.removeFirstIdentifier(id);
+                    //tmp2.removeFirstIdentifier(id);
                 }
             }
         }

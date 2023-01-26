@@ -1,0 +1,15 @@
+{
+    /*
+    Il seguente esempio è fornito con le specifiche del progetto.
+    */
+
+    int u = 1 ;
+    void f(var int x, int n){
+    	if (n == 0) {
+    	    print(x) ;
+    	} else {
+    	    int y = x * n ; f(y,n-1) ;
+    	}
+    }
+    f(u,6) ;
+}
