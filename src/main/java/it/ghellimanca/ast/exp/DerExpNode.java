@@ -26,10 +26,10 @@ public class DerExpNode extends ExpNode {
 
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {
 
         // first checking the semantic errors
-        ArrayList<SemanticError> err = id.checkSemantics(env);
+        ArrayList<SemanticWarning> err = id.checkSemantics(env);
 
         // dummy environment for status change of the id
         Environment newEnv = new Environment();

@@ -5,15 +5,11 @@
 
     int a;
 
-    void f(var int x, int n) {
-        if (n==0) {
-            x = n;
-        } else {
-            f(x, n-1);
-        }
+    void f() {
+        int x = 1; print x;
     }
 
-    f(a, 3);
+    f();
 
     /*
     n == 3

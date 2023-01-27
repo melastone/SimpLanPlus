@@ -106,22 +106,6 @@ public class Environment {
     /**
      * Extends the symbolTable with an initialized scope
      *
-     * @param  s  the scope to add
-     * @return the updated Symbol Table
-     */
-    public List<Map<String,STEntry>> newScope(Map<String,STEntry> s) {
-
-        symbolTable.add(s);
-        nestingLevel += 1;
-        offset = 0;
-
-        return this.symbolTable;
-    }
-
-
-    /**
-     * Adds a new scope to the environment.
-     *
      * @param scope the scope to add to the Symbol Table stack
      */
     private void pushNewScope(Map<String, STEntry> scope) {
@@ -177,32 +161,6 @@ public class Environment {
 
     /**
      * Process a new declaration by adding its entry in the Symbol Table.
-     * Adds id ⟼ t into the table, where id is the label of the variable (or function) and t is its type
-     * If it finds a collision throws a MultipleDeclarationException
-     *
-     * @param id   the identifier of the variable or function.
-     * @param type the type of the variable or function.
-     * @throws MultipleDeclarationException when [id] is already present in the head
-     *                                      of the Symbol Table.
-     * @return the updated Symbol Table
-     */
-    public STEntry addDeclaration(String id, TypeNode type) throws MultipleDeclarationException{
-        STEntry stentry = new STEntry(type, nestingLevel, offset);
-
-        STEntry declaration = currentScope().put(id, stentry);
-        if (declaration != null) {
-            throw new MultipleDeclarationException("Multiple declaration for ID: " + id
-                    + ". It was previously defined of type: " + declaration.getType() + ".");
-        }
-
-        offset += 1;
-
-        return stentry;
-    }
-
-
-    /**
-     * Process a new declaration by adding its entry in the Symbol Table.
      * Used when it is certain that [id] has not been declared before.
      * If it does unexpected behaviour could occur.
      *
@@ -219,40 +177,6 @@ public class Environment {
         offset += 1;
 
         return stentry;
-    }
-
-
-    /**
-     * Process a new declaration by adding its entry in the Symbol Table.
-     * Used when it is certain that [id] has not been declared before.
-     * If it does unexpected behaviour could occur.
-     *
-     * @param id   the identifier of the variable or function.
-     * @param type the type of the variable or function.
-     * @return the updated Symbol Table
-     */
-    public STEntry safeAddDeclaration(String id, TypeNode type) {
-        STEntry stentry = new STEntry(type, nestingLevel, offset);
-
-        currentScope().put(id, stentry);
-        offset += 1;
-
-        return stentry;
-    }
-
-
-    /**
-     * Adds an entry to the current scope of the Symbol Table.
-     * Used if sure that [id] has not been declared before.
-     *
-     * @param id        identifier of variable or function
-     * @param stEntry   Symbol Table Entry associated to [id]
-     */
-    public void addEntry(String id, STEntry stEntry) {
-        if(!(stEntry.getType() instanceof ArrowTypeNode)) {
-            offset += 1;
-        }
-        currentScope().put(id,stEntry);
     }
 
 
@@ -372,6 +296,13 @@ public class Environment {
     }
 
 
+    /**
+     *
+     * @param env1
+     * @param env2
+     * @param operator
+     * @return
+     */
     public static Environment operationsOnEnvironments(final Environment env1, final Environment env2, BiFunction<Effect, Effect, Effect> operator) {
         Environment resEnv = new Environment(new ArrayList<>(), env1.nestingLevel, env1.offset);
         Environment tmp2 = new Environment(env2);
@@ -379,7 +310,6 @@ public class Environment {
         // assuming dom(env2) is in dom(env1)
         for (int i = 0; i < env1.symbolTable.size() ; i++) {
             var scope1 = env1.symbolTable.get(i);
-//            var scope2 = tmp2.symbolTable.get(i);
 
             HashMap<String, STEntry> resScope = new HashMap<>();
 
@@ -409,20 +339,6 @@ public class Environment {
                 if (!foundId) {
                     resScope.put(id, entry1);
                 }
-
-//                for (int j = 0; j < env2.symbolTable.size(); j++) {
-//                    var scope2 = tmp2.symbolTable.get(j);
-//                    var entry2 = scope2.get(id);
-//
-////                    if (entry2 == null) {  // x non appartiene dom(sigma')
-////                        resScope.put(id, entry1);
-//                    if (entry2 != null) {    // id è anche in sigma2
-//                        var entryOp = new STEntry(entry1.getType(), entry1.getNestingLevel(), entry1.getOffset());
-//                        entryOp.setVarStatus(operator.apply(entry1.getVarStatus(), entry2.getVarStatus()));
-//                        resScope.put(id, entryOp);
-//                        tmp2.removeFirstIdentifier(id);
-//                    }
-//                }
             }
             resEnv.symbolTable.add(resScope);
 
@@ -447,7 +363,6 @@ public class Environment {
     /**
      * Updates [env1] with new entries contained in [env2], if any.
      * It is used by CallNode for applying updates.
-     * todo: controlla se il passo base viene eseguito in caso di env2 non vuoto
      *
      * @param env1  environment to be updated
      * @param env2  environment with updates

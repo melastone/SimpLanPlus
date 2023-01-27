@@ -20,10 +20,7 @@ import java.util.stream.Collectors;
  * voidType is used in case the function is void.
  *
  * todo: aggiungi i controlli di subtyping per le regole di tipaggio (non sarebbero necessarie x questa grammatica, ma il prof le apprezza)
- * todo: testa la definizione di fun senza args
  * todo: stabilisci come viene utilizzato l'offset del corpo della funzione
- * todo: verifica che nella costruzione di Sigma0 i parametri abbiano effettivamente tutti status INIT
- * todo: accertati che settare DecFunNode nella STEntry sia inutile a questo punto.
  */
 public class DecFunNode extends DeclarationNode {
 
@@ -71,112 +68,105 @@ public class DecFunNode extends DeclarationNode {
 
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
-        ArrayList<SemanticError> err = new ArrayList<>();
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {
+        ArrayList<SemanticWarning> err = new ArrayList<>();
 
-        try {
+        List<TypeNode> argsType = arguments.stream().map(ArgNode::getType).collect(Collectors.toList());
 
-            List<TypeNode> argsType = arguments.stream().map(ArgNode::getType).collect(Collectors.toList());
+        ArrowTypeNode funType = new ArrowTypeNode(argsType,type);
+        id.setStEntry(env.addDeclaration(id.getIdentifier(), funType, Effect.INIT));
+        // id.getStEntry().setFunNode(this);   // adding reference to this node in order to access arguments during call node effects analysis
 
-            ArrowTypeNode funType = new ArrowTypeNode(argsType,type);
-            id.setStEntry(env.addDeclaration(id.getIdentifier(), funType, Effect.INIT));
-            // id.getStEntry().setFunNode(this);   // adding reference to this node in order to access arguments during call node effects analysis
+        STEntry funEntryCopy = id.getStEntry();
 
-            STEntry funEntryCopy = id.getStEntry();
+        // build Sigma0 - domain of the function - and initPars
+        List<Effect> Sigma0 = new ArrayList<>();
+        List<Boolean> initPars = new ArrayList<>();
 
-            // build Sigma0 - domain of the function - and initPars
-            List<Effect> Sigma0 = new ArrayList<>();
-            List<Boolean> initPars = new ArrayList<>();
+        Effect bottom = new Effect(Effect.DECLARED);
+        for (int i = 0; i < arguments.size(); i++) {
+            Sigma0.add(bottom);
+            initPars.add(i, false);
+        }
 
-            Effect bottom = new Effect(Effect.DECLARED);
-            for (int i = 0; i < arguments.size(); i++) {
-                Sigma0.add(bottom);
-                initPars.add(i, false);
-            }
-
-            // saving Sigma0 and initPars in the STEntry of the function
-            funEntryCopy.setFunStatus(0, Sigma0);
-            funEntryCopy.setInitPars(initPars);
+        // saving Sigma0 and initPars in the STEntry of the function
+        funEntryCopy.setFunStatus(0, Sigma0);
+        funEntryCopy.setInitPars(initPars);
 
 
-            // open a new scope where to evaluate function body and calculating Sigma1
-            env.newScope();
+        // open a new scope where to evaluate function body and calculating Sigma1
+        env.newScope();
 
-            // adding arguments declarations into the new scope. set them to INIT in order to correctly calculate Sigma1
-            for (ArgNode arg : arguments) {
-                arg.getId().setStEntry(env.safeAddDeclaration(arg.getId().getIdentifier(), arg.getType(), Effect.INIT));
-            }
+        // adding arguments declarations into the new scope. set them to INIT in order to correctly calculate Sigma1
+        for (ArgNode arg : arguments) {
+            arg.getId().setStEntry(env.safeAddDeclaration(arg.getId().getIdentifier(), arg.getType(), Effect.INIT));
+        }
 
-            // adding function declaration into the new scope in order to enable recursive calls
-            STEntry localFunEntryCopy = env.safeAddDeclaration(id.getIdentifier(), funType);
-            // localFunEntryCopy.setFunNode(this);
+        // adding function declaration into the new scope in order to enable recursive calls
+        STEntry localFunEntryCopy = env.safeAddDeclaration(id.getIdentifier(), funType, Effect.INIT);
+        // localFunEntryCopy.setFunNode(this);
 
-            // adding funStatuses and initialized initPars to innerEntry
-            localFunEntryCopy.setFunStatus(0, Sigma0);
-            localFunEntryCopy.setFunStatus(1, Sigma0);
-            localFunEntryCopy.setInitPars(initPars);
+        // adding funStatuses and initialized initPars to innerEntry
+        localFunEntryCopy.setFunStatus(0, Sigma0);
+        localFunEntryCopy.setFunStatus(1, Sigma0);
+        localFunEntryCopy.setInitPars(initPars);
 
-            // saving current Environment in order to use it for eventual iterations of Fixed Point Algorithm
-            Environment oldEnv = new Environment(env);
+        // saving current Environment in order to use it for eventual iterations of Fixed Point Algorithm
+        Environment oldEnv = new Environment(env);
 
-            // saving current Sigma1 in order to verify whether if it changes or not
-            List<Effect> oldSigma1 = localFunEntryCopy.getFunStatus().get(1);
+        // saving current Sigma1 in order to verify whether if it changes or not
+        List<Effect> oldSigma1 = localFunEntryCopy.getFunStatus().get(1);
 
-            // it will create a new scope with function body info only
+        // it will create a new scope with function body info only
+        err.addAll(body.checkSemantics(env));
+
+        // update Sigma1 with changes made by body evaluation
+        List<Effect> updatedStatuses = arguments.stream().map(argNode -> env.safeLookup(argNode.getId().getIdentifier()).getVarStatus())
+                .collect(Collectors.toList());
+        localFunEntryCopy.setFunStatus(1, updatedStatuses);
+
+        boolean hasCodomainChanged = !localFunEntryCopy.getFunStatus().get(1).equals(oldSigma1);
+
+        while (hasCodomainChanged) {
+
+            //System.out.println("Performing another fix-point computation. Updating Sigma1 with Sigma1'.\n");
+
+            // we do not want to keep statuses as they were update by previous iteration of the algorithm,
+            // so we restore the environment as it was before
+            env.replace(oldEnv);
+
+            oldSigma1 = localFunEntryCopy.getFunStatus().get(1);
+
+            // repeating the check of the body
             err.addAll(body.checkSemantics(env));
 
-            // update Sigma1 with changes made by body evaluation
-            List<Effect> updatedStatuses = arguments.stream().map(argNode -> env.safeLookup(argNode.getId().getIdentifier()).getVarStatus())
-                    .collect(Collectors.toList());
-            localFunEntryCopy.setFunStatus(1, updatedStatuses);
-
-            boolean hasCodomainChanged = !localFunEntryCopy.getFunStatus().get(1).equals(oldSigma1);
-
-            while (hasCodomainChanged) {
-
-                System.out.println("Performing another fix-point computation. Updating Sigma1 with Sigma1'.\n");
-
-                // we do not want to keep statuses as they were update by previous iteration of the algorithm,
-                // so we restore the environment as it was before
-                env.replace(oldEnv);
-
-                oldSigma1 = localFunEntryCopy.getFunStatus().get(1);
-
-                // repeating the check of the body
-                err.addAll(body.checkSemantics(env));
-
-                localFunEntryCopy.setFunStatus(1, arguments.stream().map(argument -> env.safeLookup(argument.getId().getIdentifier()).getVarStatus())
+            localFunEntryCopy.setFunStatus(1, arguments.stream().map(argument -> env.safeLookup(argument.getId().getIdentifier()).getVarStatus())
                     .collect(Collectors.toList()));
 
-                var newSigma1 = localFunEntryCopy.getFunStatus().get(1);
+            var newSigma1 = localFunEntryCopy.getFunStatus().get(1);
 
-                System.out.println("Sigma1:\n" + oldSigma1 + "\nSigma1':\n" + newSigma1 + '\n');
+            //System.out.println("Sigma1:\n" + oldSigma1 + "\nSigma1':\n" + newSigma1 + '\n');
 
-                hasCodomainChanged = !newSigma1.equals(oldSigma1);
-            }
-
-            // update initPars
-            //List<Boolean> initPars = new ArrayList<>();
-            for (int argIndex = 0; argIndex < arguments.size(); argIndex++) {
-                //STEntry argEntry = arguments.get(argIndex).getId().getStEntry();
-                STEntry argEntry = env.safeLookup(arguments.get(argIndex).getId().getIdentifier());
-                initPars.set(argIndex, argEntry.isInitAfterDec());
-            }
-
-            // saving both Sigma1 and initPars in the copied STEntry
-            funEntryCopy.setFunStatus(1, localFunEntryCopy.getFunStatus().get(1));
-            funEntryCopy.setInitPars(initPars);
-            id.setStEntry(funEntryCopy);
-
-            env.popScope();
-
-            // update function STEntry
-            env.safeUpdateEntry(id.getIdentifier(), id.getStEntry());
-
-
-        } catch (MultipleDeclarationException e) {
-            err.add(new SemanticError(e.getMessage()));
+            hasCodomainChanged = !newSigma1.equals(oldSigma1);
         }
+
+        // update initPars
+        //List<Boolean> initPars = new ArrayList<>();
+        for (int argIndex = 0; argIndex < arguments.size(); argIndex++) {
+            //STEntry argEntry = arguments.get(argIndex).getId().getStEntry();
+            STEntry argEntry = env.safeLookup(arguments.get(argIndex).getId().getIdentifier());
+            initPars.set(argIndex, argEntry.isInitAfterDec());
+        }
+
+        // saving both Sigma1 and initPars in the copied STEntry
+        funEntryCopy.setFunStatus(1, localFunEntryCopy.getFunStatus().get(1));
+        funEntryCopy.setInitPars(initPars);
+        id.setStEntry(funEntryCopy);
+
+        env.popScope();
+
+        // update function STEntry
+        env.safeUpdateEntry(id.getIdentifier(), id.getStEntry());
 
         return err;
     }

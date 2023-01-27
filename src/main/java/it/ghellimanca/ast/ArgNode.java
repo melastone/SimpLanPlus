@@ -1,8 +1,6 @@
 package it.ghellimanca.ast;
 
-import it.ghellimanca.ast.type.VoidTypeNode;
-import it.ghellimanca.semanticanalysis.Environment;
-import it.ghellimanca.semanticanalysis.SemanticError;
+import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
@@ -33,7 +31,7 @@ public class ArgNode implements Node {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {
 
         return new ArrayList<>();
     }

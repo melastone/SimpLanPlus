@@ -51,14 +51,10 @@ public class IdNode implements Node {
 
     // will be called only when id is used not declared
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
-        ArrayList<SemanticError> err = new ArrayList<>();
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {
+        ArrayList<SemanticWarning> err = new ArrayList<>();
 
-        try {
-            stEntry = env.lookup(id); // lookup has to return the type of the value that the id identifies
-        } catch(MissingDeclarationException exception) {
-            err.add(new SemanticError(exception.getMessage()));
-        }
+        stEntry = env.lookup(id); // lookup has to return the type of the value that the id identifies
 
         return err;
     }

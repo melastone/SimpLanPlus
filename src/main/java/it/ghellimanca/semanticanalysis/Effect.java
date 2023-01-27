@@ -93,8 +93,13 @@ public class Effect {
     }
 
     /**
-     * Implements the ???? par operator
-     * todo: scrivere la definizione di questa funzione, che ancora non ho capito ehehehe
+     * Implements the par operator. It performs the following operation
+     *
+     * PAR | ⊥ | 1 | 2 | ⊤
+     *   ⊥ | ⊥ | 1 | 2 | ⊤
+     *   1 | 1 | 1 | 2 | ⊤
+     *   2 | 2 | 2 | 2 | ⊤
+     *   ⊤ | ⊤ | ⊤ | ⊤ | ⊤
      *
      * @param e1
      * @param e2

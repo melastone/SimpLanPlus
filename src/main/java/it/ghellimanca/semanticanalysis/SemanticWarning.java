@@ -1,14 +1,14 @@
 package it.ghellimanca.semanticanalysis;
 
 /**
- * Represents error outputted by Node::checkSemantics()
- * Contains a message
+ * Represents warnings outputted by Node::checkSemantics()
+ * Contains a message.
  */
-public class SemanticError {
+public class SemanticWarning {
 
     final private String msg;
 
-    public SemanticError(String msg) {
+    public SemanticWarning(String msg) {
         this.msg = msg;
     }
 

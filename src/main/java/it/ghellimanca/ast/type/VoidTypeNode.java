@@ -1,7 +1,6 @@
 package it.ghellimanca.ast.type;
 
-import it.ghellimanca.semanticanalysis.Environment;
-import it.ghellimanca.semanticanalysis.SemanticError;
+import it.ghellimanca.semanticanalysis.*;
 
 import java.util.ArrayList;
 
@@ -16,7 +15,7 @@ public class VoidTypeNode extends TypeNode{
     public TypeNode typeCheck() { return null; }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {
         return new ArrayList<>();
     }
 }

@@ -7,7 +7,6 @@ import it.ghellimanca.gen.SimpLanPlusParser;
 import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.MissingInitializationException;
-import it.ghellimanca.semanticanalysis.SemanticError;
 import it.ghellimanca.semanticanalysis.TypeCheckingException;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -146,17 +145,21 @@ public class SimpLanPlus {
 
         // Checking for semantic errors
         try {
-            ArrayList<SemanticError> semanticErrors = AST.checkSemantics(environment);
+            ArrayList<SemanticWarning> semanticWarnings = AST.checkSemantics(environment);
 
-            if (!semanticErrors.isEmpty()) {
-                System.err.println("Semantic errors:");
+            if (!semanticWarnings.isEmpty()) {
+                System.err.println("Warnings:");
 
-                for (SemanticError err : semanticErrors) {
-                    System.err.println(err);
+                for (SemanticWarning warning : semanticWarnings) {
+                    System.err.println(warning);
                 }
 
                 System.exit(1);
             }
+
+        } catch (MultipleDeclarationException | MissingDeclarationException e) {
+            System.err.println("Semantic analysis error:\n" + e.getMessage());
+            System.exit(1);
         } catch (MissingInitializationException | ParametersCountException e) {
             System.err.println("Effect analysis error:\n" + e.getMessage());
             System.exit(1);
@@ -173,8 +176,6 @@ public class SimpLanPlus {
 
 
         // Checking for effect analysis errors
-
-        //ArrayList<SemanticError> effectAnalysisErrors = AST.checkEffects(sigma);
 
 
         /* CODE GENERATION */

@@ -53,9 +53,9 @@ public class ProgramNode implements Node {
 
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {
 
-        ArrayList<SemanticError> err = new ArrayList<>();
+        ArrayList<SemanticWarning> err = new ArrayList<>();
         Map<String, STEntry> currentScope;
 
         env.newScope();
@@ -80,9 +80,13 @@ public class ProgramNode implements Node {
         // for every x_i in dom(sigma_1')
         for (var id : currentScope.keySet()) {
 
+            var idStatus = currentScope.get(id).getVarStatus();
+
             // sigma_1'(x) has to be <= USED otherwise there was an error
-            if (currentScope.get(id).getVarStatus().equals(new Effect(Effect.ERROR))) {
+            if (idStatus.equals(new Effect(Effect.ERROR))) {
                 throw new MissingInitializationException("Error in the effect analysis: " + id + " was used before initialization.");
+            } else if (idStatus.equals(new Effect(Effect.INIT)) || idStatus.equals(new Effect(Effect.DECLARED))){
+                err.add(new SemanticWarning("Variable " + id + " was declared but never used."));
             }
         }
 

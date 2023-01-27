@@ -39,9 +39,9 @@ public class AssignmentNode extends StatementNode {
 
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {
 
-        ArrayList<SemanticError> err = new ArrayList<>();
+        ArrayList<SemanticWarning> err = new ArrayList<>();
         Environment newEnv = new Environment();
 
         // first checking the semantic errors

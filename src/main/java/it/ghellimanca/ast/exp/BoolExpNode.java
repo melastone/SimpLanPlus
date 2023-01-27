@@ -1,8 +1,7 @@
 package it.ghellimanca.ast.exp;
 
 import it.ghellimanca.ast.IdNode;
-import it.ghellimanca.semanticanalysis.Environment;
-import it.ghellimanca.semanticanalysis.SemanticError;
+import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.ast.type.BoolTypeNode;
 import it.ghellimanca.ast.type.TypeNode;
 
@@ -28,7 +27,7 @@ public class BoolExpNode extends ExpNode {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {
         return new ArrayList<>();
     }
 

@@ -47,7 +47,7 @@ public class ReturnNode extends StatementNode {
 
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {
         if (this.exp != null) {
             return exp.checkSemantics(env);
         }

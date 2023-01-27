@@ -1,11 +1,9 @@
 package it.ghellimanca.ast.statement;
 
-import it.ghellimanca.ast.ArgNode;
 import it.ghellimanca.ast.type.ArrowTypeNode;
 import it.ghellimanca.ast.type.VarTypeNode;
 import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.ast.IdNode;
-import it.ghellimanca.ast.Node;
 import it.ghellimanca.ast.exp.ExpNode;
 import it.ghellimanca.ast.type.TypeNode;
 
@@ -20,7 +18,6 @@ import java.util.stream.IntStream;
  * A call statement has the form:
  * ID '(' (exp(',' exp)*)? ')'
  *
- * todo: eliminare il controllo sulla dimensione di initPars
  *
  */
 public class CallNode extends StatementNode {
@@ -50,8 +47,8 @@ public class CallNode extends StatementNode {
     public String toString() { return toPrint("");}
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException{
-        ArrayList<SemanticError> err = new ArrayList<>();
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {
+        ArrayList<SemanticWarning> err = new ArrayList<>();
 
         err.addAll(id.checkSemantics(env));
 
@@ -144,7 +141,7 @@ public class CallNode extends StatementNode {
                 IdNode u_iId = params.get(i).variables().get(0);
                 STEntry u_iEntry = env.safeLookup(u_iId.getIdentifier());
 
-                u_iEnv.safeAddDeclaration(u_iId.getIdentifier(), u_iEntry.getType());
+                u_iEnv.safeAddDeclaration(u_iId.getIdentifier(), u_iEntry.getType(), Effect.DECLARED);
 
                 Effect u_iStatus = u_iEntry.getVarStatus();
                 Effect x_iStatus = codomainStatus.get(i);
@@ -164,7 +161,7 @@ public class CallNode extends StatementNode {
 
             // update environment to be returned
             Environment updatedEnv = Environment.update(Sigma1, Sigma2);
-            System.out.println("Function call updated Environment to:\n" + updatedEnv);
+            //System.out.println("Function call updated Environment to:\n" + updatedEnv);
             env.replace(updatedEnv);
         }
 

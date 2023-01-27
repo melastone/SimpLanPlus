@@ -47,20 +47,17 @@ public class DecVarNode extends DeclarationNode {
 
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {
 
-        ArrayList<SemanticError> err = new ArrayList<>();
+        ArrayList<SemanticWarning> err = new ArrayList<>();
 
-        try {
-            if (exp != null) {  // if the variable is also initialized
+        if (exp != null) {  // if the variable is also initialized
                 err.addAll(exp.checkSemantics(env));
                 env.addDeclaration(id.getIdentifier(), type, Effect.INIT);
+
             } else {
                 env.addDeclaration(id.getIdentifier(), type, Effect.DECLARED);
             }
-        } catch (MultipleDeclarationException e) {
-            err.add(new SemanticError(e.getMessage()));
-        }
 
         return err;
     }

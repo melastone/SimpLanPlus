@@ -38,9 +38,9 @@ public class BinExpNode extends ExpNode {
 
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) throws MissingInitializationException, ParametersCountException {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {
 
-        ArrayList<SemanticError> err = new ArrayList<>();
+        ArrayList<SemanticWarning> err = new ArrayList<>();
 
         err.addAll(leftExp.checkSemantics(env));
         err.addAll(rightExp.checkSemantics(env));

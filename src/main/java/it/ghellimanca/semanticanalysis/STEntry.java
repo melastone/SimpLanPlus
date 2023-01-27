@@ -1,6 +1,5 @@
 package it.ghellimanca.semanticanalysis;
 
-import it.ghellimanca.ast.declaration.DecFunNode;
 import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
@@ -9,7 +8,6 @@ import java.util.List;
 /**
  * Represents an entry of the symbol table.
  *
- * TODO: rimettere a posto i costruttori (quello copia non funziona, bisogna capire quali attributi possono essere non inizializzati..)
  */
 public class STEntry {
 
@@ -27,31 +25,11 @@ public class STEntry {
 
     private List<Boolean> initPars;
 
-    private DecFunNode funNode;
-
-
-
-    /**
-     * Constructor for {@code STEntry}
-     *
-     * @param type          a TypeNode
-     * @param nestingLevel  a positive integer
-     * @param offset        a positive integer
-     */
-    public STEntry(TypeNode type, int nestingLevel, int offset) {
-        this.type = type;
-        this.nestingLevel = nestingLevel;
-        this.offset = offset;
-        this.varStatus = new Effect();
-        this.initAfterDec= false;   // default value
-        this.funStatus = new ArrayList<>();
-        this.initPars = new ArrayList<>();
-    }
 
 
     /**
      * Constructor for {@code STEntry}.
-     * Typically used by DeclarationNodes, which choose between declared and init statuses.
+     * Typically used by {@code Environment.addDeclaration}, which choose between declared and init statuses.
      *
      * @param type          a TypeNode
      * @param nestingLevel  a positive integer
@@ -78,7 +56,7 @@ public class STEntry {
      * @param offset        a positive integer
      * @param status        instance of Effect class
      */
-    public STEntry(TypeNode type, int nestingLevel, int offset, Effect status, boolean isInitAfterDec, List<List<Effect>> funStatus, List initPars) {
+    public STEntry(TypeNode type, int nestingLevel, int offset, Effect status, boolean isInitAfterDec, List<List<Effect>> funStatus, List<Boolean> initPars) {
         this.type = type;
         this.nestingLevel = nestingLevel;
         this.offset = offset;
@@ -87,14 +65,6 @@ public class STEntry {
         this.funStatus = funStatus;
         this.initPars = initPars;
     }
-
-
-//    public STEntry(Effect status) {
-//        this.status = status;
-//        this.type = null;
-//        this.nestingLevel = -1;
-//        this.offset = -1;
-//    }
 
 
     /**
@@ -156,13 +126,6 @@ public class STEntry {
         this.initPars = initPars;
     }
 
-    public DecFunNode getFunNode() {
-        return funNode;
-    }
-
-    public void setFunNode(DecFunNode funNode) {
-        this.funNode = funNode;
-    }
 
     @Override
     public String toString() {

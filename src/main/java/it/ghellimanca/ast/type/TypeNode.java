@@ -1,10 +1,6 @@
 package it.ghellimanca.ast.type;
 
-import it.ghellimanca.semanticanalysis.Environment;
-import it.ghellimanca.semanticanalysis.SemanticError;
-import it.ghellimanca.ast.Node;
-
-import java.util.ArrayList;
+import it.ghellimanca.ast.Node;;
 
 /**
  * A generic type node of the AST.
