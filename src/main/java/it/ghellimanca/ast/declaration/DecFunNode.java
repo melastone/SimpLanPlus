@@ -84,15 +84,20 @@ public class DecFunNode extends DeclarationNode {
 
             STEntry funEntryCopy = id.getStEntry();
 
-            // build Sigma0 - domain of the function
+            // build Sigma0 - domain of the function - and initPars
             List<Effect> Sigma0 = new ArrayList<>();
+            List<Boolean> initPars = new ArrayList<>();
+
             Effect bottom = new Effect(Effect.DECLARED);
             for (int i = 0; i < arguments.size(); i++) {
                 Sigma0.add(bottom);
+                initPars.add(i, false);
             }
 
-            // saving Sigma0 in the STEntry of the function
+            // saving Sigma0 and initPars in the STEntry of the function
             funEntryCopy.setFunStatus(0, Sigma0);
+            funEntryCopy.setInitPars(initPars);
+
 
             // open a new scope where to evaluate function body and calculating Sigma1
             env.newScope();
@@ -106,10 +111,10 @@ public class DecFunNode extends DeclarationNode {
             STEntry localFunEntryCopy = env.safeAddDeclaration(id.getIdentifier(), funType);
             // localFunEntryCopy.setFunNode(this);
 
-            // adding funStatus to innerEntry
+            // adding funStatuses and initialized initPars to innerEntry
             localFunEntryCopy.setFunStatus(0, Sigma0);
             localFunEntryCopy.setFunStatus(1, Sigma0);
-
+            localFunEntryCopy.setInitPars(initPars);
 
             // saving current Environment in order to use it for eventual iterations of Fixed Point Algorithm
             Environment oldEnv = new Environment(env);
@@ -150,12 +155,12 @@ public class DecFunNode extends DeclarationNode {
                 hasCodomainChanged = !newSigma1.equals(oldSigma1);
             }
 
-            // build initPars
-            List<Boolean> initPars = new ArrayList<>();
+            // update initPars
+            //List<Boolean> initPars = new ArrayList<>();
             for (int argIndex = 0; argIndex < arguments.size(); argIndex++) {
                 //STEntry argEntry = arguments.get(argIndex).getId().getStEntry();
                 STEntry argEntry = env.safeLookup(arguments.get(argIndex).getId().getIdentifier());
-                initPars.add(argIndex, argEntry.isInitAfterDec());
+                initPars.set(argIndex, argEntry.isInitAfterDec());
             }
 
             // saving both Sigma1 and initPars in the copied STEntry
@@ -165,7 +170,7 @@ public class DecFunNode extends DeclarationNode {
 
             env.popScope();
 
-            // update function STEntry inside the Environment
+            // update function STEntry
             env.safeUpdateEntry(id.getIdentifier(), id.getStEntry());
 
 

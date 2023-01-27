@@ -108,12 +108,10 @@ public class CallNode extends StatementNode {
 
             // set to init statuses of params initialized inside the function body
             for (int i : indexOfPassedByReference) {
-                if (initPars.size() > 0) {
-                    if (initPars.get(i)){
+                if (initPars.get(i)){
                         IdNode u_iId = params.get(i).variables().get(0);
                         STEntry u_iEntry = env.safeLookup(u_iId.getIdentifier());
                         u_iEntry.setVarStatus(Effect.seq(u_iEntry.getVarStatus(), new Effect(Effect.INIT)));
-                    }
                 }
             }
 

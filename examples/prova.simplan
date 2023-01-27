@@ -3,11 +3,33 @@
     Questo file possiamo usarlo per testare codice al volo.
     */
 
-    int x = 1;
-    bool y;
+    int a;
 
-    int f(var bool z) {
-        return 1;
+    void f(var int x, int n) {
+        if (n==0) {
+            x = n;
+        } else {
+            f(x, n-1);
+        }
     }
-    f(y);
+
+    f(a, 3);
+
+    /*
+    n == 3
+        a -> BOTTOM
+        n -> USED
+
+    n == 2
+        a -> BOTTOM
+        n -> USED
+
+    n == 1
+        a -> BOTTOM
+        n -> USED
+
+    n == 0
+        a -> INIT
+        n -> USED
+    */
 }
