@@ -29,4 +29,9 @@ public interface Node {
      * */
     TypeNode typeCheck() throws TypeCheckingException;
 
+    /**
+     * Code generation
+     * */
+    String codeGeneration();
+
 }

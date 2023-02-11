@@ -51,6 +51,11 @@ public class DerExpNode extends ExpNode {
         return id.typeCheck();
     }
 
+    @Override
+    public String codeGeneration() {
+        return id.codeGeneration();
+    }
+
 
     @Override
     public List<IdNode> variables() {

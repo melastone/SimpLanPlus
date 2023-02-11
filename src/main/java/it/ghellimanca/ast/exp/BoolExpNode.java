@@ -37,6 +37,12 @@ public class BoolExpNode extends ExpNode {
     }
 
     @Override
+    public String codeGeneration() {
+        int asInt = bool ? 1 : 0;
+        return "li $a0" + asInt + "\n";
+    }
+
+    @Override
     public List<IdNode> variables() {
         return new ArrayList<>();
     }

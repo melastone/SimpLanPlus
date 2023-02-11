@@ -35,6 +35,11 @@ public class ValExpNode extends ExpNode {
     }
 
     @Override
+    public String codeGeneration() {
+        return "li $a0" + number + "\n";
+    }
+
+    @Override
     public List<IdNode> variables() {
         return new ArrayList<>();
     }
