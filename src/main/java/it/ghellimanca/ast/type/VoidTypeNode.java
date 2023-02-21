@@ -4,7 +4,7 @@ import it.ghellimanca.semanticanalysis.*;
 
 import java.util.ArrayList;
 
-public class VoidTypeNode extends TypeNode{
+public class VoidTypeNode extends TypeNode {
 
     @Override
     public String toPrint(String indent) {
@@ -13,6 +13,11 @@ public class VoidTypeNode extends TypeNode{
 
     @Override
     public TypeNode typeCheck() { return null; }
+
+    @Override
+    public String codeGeneration() {
+        return "";
+    }
 
     @Override
     public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {

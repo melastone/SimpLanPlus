@@ -29,5 +29,10 @@ public class BoolTypeNode extends TypeNode {
     public TypeNode typeCheck() throws TypeCheckingException {
         return null;
     }
+
+    @Override
+    public String codeGeneration() {
+        return "";
+    }
 }
 

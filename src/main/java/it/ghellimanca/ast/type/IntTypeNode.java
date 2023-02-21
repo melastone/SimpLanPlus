@@ -30,4 +30,9 @@ public class IntTypeNode extends TypeNode {
         return null;
     }
 
+    @Override
+    public String codeGeneration() {
+        return "";
+    }
+
 }
