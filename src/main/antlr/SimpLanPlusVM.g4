@@ -1,4 +1,4 @@
-grammar SimpLanVM;
+grammar SimpLanPlusVM;
 
 program: instructions*;
 

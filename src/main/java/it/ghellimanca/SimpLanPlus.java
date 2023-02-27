@@ -40,6 +40,9 @@ public class SimpLanPlus {
 
         /* COMPILER */
         var assembly = compile(fileContent);
+
+        /* INTERPRETER */
+        //run(assembly);
     }
 
 
@@ -82,8 +85,6 @@ public class SimpLanPlus {
 
         // Visiting the tree and generating the AST
         ProgramNode AST = (ProgramNode) parseTreeVisitor.visitProgram(slpParser.program());
-//        AST.setMainBlock(); // The main block is special therefore just here a flag is set to signal this
-
 
         /* ERROR DETECTION */
 
@@ -132,10 +133,8 @@ public class SimpLanPlus {
             System.exit(1);
         }
 
-
         System.out.println("Parse completed without issues!");
         System.out.println("The AST generated is:" + AST);
-
 
         /* SEMANTIC ANALYSIS */
 
@@ -143,7 +142,7 @@ public class SimpLanPlus {
         Environment environment = new Environment();
 
 
-        // Checking for semantic errors
+        // Checking for semantic and effect analysis errors
         try {
             ArrayList<SemanticWarning> semanticWarnings = AST.checkSemantics(environment);
 
@@ -175,19 +174,20 @@ public class SimpLanPlus {
         }
 
 
-        // Checking for effect analysis errors
-
-
         /* CODE GENERATION */
-
-        return null;
-
+        return AST.codeGeneration();
     }
 
     /**
      * Handles the interpretation phase
      */
-    private static void run() {
+    private static void run(String assemblyCode) {
+
+        //VM lexer
+
+        //VM parser
+
+        //VM Interpreter
 
     }
 
