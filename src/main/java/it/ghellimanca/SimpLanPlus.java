@@ -133,14 +133,16 @@ public class SimpLanPlus {
         }
 
 
-        System.out.println("Parse completed without issues!");
-        System.out.println("The AST generated is:" + AST);
+        System.out.println("Parse completed without issues.");
+        // System.out.println("The AST generated is:" + AST);
 
 
         /* SEMANTIC ANALYSIS */
 
         // Creating the environment
         Environment environment = new Environment();
+
+        System.out.println("Semantic Analysis...");
 
 
         // Checking for semantic errors
@@ -165,20 +167,26 @@ public class SimpLanPlus {
             System.exit(1);
         }
 
+        System.out.println("Semantic analysis (hopefully) completed.");
+
+
         // Checking for type errors
+
+        System.out.println("Type checking...");
+
         try {
-            TypeNode finalType = AST.typeCheck();
-            System.out.println("Type checking completed with success!");
-            System.out.println("Final block type is " + finalType);
+            AST.typeCheck();
         } catch (TypeCheckingException exception) {
-            System.err.println("Type error:\n" + exception.getMessage());
+            System.err.println("Type checking error:\n" + exception.getMessage());
+            System.exit(1);
         }
 
-
-        // Checking for effect analysis errors
+        System.out.println("Type checking completed with success!");
 
 
         /* CODE GENERATION */
+
+        System.out.println("Assembling...");
 
         return null;
 

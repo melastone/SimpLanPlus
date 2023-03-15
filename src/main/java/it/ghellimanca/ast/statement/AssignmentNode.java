@@ -42,24 +42,21 @@ public class AssignmentNode extends StatementNode {
     public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {
 
         ArrayList<SemanticWarning> err = new ArrayList<>();
-        Environment newEnv = new Environment();
 
         // first checking the semantic errors
         err.addAll(exp.checkSemantics(env));
         err.addAll(id.checkSemantics(env));
 
         // dummy environment for status change of the id
+        Environment newEnv = new Environment();
         newEnv.newScope();
+
         newEnv.safeAddDeclaration(id.getIdentifier(), id.getStEntry().getType(), Effect.INIT);
 
         // replace old env with seq of old env and dummy env
         env.seq(newEnv);
 
         // updating STEntry inside IdNode with both new status and initAfterDec boolean
-//        // set new status in the entry inside idnode
-//        id.setStEntry(env.safeLookup(id.getIdentifier()));
-//
-//        id.getStEntry().setInitAfterDec(true);
         STEntry updatedEntry = env.safeLookup(id.getIdentifier());
         updatedEntry.setInitAfterDec(true);
 

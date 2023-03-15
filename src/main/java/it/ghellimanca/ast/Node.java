@@ -20,6 +20,7 @@ public interface Node {
 
     /**
      * Check for semantic and effect analysis errors in the node.
+     *
      * */
     ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException;
 
@@ -28,5 +29,11 @@ public interface Node {
      * Type checking.
      * */
     TypeNode typeCheck() throws TypeCheckingException;
+
+    /**
+     * Generates the intermediate code for the corresponding node.
+     *
+     */
+    String codeGeneration();
 
 }

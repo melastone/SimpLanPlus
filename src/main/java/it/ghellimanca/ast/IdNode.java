@@ -14,7 +14,6 @@ import java.util.ArrayList;
 public class IdNode implements Node {
 
     final private String id;
-
     private STEntry stEntry;
 
 

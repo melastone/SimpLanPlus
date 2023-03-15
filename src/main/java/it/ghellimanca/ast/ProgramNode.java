@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+// TODO: distinzione tra dichiarazioni di vars e di fun nella codegen
+// TODO: aggiornare RA nella codegen una volta capito come
+
 public class ProgramNode implements Node {
 
     final private List<DeclarationNode> declarations;
@@ -90,6 +93,10 @@ public class ProgramNode implements Node {
             }
         }
 
+        // qui potremmo prendere l'offset dello scope attuale, che corrisponde a n
+        // ci serve conoscere n per la codegeneration
+        // in realtà non c'è bisogno; potrei delegare la sottrazione di 1 ad ogni code generation dei DEcVarNode
+
         // returning just sigma_0'
         env.exitScope();
 
@@ -137,5 +144,34 @@ public class ProgramNode implements Node {
         }
 
         return new VoidTypeNode();
+    }
+
+    @Override
+    public String codeGeneration() {
+        StringBuilder buff = new StringBuilder();
+
+        // suppongo $sp e $fp già inizializzati a memsize (lo si fa nella vera e propria SVM)
+
+        // check before that decs are not null!
+
+        buff.append("subi $sp $sp").append(declarations.size());
+        buff.append("li $t0 0");    // using a fake RA
+        buff.append("push $t0");
+        buff.append("push $fp");
+        buff.append("move $fp $sp");
+
+        for (DeclarationNode dec : declarations) {
+                buff.append(dec.codeGeneration());
+        }
+
+        if (this.statements != null) {
+            for (StatementNode stm : statements) {
+                buff.append(stm.codeGeneration());
+            }
+        }
+
+        // is there anything we have to do??? setting fp and sp to memsize, for instance...
+
+        return buff.toString();
     }
 }
