@@ -37,6 +37,12 @@ public class BaseExpNode extends ExpNode {
         return exp.typeCheck();
     }
 
+    @Override
+    public String codeGeneration() {
+
+        return exp.codeGeneration();
+    }
+
 
     @Override
     public List<IdNode> variables() {

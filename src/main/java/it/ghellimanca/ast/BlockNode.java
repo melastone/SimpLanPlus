@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * Node of the AST for a block
  *
- *
+ *todo: aggiorna la codegen in caso di aggiunta registri al RdA, o in caso si usi meglio il RA
  */
 public class BlockNode extends StatementNode {
 
@@ -145,6 +145,39 @@ public class BlockNode extends StatementNode {
         }
 
         return new VoidTypeNode();
+    }
+
+    @Override
+    public String codeGeneration() {
+        StringBuilder buff = new StringBuilder();
+
+        // build AR
+        if (this.variableDeclarations != null){
+            buff.append("subi $sp $sp").append(variableDeclarations.size()).append("\n");
+        }
+        buff.append("li $t0 0\n");    // using a fake RA
+        buff.append("push $t0\n");
+        buff.append("push $fp\n");
+        buff.append("mv $fp $sp\n");
+
+        if (this.variableDeclarations != null) {
+            for (DeclarationNode varDec : variableDeclarations) {
+                buff.append(varDec.codeGeneration());
+            }
+        }
+        if (this.statements != null){
+            for (StatementNode stm : statements) {
+                buff.append(stm.codeGeneration());
+            }
+        }
+
+        // restore registers to previous values
+        buff.append("lw $fp 0($sp)\n");     // restore old $fp
+        buff.append("pop ;pop old $fp\n");
+        buff.append("pop ;pop fake RA\n");
+        buff.append("addi $sp $sp").append(variableDeclarations.size()).append("\n");
+
+        return buff.toString();
     }
 
 }

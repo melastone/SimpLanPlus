@@ -18,7 +18,9 @@ instruction : push
             | lw
             | li
             | sw
-            | move;
+            | mv
+            | b
+            | beq;
 
 push    : 'push' src=REG;                       #push
 pop     : 'pop';                                #pop
@@ -31,14 +33,17 @@ subi    : 'subi' dest=REG reg1=REG val=NUMBER;      #subInt
 lw      : 'lw' dest=REG offset=NUMBER '(' src=REG ')'; #loadWord
 li      : 'li' dest=REG val=NUMBER;                    #loadInteger
 sw      : 'sw' src=REG offset=NUMBER '(' dest=REG ')'; #storeWord
-move    : 'move' dest=REG src=REG
+mv      : 'mv' dest=REG src=REG                        #move
+
+b       : 'b' dest=LABEL                            #branch
+beq     : 'beq' reg1=REG reg2=REG dest=LABEL        #branchIfEq
 
 
 fragment DIGIT  : '0'..'9';
 REG : '$'('t'DIGIT|'a0'|'ra'|'sp'|'fp');
 
 fragment CHAR : ('a'..'z'|'A'..'Z');
-STRING : CHAR+;
+LABEL : CHAR+;
 
 // ESCAPE SEQUENCES
 WS  : ( '\t' | ' ' | '\r' | '\n' )+   -> skip;

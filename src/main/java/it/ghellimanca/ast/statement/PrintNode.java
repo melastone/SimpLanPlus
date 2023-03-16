@@ -49,4 +49,9 @@ public class PrintNode extends StatementNode {
 
         return new VoidTypeNode();
     }
+
+    @Override
+    public String codeGeneration() {
+        return exp.codeGeneration() + "print $a0\n";
+    }
 }

@@ -37,6 +37,15 @@ public class BoolExpNode extends ExpNode {
     }
 
     @Override
+    public String codeGeneration() {
+        StringBuilder buff = new StringBuilder();
+
+        buff.append("li $a0 ").append(bool ? 1 : 0);
+
+        return buff.toString();
+    }
+
+    @Override
     public List<IdNode> variables() {
         return new ArrayList<>();
     }

@@ -44,6 +44,12 @@ public class NotExpNode extends ExpNode {
         return new BoolTypeNode();
     }
 
+    @Override
+    public String codeGeneration() {
+
+        return exp.codeGeneration() + "not $a0 $a0" + "\n";
+    }
+
 
     @Override
     public List<IdNode> variables() {

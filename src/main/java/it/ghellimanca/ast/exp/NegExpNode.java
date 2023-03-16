@@ -43,6 +43,12 @@ public class NegExpNode extends ExpNode {
         return new IntTypeNode();
     }
 
+    @Override
+    public String codeGeneration() {
+
+        return exp.codeGeneration() + "multi $a0 $a0 -1" + "\n";
+    }
+
 
     @Override
     public List<IdNode> variables() {

@@ -96,4 +96,30 @@ public class IteNode extends StatementNode {
         // returning the branches type
         return stm1Type;
     }
+
+    @Override
+    public String codeGeneration() {
+        StringBuilder buff = new StringBuilder();
+        Boolean hasElse = !(stm2 == null);
+
+        String falseBranch = "FALSE_BRANCH";
+        String endIf = "END_IF";
+
+        buff.append(exp.codeGeneration());
+        buff.append("li $t1 0\n");
+        buff.append("beq $t1 $a0").append(falseBranch).append("\n");
+
+        buff.append(stm1.codeGeneration());
+        buff.append("b ").append(endIf).append('\n');
+
+        buff.append(falseBranch).append(":\n");
+
+        if (hasElse) {
+          buff.append(stm2.codeGeneration());
+        }
+
+        buff.append(endIf).append(":\n");
+
+        return buff.toString();
+    }
 }

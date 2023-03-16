@@ -12,8 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-// TODO: distinzione tra dichiarazioni di vars e di fun nella codegen
+// TODO: distinzione tra dichiarazioni di vars e di fun nella codegen????
 // TODO: aggiornare RA nella codegen una volta capito come
+// TODO: inserire comandi di chiusura del programma
 
 public class ProgramNode implements Node {
 
@@ -152,16 +153,19 @@ public class ProgramNode implements Node {
 
         // suppongo $sp e $fp già inizializzati a memsize (lo si fa nella vera e propria SVM)
 
-        // check before that decs are not null!
+        if (this.declarations != null) {
+            buff.append("subi $sp $sp").append(declarations.size()).append("\n");
+        }
 
-        buff.append("subi $sp $sp").append(declarations.size());
-        buff.append("li $t0 0");    // using a fake RA
-        buff.append("push $t0");
-        buff.append("push $fp");
-        buff.append("move $fp $sp");
+        buff.append("li $t0 0\n");    // using a fake RA
+        buff.append("push $t0\n");
+        buff.append("push $fp\n");
+        buff.append("mv $fp $sp\n");
 
-        for (DeclarationNode dec : declarations) {
+        if (this.declarations != null) {
+            for (DeclarationNode dec : declarations) {
                 buff.append(dec.codeGeneration());
+            }
         }
 
         if (this.statements != null) {

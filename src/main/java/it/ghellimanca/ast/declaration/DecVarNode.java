@@ -53,10 +53,10 @@ public class DecVarNode extends DeclarationNode {
 
         if (exp != null) {  // if the variable is also initialized
                 err.addAll(exp.checkSemantics(env));
-                env.addDeclaration(id.getIdentifier(), type, Effect.INIT);
+                id.setStEntry(env.addDeclaration(id.getIdentifier(), type, Effect.INIT));
 
             } else {
-                env.addDeclaration(id.getIdentifier(), type, Effect.DECLARED);
+                id.setStEntry(env.addDeclaration(id.getIdentifier(), type, Effect.DECLARED));
             }
 
         return err;

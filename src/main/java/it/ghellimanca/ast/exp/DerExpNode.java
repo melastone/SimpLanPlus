@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * Represents the result of dereferencing something as a node in the AST.
+ *
+ * todo: capisci se la codeGen deve fare altro
  */
 public class DerExpNode extends ExpNode {
 
@@ -49,6 +51,13 @@ public class DerExpNode extends ExpNode {
     @Override
     public TypeNode typeCheck() {
         return id.typeCheck();
+    }
+
+    @Override
+    public String codeGeneration() {
+        // non ho codice qui perché l'operazione di cercare il valore di x e metterlo in $0 già la fa idNode
+
+        return id.codeGeneration();
     }
 
 

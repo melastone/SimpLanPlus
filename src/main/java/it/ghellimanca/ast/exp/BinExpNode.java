@@ -12,6 +12,8 @@ import java.util.List;
 
 /**
  * Represents a binary expression left=exp op right=exp node in the AST.
+ *
+ * todo: sostituire le LABEL esplicite con lil gestore delle label, dopo averne deciso
  */
 public class BinExpNode extends ExpNode {
 
@@ -97,6 +99,150 @@ public class BinExpNode extends ExpNode {
             default:
                 return null;
         }
+    }
+
+    @Override
+    public String codeGeneration() {
+        StringBuilder res = new StringBuilder();
+
+        res.append(leftExp.codeGeneration());
+        res.append("push $a0\n");
+        res.append(rightExp.codeGeneration());
+        res.append("lw $t1 0($sp)\n");
+        res.append("pop\n");
+
+        switch (operator) {
+            case "*":
+                res.append("mult $a0 $t1 $a0\n");
+                break;
+            case "/":
+                res.append("div $a0 $t1 $a0\n");
+                break;
+            case "+":
+                res.append("add $a0 $t1 $a0\n");
+                break;
+            case "-":
+                res.append("sub $a0 $t1 $a0\n");
+                break;
+            case "<":
+                String lessEqTrueBrLabel = "LESS_EQ_TRUE_BRANCH";
+                String endLessLabel = "END LESS";
+                String lessLeqTrueBrLabel = "LESS_LEQ_TRUE_BRANCH";
+
+                res.append("beq $a0 $t1 ").append(lessEqTrueBrLabel).append("\n");
+
+                /* EQUAL IS FALSE */
+                res.append("bleq $a0 $t1 ").append(lessLeqTrueBrLabel).append("\n");
+
+                // LESS IS FALSE
+                res.append("li $a0 0\n");
+                res.append("b ").append(endLessLabel).append("\n");
+
+                // LESS IS TRUE
+                res.append(lessLeqTrueBrLabel).append(":\n");
+                res.append("li $a0 1\n");
+                res.append("b ").append(endLessLabel).append("\n");
+
+                // EQUAL IS TRUE, LESS IS FALSE
+                res.append(lessEqTrueBrLabel).append(":\n");
+                res.append("li $a0 0\n");
+
+                res.append(endLessLabel).append(":\n");
+                break;
+            case "<=":
+                String leqTrueBrLabel = "LEQ_TRUE_BRANCH";
+                String endLeqLabel = "END LEQ";
+
+                res.append("bleq $a0 $t1 ").append(leqTrueBrLabel).append("\n");
+
+                // LEQ_FALSE_BRANCH:
+                res.append("li $a0 0\n");
+                res.append("b ").append(endLeqLabel).append("\n");
+
+                res.append(leqTrueBrLabel).append(":\n");
+                res.append("li $a0 1\n");
+
+                res.append(endLeqLabel).append(":\n");
+                break;
+            case ">":
+                String grEqTrueBrLabel = "GR_EQ_TRUE_BRANCH";
+                String endGrLabel = "END GR";
+
+                res.append("bleq $a0 $t1 ").append(grEqTrueBrLabel).append("\n");
+
+                // BLEQ IS FALSE, GR IS TRUE
+                res.append("li $a0 1\n");
+                res.append("b ").append(endGrLabel).append("\n");
+
+                // BLEQ IS TRUE, GR IS FALSE
+                res.append(grEqTrueBrLabel).append(":\n");
+                res.append("li $a0 0\n");
+
+                res.append(endGrLabel).append(":\n");
+                break;
+            case ">=":
+                String geqTrueBrLabel = "GEQ_TRUE_BRANCH";
+                String geqFalseBrLabel = "GEQ_FALSE_BRANCH";
+                String endGeqLabel = "END GEQ";
+
+                res.append("beq $a0 $t1 ").append(geqTrueBrLabel).append("\n");
+
+                /* EQUAL IS FALSE */
+                res.append("bleq $a0 $t1 ").append(geqFalseBrLabel).append("\n");
+
+                // BLEQ IS FALSE
+                res.append("b ").append(geqTrueBrLabel).append("\n");
+
+                // GEQ IS FALSE
+                res.append(geqFalseBrLabel).append(":\n");
+                res.append("li $a0 0\n");
+                res.append("b ").append(endGeqLabel).append("\n");
+
+                /* GEQ IS TRUE */
+                res.append(geqTrueBrLabel).append(":\n");
+                res.append("li $a0 1\n");
+
+                res.append(endGeqLabel).append(":\n");
+                break;
+            case "==":
+                String eqTrueBrLabel = "EQ_TRUE_BRANCH";
+                String endEqLabel = "END EQ";
+
+                res.append("beq $a0 $t1 ").append(eqTrueBrLabel).append("\n");
+
+                // EQ_FALSE_BRANCH:
+                res.append("li $a0 0\n");
+                res.append("b ").append(endEqLabel).append("\n");
+
+                res.append(eqTrueBrLabel).append(":\n");
+                res.append("li $a0 1\n");
+
+                res.append(endEqLabel).append(":\n");
+                break;
+            case "!=":
+                String uneqTrueBrLabel = "UNEQ_TRUE_BRANCH";
+                String endUneqLabel = "END UNEQ";
+
+                res.append("beq $a0 $t1 ").append(uneqTrueBrLabel).append("\n");
+
+                // UNEQ_FALSE_BRANCH:
+                res.append("li $a0 1\n");
+                res.append("b ").append(endUneqLabel).append("\n");
+
+                res.append(uneqTrueBrLabel).append(":\n");
+                res.append("li $a0 0\n");
+
+                res.append(endUneqLabel).append(":\n");
+                break;
+            case "&&":
+                res.append("and $a0 $t1 $a0\n");
+                break;
+            case "||":
+                res.append("or $a0 $t1 $a0\n");
+                break;
+        }
+
+        return res.toString();
     }
 
 
