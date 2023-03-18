@@ -42,6 +42,11 @@ public class ArgNode implements Node {
     }
 
     @Override
+    public String codeGeneration() {
+        return null;
+    }
+
+    @Override
     public String toPrint(String indent) {
         return "\n" + indent + "ARGUMENT" + type.toPrint(indent + "\t") + id.toPrint(indent + "\t");
     }

@@ -33,6 +33,15 @@ public class BlockNode extends StatementNode {
 
 
 
+    public List<DecVarNode> getVariableDeclarations() {
+        return variableDeclarations;
+    }
+
+    public List<StatementNode> getStatements() {
+        return statements;
+    }
+
+
     @Override
     public String toPrint(String indent) {
         String res = "\n" + indent + "BLOCK";
@@ -179,5 +188,6 @@ public class BlockNode extends StatementNode {
 
         return buff.toString();
     }
+
 
 }

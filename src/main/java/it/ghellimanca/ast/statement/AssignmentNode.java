@@ -77,6 +77,22 @@ public class AssignmentNode extends StatementNode {
 
         return new VoidTypeNode();
     }
+
+    @Override
+    public String codeGeneration() {
+        StringBuilder buffer = new StringBuilder();
+
+        buffer.append(exp.codeGeneration());
+
+        buffer.append("mv $al $fp").append("\n");
+
+        for (int i = 0; i < id.getCurrNestingLevel() - id.getStEntry().getNestingLevel(); i++) {
+            buffer.append("lw $al 0($al)").append("\n");
+        }
+        buffer.append("sw $a0 ").append(id.getStEntry().getOffset() + 2).append("($al)").append("\n");
+
+        return buffer.toString();
+    }
 }
 
 

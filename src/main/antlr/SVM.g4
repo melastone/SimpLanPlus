@@ -20,7 +20,9 @@ instruction : push
             | sw
             | mv
             | b
-            | beq;
+            | beq
+            | jal
+            | jr;
 
 push    : 'push' src=REG;                       #push
 pop     : 'pop';                                #pop
@@ -38,9 +40,12 @@ mv      : 'mv' dest=REG src=REG                        #move
 b       : 'b' dest=LABEL                            #branch
 beq     : 'beq' reg1=REG reg2=REG dest=LABEL        #branchIfEq
 
+jal     : 'jal' dest=LABEL                          #jumpAndSaveRA
+jr      : 'jr'  dest=LABEL                          #jumpToLabel
+
 
 fragment DIGIT  : '0'..'9';
-REG : '$'('t'DIGIT|'a0'|'ra'|'sp'|'fp');
+REG : '$'('t'DIGIT|'a0'|'ra'|'sp'|'fp'|'al');
 
 fragment CHAR : ('a'..'z'|'A'..'Z');
 LABEL : CHAR+;

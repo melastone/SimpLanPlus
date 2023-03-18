@@ -1,6 +1,7 @@
 package it.ghellimanca.ast.declaration;
 
 import it.ghellimanca.ast.type.ArrowTypeNode;
+import it.ghellimanca.ast.type.VarTypeNode;
 import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.ast.ArgNode;
 import it.ghellimanca.ast.BlockNode;
@@ -180,5 +181,53 @@ public class DecFunNode extends DeclarationNode {
         }
 
         return type;
+    }
+
+    @Override
+    public String codeGeneration() {
+        StringBuilder buff = new StringBuilder();
+
+        buff.append(id.getIdentifier()).append("_ENTRY:\n");
+
+        // allocate variable declarations
+        ArrayList<DecVarNode> decs = (ArrayList<DecVarNode>) body.getVariableDeclarations();
+        int nDecs = 0;
+        if (decs != null && decs.size() > 0) {
+            nDecs = decs.size();
+            buff.append("subi $sp $sp ").append(decs.size()).append('\n');
+        }
+
+        buff.append("push $ra\n");
+        buff.append("push $fp\n");
+        buff.append("mv $fp $sp\n");
+
+        buff.append(body.codeGeneration());
+
+        // update passed-by-reference variables values
+        int nVar = 0, nArgs = 0;
+        if (arguments != null && arguments.size() > 0) {
+            nArgs = arguments.size();
+            for (ArgNode arg: arguments) {
+                boolean isVar = (arg.getType() instanceof VarTypeNode);
+                if (isVar) {
+                    nVar++;
+                    int argOffset = arg.getId().getStEntry().getOffset();
+                    buff.append("lw $t1 ").append(argOffset + 2).append("($fp)\n");     // get its value
+                    buff.append("lw $t2 ").append(argOffset + 3).append("($fp)\n");     // get its address
+                    buff.append("sw $t1 0($t2)\n");
+                }
+            }
+        }
+
+        // restore registers and stack
+        buff.append("lw $fp 0($sp)\n");
+        buff.append("pop\n");   // pop old $fp
+        buff.append("lw $ra 0($sp)\n");
+        buff.append("pop\n");   // pop RA
+        buff.append("addi $sp $sp ").append(nArgs + nVar + nDecs).append('\n');
+
+        buff.append("jr $ra\n");
+
+        return buff.toString();
     }
 }

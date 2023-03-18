@@ -66,4 +66,15 @@ public class ReturnNode extends StatementNode {
 
         return new VoidTypeNode();
     }
+
+    @Override
+    public String codeGeneration() {
+        StringBuilder buff = new StringBuilder();
+
+        if (exp != null) {
+            buff.append(exp.codeGeneration());
+        }
+        
+        return buff.toString();
+    }
 }

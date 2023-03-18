@@ -15,6 +15,11 @@ public class VoidTypeNode extends TypeNode{
     public TypeNode typeCheck() { return null; }
 
     @Override
+    public String codeGeneration() {
+        return null;
+    }
+
+    @Override
     public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {
         return new ArrayList<>();
     }

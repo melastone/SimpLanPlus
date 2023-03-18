@@ -1,5 +1,7 @@
 package it.ghellimanca.ast.statement;
 
+import it.ghellimanca.ast.ArgNode;
+import it.ghellimanca.ast.exp.DerExpNode;
 import it.ghellimanca.ast.type.ArrowTypeNode;
 import it.ghellimanca.ast.type.VarTypeNode;
 import it.ghellimanca.semanticanalysis.*;
@@ -9,6 +11,7 @@ import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -197,39 +200,42 @@ public class CallNode extends StatementNode {
         return ((ArrowTypeNode) funType).getRet();
     }
 
-//    @Override
-//    public TypeNode typeCheck() throws TypeCheckingException {
-//        TypeNode funType = id.typeCheck();
-//
-//        if (!(funType instanceof ArrowTypeNode)) {
-//            throw new TypeCheckingException("Function " + id.getIdentifier() + " does not have a function type.");
-//        }
-//
-//        List<TypeNode> formalParamsTypes = ((ArrowTypeNode) funType).getArgs();   //T1 x .. x Tn
-//        List<TypeNode> actualParamsTypes = new ArrayList<>();
-//
-//        for (ExpNode par : params) {
-//            TypeNode parType = par.typeCheck();
-//
-//            if (parType instanceof VarTypeNode) {
-//                actualParamsTypes.add(((VarTypeNode) parType).getType());
-//            }
-//            else { actualParamsTypes.add(parType);}
-//        }
-//
-//        int size = formalParamsTypes.size();
-//        if (actualParamsTypes.size() != size) {
-//            throw new TypeCheckingException("Function " + id.getIdentifier() + ": expecting " + size + " number of parameters but got " + actualParamsTypes.size()  + " instead.");
-//        }
-//
-//        for (int i = 0; i < size; i++) {
-//            if (!actualParamsTypes.get(i).equals(formalParamsTypes.get(i))) {
-//                throw new TypeCheckingException("Function " + id.getIdentifier() + ": expecting argument of type " + formalParamsTypes.get(i) + " but got " + actualParamsTypes.get(i) + " instead.");
-//            }
-//        }
-//
-//        return ((ArrowTypeNode) funType).getRet();
-//    }
+    @Override
+    public String codeGeneration() {
+        StringBuilder buffer = new StringBuilder();
+
+        ArrowTypeNode funType = (ArrowTypeNode) id.getStEntry().getType();
+        ArrayList<TypeNode> argsType = (ArrayList<TypeNode>) funType.getArgs();
+
+        // push actual params in reverse order
+        if (this.params != null && this.params.size() > 0){
+            for (int i = (this.params.size() - 1); i >= 0; i--){
+                DerExpNode par = (DerExpNode) this.params.get(i);
+                STEntry parEntry = par.getId().getStEntry();
+
+                // check if it's var; if so push var address
+                boolean isVar = (argsType.get(i) instanceof VarTypeNode);
+                if (isVar) {
+                    buffer.append("mv $al $fp").append("\n");
+
+                    for (int j = 0; j < id.getCurrNestingLevel() - parEntry.getNestingLevel(); j++) {
+                        buffer.append("lw $al 0($al)").append("\n");
+                    }
+                    buffer.append("mv $t1 $al\n");
+                    buffer.append("addi $t1 $t1 ").append(parEntry.getOffset() + 2).append("\n");
+                    buffer.append("push $t1\n");    // if var, push its address first
+                }
+                buffer.append(par.codeGeneration());
+                buffer.append("push $a0\n");
+            }
+        }
+
+        buffer.append("jal ").append(id.getIdentifier().toUpperCase(Locale.ROOT)).append("_ENTRY\n");
+
+        return buffer.toString();
+    }
+
+
 
     /**
      * Gets all the variables used as parameters or inside them.

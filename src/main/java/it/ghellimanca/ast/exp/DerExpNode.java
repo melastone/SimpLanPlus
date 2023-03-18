@@ -14,10 +14,16 @@ import java.util.List;
  */
 public class DerExpNode extends ExpNode {
 
+
+
     final IdNode id;
 
     public DerExpNode(IdNode id) {
         this.id = id;
+    }
+
+    public IdNode getId() {
+        return id;
     }
 
 

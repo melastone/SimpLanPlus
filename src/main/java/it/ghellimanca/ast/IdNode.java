@@ -18,6 +18,10 @@ public class IdNode implements Node {
 
 
 
+    private int currNestingLevel;
+
+
+
     public IdNode(String id) {
         this.id = id;
     }
@@ -36,6 +40,9 @@ public class IdNode implements Node {
         this.stEntry = stEntry;
     }
 
+    public int getCurrNestingLevel() {
+        return currNestingLevel;
+    }
 
     @Override
     public String toPrint(String indent) {
@@ -54,6 +61,7 @@ public class IdNode implements Node {
         ArrayList<SemanticWarning> err = new ArrayList<>();
 
         stEntry = env.lookup(id); // lookup has to return the type of the value that the id identifies
+        currNestingLevel = env.getNestingLevel();
 
         return err;
     }
@@ -66,5 +74,21 @@ public class IdNode implements Node {
         if (type instanceof VarTypeNode) type = ((VarTypeNode) type).getType();
 
         return type;
+    }
+
+    @Override
+    public String codeGeneration() {
+        StringBuilder buffer = new StringBuilder();
+        int idNestingLevel = stEntry.getNestingLevel();
+        int idOffset = stEntry.getOffset();
+
+        buffer.append("mv $al $fp").append("\n");
+
+        for (int i = 0; i < currNestingLevel - idNestingLevel; i++) {
+            buffer.append("lw $al 0($al)").append("\n");
+        }
+        buffer.append("lw $a0 ").append(idOffset + 2).append("($al)").append("\n");
+
+        return buffer.toString();
     }
 }

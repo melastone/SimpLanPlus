@@ -76,4 +76,17 @@ public class DecVarNode extends DeclarationNode {
         return type;
     }
 
+    @Override
+    public String codeGeneration() {
+        StringBuilder buff = new StringBuilder();
+
+        // check if it's init, then set value
+        if (exp != null) {
+            buff.append(exp.codeGeneration());
+            buff.append("sw $a0 ").append(id.getStEntry().getOffset() + 2).append("($fp)\n");
+        }
+
+        return buff.toString();
+    }
+
 }
