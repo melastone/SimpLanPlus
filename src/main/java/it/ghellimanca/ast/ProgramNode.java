@@ -12,9 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-// TODO: distinzione tra dichiarazioni di vars e di fun nella codegen????
-// TODO: aggiornare RA nella codegen una volta capito come
-// TODO: inserire comandi di chiusura del programma
 
 public class ProgramNode implements Node {
 
@@ -174,7 +171,15 @@ public class ProgramNode implements Node {
             }
         }
 
-        // is there anything we have to do??? setting fp and sp to memsize, for instance...
+        // restore registers and stack
+        buff.append("lw $fp 0($sp)\n");
+        buff.append("pop\n");   // pop olf $fp
+        buff.append("mv $ra 0($sp)\n");
+        buff.append("pop\n");   // pop RA
+        if (this.declarations != null) {
+            buff.append("addi $sp $sp").append(declarations.size()).append("\n");
+        }
+        buff.append("halt\n");
 
         return buff.toString();
     }

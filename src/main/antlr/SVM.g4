@@ -21,6 +21,7 @@ instruction : push
             | mv
             | b
             | beq
+            | label
             | jal
             | jr;
 
@@ -39,9 +40,10 @@ mv      : 'mv' dest=REG src=REG                        #move
 
 b       : 'b' dest=LABEL                            #branch
 beq     : 'beq' reg1=REG reg2=REG dest=LABEL        #branchIfEq
+label   : LABEL ':'                                 #label
 
 jal     : 'jal' dest=LABEL                          #jumpAndSaveRA
-jr      : 'jr'  dest=LABEL                          #jumpToLabel
+jr      : 'jr'  dest=REG                            #jumpToLabel
 
 
 fragment DIGIT  : '0'..'9';

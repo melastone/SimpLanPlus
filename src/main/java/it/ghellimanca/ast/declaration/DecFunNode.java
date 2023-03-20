@@ -1,5 +1,6 @@
 package it.ghellimanca.ast.declaration;
 
+import it.ghellimanca.ast.statement.StatementNode;
 import it.ghellimanca.ast.type.ArrowTypeNode;
 import it.ghellimanca.ast.type.VarTypeNode;
 import it.ghellimanca.semanticanalysis.*;
@@ -10,6 +11,7 @@ import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 
@@ -21,7 +23,6 @@ import java.util.stream.Collectors;
  * voidType is used in case the function is void.
  *
  * todo: aggiungi i controlli di subtyping per le regole di tipaggio (non sarebbero necessarie x questa grammatica, ma il prof le apprezza)
- * todo: stabilisci come viene utilizzato l'offset del corpo della funzione
  */
 public class DecFunNode extends DeclarationNode {
 
@@ -118,6 +119,9 @@ public class DecFunNode extends DeclarationNode {
         // saving current Sigma1 in order to verify whether if it changes or not
         List<Effect> oldSigma1 = localFunEntryCopy.getFunStatus().get(1);
 
+        // set reference to this function in all body's statements
+        body.setFunId(id.getIdentifier());
+
         // it will create a new scope with function body info only
         err.addAll(body.checkSemantics(env));
 
@@ -187,6 +191,11 @@ public class DecFunNode extends DeclarationNode {
     public String codeGeneration() {
         StringBuilder buff = new StringBuilder();
 
+        // creating jump label in order to ignore the following code
+        // it will be only used by the caller
+        String jumpLabel = id.getIdentifier() + "_JUMP";
+        buff.append("b ").append(jumpLabel).append('\n');
+
         buff.append(id.getIdentifier()).append("_ENTRY:\n");
 
         // allocate variable declarations
@@ -201,7 +210,12 @@ public class DecFunNode extends DeclarationNode {
         buff.append("push $fp\n");
         buff.append("mv $fp $sp\n");
 
-        buff.append(body.codeGeneration());
+        // generate code for body's statements
+        var funStatements = new ArrayList<>(body.getStatements());
+        funStatements.forEach(stm -> buff.append(stm.codeGeneration()));
+
+        // setting label for after-return code
+        buff.append(id.getIdentifier().toUpperCase(Locale.ROOT)).append("_END:\n");
 
         // update passed-by-reference variables values
         int nVar = 0, nArgs = 0;
@@ -227,6 +241,8 @@ public class DecFunNode extends DeclarationNode {
         buff.append("addi $sp $sp ").append(nArgs + nVar + nDecs).append('\n');
 
         buff.append("jr $ra\n");
+
+        buff.append(jumpLabel).append(":\n");
 
         return buff.toString();
     }

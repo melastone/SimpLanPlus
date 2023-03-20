@@ -155,8 +155,6 @@ public class SimpLanPlus {
                 for (SemanticWarning warning : semanticWarnings) {
                     System.err.println(warning);
                 }
-
-                System.exit(1);
             }
 
         } catch (MultipleDeclarationException | MissingDeclarationException e) {

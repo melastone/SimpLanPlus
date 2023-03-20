@@ -6,6 +6,7 @@ import it.ghellimanca.ast.exp.ExpNode;
 import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 /**
@@ -14,6 +15,7 @@ import java.util.ArrayList;
  * A return statement has the form:
  * 'return' (exp)?
  *
+ * todo: si potrebbe aggiungere il controllo x warning in caso di codice scritto dopo una return....
  */
 public class ReturnNode extends StatementNode {
 
@@ -74,7 +76,11 @@ public class ReturnNode extends StatementNode {
         if (exp != null) {
             buff.append(exp.codeGeneration());
         }
-        
+
+        // if there is code written after the return statement, it could affect $a0 status
+        // simply ignore it!
+        buff.append("b ").append(getFunId().toUpperCase(Locale.ROOT)).append("_END\n");
+
         return buff.toString();
     }
 }

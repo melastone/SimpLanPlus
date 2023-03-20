@@ -41,24 +41,29 @@ public class BlockNode extends StatementNode {
         return statements;
     }
 
+    public void setFunId(String funId){
+        for (StatementNode stm : statements) {
+            stm.setFunId(funId);
+        }
+    }
 
     @Override
     public String toPrint(String indent) {
-        String res = "\n" + indent + "BLOCK";
+        StringBuilder res = new StringBuilder("\n" + indent + "BLOCK");
 
         if (this.variableDeclarations != null) {
             for (DeclarationNode dec : variableDeclarations) {
-                res += dec.toPrint(indent + "\t");
+                res.append(dec.toPrint(indent + "\t"));
             }
         }
 
         if (this.statements != null) {
             for (StatementNode stat : statements) {
-                res += stat.toPrint(indent + "\t");
+                res.append(stat.toPrint(indent + "\t"));
             }
         }
 
-        return res;
+        return res.toString();
     }
 
 
@@ -184,7 +189,9 @@ public class BlockNode extends StatementNode {
         buff.append("lw $fp 0($sp)\n");     // restore old $fp
         buff.append("pop ;pop old $fp\n");
         buff.append("pop ;pop fake RA\n");
-        buff.append("addi $sp $sp").append(variableDeclarations.size()).append("\n");
+        if (this.variableDeclarations != null){
+            buff.append("addi $sp $sp").append(variableDeclarations.size()).append("\n");
+        }
 
         return buff.toString();
     }
