@@ -25,7 +25,7 @@ public class ValExpNode extends ExpNode {
     }
 
     @Override
-    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
         return new ArrayList<>();
     }
 
@@ -37,7 +37,7 @@ public class ValExpNode extends ExpNode {
     @Override
     public String codeGeneration() {
 
-        return "li $a0" + number + "\n";
+        return "li $a0 " + number + "\n";
     }
 
     @Override

@@ -10,7 +10,6 @@ public abstract class StatementNode implements Node {
 
     String funId;   // used by statements that belongs to the same function in order to have a reference to it
 
-
     public void setFunId(String funId) {
         this.funId = funId;
     }

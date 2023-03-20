@@ -54,7 +54,7 @@ public class ProgramNode implements Node {
 
 
     @Override
-    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
 
         ArrayList<SemanticWarning> err = new ArrayList<>();
         Map<String, STEntry> currentScope;
@@ -151,7 +151,7 @@ public class ProgramNode implements Node {
         // suppongo $sp e $fp già inizializzati a memsize (lo si fa nella vera e propria SVM)
 
         if (this.declarations != null) {
-            buff.append("subi $sp $sp").append(declarations.size()).append("\n");
+            buff.append("subi $sp $sp ").append(declarations.size()).append("\n");
         }
 
         buff.append("li $t0 0\n");    // using a fake RA
@@ -177,7 +177,7 @@ public class ProgramNode implements Node {
         buff.append("mv $ra 0($sp)\n");
         buff.append("pop\n");   // pop RA
         if (this.declarations != null) {
-            buff.append("addi $sp $sp").append(declarations.size()).append("\n");
+            buff.append("addi $sp $sp ").append(declarations.size()).append("\n");
         }
         buff.append("halt\n");
 

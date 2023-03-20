@@ -3,13 +3,13 @@
     Questo file possiamo usarlo per testare codice al volo.
     */
 
-    int a;
+    int a = 1;
 
-    void f() {
-        int x = 1; print x;
+    void f(var int x) {
+        int y = 1; print x;
     }
 
-    f();
+    f(a);
 
     /*
     n == 3

@@ -53,7 +53,7 @@ public class IteNode extends StatementNode {
 
 
     @Override
-    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
         ArrayList<SemanticWarning> err = new ArrayList<>();
 
         err.addAll(exp.checkSemantics(env));

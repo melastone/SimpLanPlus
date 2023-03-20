@@ -1,7 +1,6 @@
 package it.ghellimanca;
 
 import it.ghellimanca.ast.ProgramNode;
-import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.gen.SimpLanPlusLexer;
 import it.ghellimanca.gen.SimpLanPlusParser;
 import it.ghellimanca.semanticanalysis.*;
@@ -39,7 +38,20 @@ public class SimpLanPlus {
         System.out.println("Input file:\t" + filename);
 
         /* COMPILER */
+
         var assembly = compile(fileContent);
+
+        // Creating file object. Deleting errors.txt file if it exists
+        File file = new File(filename + ".svm");
+
+        file.delete();
+        file.createNewFile();
+
+        FileWriter writer = new FileWriter(file, true);
+        writer.write(assembly);
+
+        writer.flush();
+        writer.close();
     }
 
 
@@ -160,7 +172,7 @@ public class SimpLanPlus {
         } catch (MultipleDeclarationException | MissingDeclarationException e) {
             System.err.println("Semantic analysis error:\n" + e.getMessage());
             System.exit(1);
-        } catch (MissingInitializationException | ParametersCountException e) {
+        } catch (MissingInitializationException | ParametersException e) {
             System.err.println("Effect analysis error:\n" + e.getMessage());
             System.exit(1);
         }
@@ -186,7 +198,7 @@ public class SimpLanPlus {
 
         System.out.println("Assembling...");
 
-        return null;
+        return AST.codeGeneration();
 
     }
 

@@ -49,7 +49,7 @@ public class ReturnNode extends StatementNode {
 
 
     @Override
-    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
         if (this.exp != null) {
             return exp.checkSemantics(env);
         }
@@ -73,13 +73,15 @@ public class ReturnNode extends StatementNode {
     public String codeGeneration() {
         StringBuilder buff = new StringBuilder();
 
+        var funId = this.funId.toUpperCase();
+
         if (exp != null) {
             buff.append(exp.codeGeneration());
         }
 
         // if there is code written after the return statement, it could affect $a0 status
         // simply ignore it!
-        buff.append("b ").append(getFunId().toUpperCase(Locale.ROOT)).append("_END\n");
+        buff.append("b ").append(funId).append("_END\n");
 
         return buff.toString();
     }

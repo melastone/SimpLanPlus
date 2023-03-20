@@ -1,6 +1,5 @@
 package it.ghellimanca.ast.statement;
 
-import it.ghellimanca.ast.ArgNode;
 import it.ghellimanca.ast.exp.DerExpNode;
 import it.ghellimanca.ast.type.ArrowTypeNode;
 import it.ghellimanca.ast.type.VarTypeNode;
@@ -50,7 +49,7 @@ public class CallNode extends StatementNode {
     public String toString() { return toPrint("");}
 
     @Override
-    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
         ArrayList<SemanticWarning> err = new ArrayList<>();
 
         err.addAll(id.checkSemantics(env));
@@ -79,7 +78,7 @@ public class CallNode extends StatementNode {
             List<TypeNode> formalParamsTypes = ((ArrowTypeNode) funEntry.getType()).getArgs();
             int size = formalParamsTypes.size();
             if (params.size() != size) {
-                throw new ParametersCountException("Function " + id.getIdentifier() + ": expecting " + size + " number of parameters but got " + params.size()  + " instead.");
+                throw new ParametersException("Function " + id.getIdentifier() + ": expecting " + size + " number of parameters but got " + params.size()  + " instead.");
             }
 
             List<Effect> codomainStatus = funEntry.getFunStatus().get(1);
@@ -106,8 +105,12 @@ public class CallNode extends StatementNode {
                 }
             }
 
+            // check thtat params passed by reference are not in binary exp form and
             // set to init statuses of params initialized inside the function body
             for (int i : indexOfPassedByReference) {
+                if (!(params.get(i) instanceof DerExpNode)) {
+                    throw new ParametersException("Function " + id.getIdentifier() + ": parameter at " + i + " position should be a variable.");
+                }
                 if (initPars.get(i)){
                         IdNode u_iId = params.get(i).variables().get(0);
                         STEntry u_iEntry = env.safeLookup(u_iId.getIdentifier());
@@ -120,7 +123,7 @@ public class CallNode extends StatementNode {
 
             List<IdNode> varsInExpressions = IntStream
                     .range(0, params.size())
-                    .filter(i -> indexOfPassedByValue.contains(i))
+                    .filter(indexOfPassedByValue::contains)
                     .mapToObj(j -> params.get(j))
                     .flatMap(par -> par.variables().stream())
                     .collect(Collectors.toList());

@@ -1,6 +1,5 @@
 package it.ghellimanca.ast.declaration;
 
-import it.ghellimanca.ast.statement.StatementNode;
 import it.ghellimanca.ast.type.ArrowTypeNode;
 import it.ghellimanca.ast.type.VarTypeNode;
 import it.ghellimanca.semanticanalysis.*;
@@ -70,7 +69,7 @@ public class DecFunNode extends DeclarationNode {
 
 
     @Override
-    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersCountException {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
         ArrayList<SemanticWarning> err = new ArrayList<>();
 
         List<TypeNode> argsType = arguments.stream().map(ArgNode::getType).collect(Collectors.toList());
@@ -120,7 +119,7 @@ public class DecFunNode extends DeclarationNode {
         List<Effect> oldSigma1 = localFunEntryCopy.getFunStatus().get(1);
 
         // set reference to this function in all body's statements
-        body.setFunId(id.getIdentifier());
+        //body.setFunId(id.getIdentifier());
 
         // it will create a new scope with function body info only
         err.addAll(body.checkSemantics(env));
@@ -193,10 +192,10 @@ public class DecFunNode extends DeclarationNode {
 
         // creating jump label in order to ignore the following code
         // it will be only used by the caller
-        String jumpLabel = id.getIdentifier() + "_JUMP";
+        String jumpLabel = id.getIdentifier().toUpperCase() + "_JUMP";
         buff.append("b ").append(jumpLabel).append('\n');
 
-        buff.append(id.getIdentifier()).append("_ENTRY:\n");
+        buff.append(id.getIdentifier().toUpperCase()).append("_ENTRY:\n");
 
         // allocate variable declarations
         ArrayList<DecVarNode> decs = (ArrayList<DecVarNode>) body.getVariableDeclarations();
@@ -209,6 +208,9 @@ public class DecFunNode extends DeclarationNode {
         buff.append("push $ra\n");
         buff.append("push $fp\n");
         buff.append("mv $fp $sp\n");
+
+        // set reference to this function in all body's statements
+        body.setFunId(id.getIdentifier());
 
         // generate code for body's statements
         var funStatements = new ArrayList<>(body.getStatements());
