@@ -32,7 +32,7 @@ public class IntTypeNode extends TypeNode {
 
     @Override
     public String codeGeneration() {
-        return null;
+        return "";
     }
 
 }

@@ -16,10 +16,7 @@ public class IdNode implements Node {
     final private String id;
     private STEntry stEntry;
 
-
-
     private int currNestingLevel;
-
 
 
     public IdNode(String id) {
@@ -32,6 +29,14 @@ public class IdNode implements Node {
         return id;
     }
 
+    public int getCurrNestingLevel() {
+        return currNestingLevel;
+    }
+
+    public void setCurrNestingLevel(int currNestingLevel) {
+        this.currNestingLevel = currNestingLevel;
+    }
+
     public STEntry getStEntry() {
         return stEntry;
     }
@@ -40,9 +45,6 @@ public class IdNode implements Node {
         this.stEntry = stEntry;
     }
 
-    public int getCurrNestingLevel() {
-        return currNestingLevel;
-    }
 
     @Override
     public String toPrint(String indent) {

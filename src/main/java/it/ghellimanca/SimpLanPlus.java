@@ -52,6 +52,10 @@ public class SimpLanPlus {
 
         writer.flush();
         writer.close();
+
+        /* INTERPRETER */
+        //run(assembly);
+
     }
 
 
@@ -94,8 +98,6 @@ public class SimpLanPlus {
 
         // Visiting the tree and generating the AST
         ProgramNode AST = (ProgramNode) parseTreeVisitor.visitProgram(slpParser.program());
-//        AST.setMainBlock(); // The main block is special therefore just here a flag is set to signal this
-
 
         /* ERROR DETECTION */
 
@@ -157,7 +159,7 @@ public class SimpLanPlus {
         System.out.println("Semantic Analysis...");
 
 
-        // Checking for semantic errors
+        // Checking for semantic and effect analysis errors
         try {
             ArrayList<SemanticWarning> semanticWarnings = AST.checkSemantics(environment);
 
@@ -205,7 +207,13 @@ public class SimpLanPlus {
     /**
      * Handles the interpretation phase
      */
-    private static void run() {
+    private static void run(String assemblyCode) {
+
+        //VM lexer
+
+        //VM parser
+
+        //VM Interpreter
 
     }
 

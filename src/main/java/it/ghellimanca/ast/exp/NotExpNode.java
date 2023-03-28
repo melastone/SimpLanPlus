@@ -46,7 +46,6 @@ public class NotExpNode extends ExpNode {
 
     @Override
     public String codeGeneration() {
-
         return exp.codeGeneration() + "not $a0 $a0" + "\n";
     }
 

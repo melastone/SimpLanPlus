@@ -48,6 +48,6 @@ public class ArrowTypeNode extends TypeNode{
 
     @Override
     public String codeGeneration() {
-        return null;
+        return "";
     }
 }

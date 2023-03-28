@@ -32,7 +32,7 @@ public class BoolTypeNode extends TypeNode {
 
     @Override
     public String codeGeneration() {
-        return null;
+        return "";
     }
 }
 

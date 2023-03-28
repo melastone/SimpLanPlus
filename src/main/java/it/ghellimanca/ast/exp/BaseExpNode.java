@@ -39,7 +39,6 @@ public class BaseExpNode extends ExpNode {
 
     @Override
     public String codeGeneration() {
-
         return exp.codeGeneration();
     }
 

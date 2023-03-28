@@ -61,8 +61,6 @@ public class DerExpNode extends ExpNode {
 
     @Override
     public String codeGeneration() {
-        // non ho codice qui perché l'operazione di cercare il valore di x e metterlo in $0 già la fa idNode
-
         return id.codeGeneration();
     }
 

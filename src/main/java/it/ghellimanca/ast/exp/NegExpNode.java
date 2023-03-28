@@ -45,7 +45,6 @@ public class NegExpNode extends ExpNode {
 
     @Override
     public String codeGeneration() {
-
         return exp.codeGeneration() + "multi $a0 $a0 -1" + "\n";
     }
 

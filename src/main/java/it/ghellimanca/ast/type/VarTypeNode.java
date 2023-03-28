@@ -8,9 +8,12 @@ public class VarTypeNode extends TypeNode{
 
     final TypeNode type;
 
+
     public VarTypeNode(TypeNode type) {
         this.type = type;
     }
+
+
 
     public TypeNode getType() {
         return type;
@@ -21,16 +24,19 @@ public class VarTypeNode extends TypeNode{
         return "\n" + indent + "TYPE: " + "&" + type;
     }
 
-    @Override
-    public TypeNode typeCheck() { return null; }
-
-    @Override
-    public String codeGeneration() {
-        return null;
-    }
 
     @Override
     public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
         return new ArrayList<>();
+    }
+
+
+    @Override
+    public TypeNode typeCheck() { return null; }
+
+
+    @Override
+    public String codeGeneration() {
+        return "";
     }
 }
