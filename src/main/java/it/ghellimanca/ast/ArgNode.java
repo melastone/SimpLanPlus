@@ -10,7 +10,6 @@ import java.util.ArrayList;
  *
  * type ID | var type ID
  *
- * todo: inserire il riferimento esplicito nel caso di arg passati per riferimento
  */
 public class ArgNode implements Node {
 

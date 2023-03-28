@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Represents a binary expression left=exp op right=exp node in the AST.
  *
- * todo: sostituire le LABEL esplicite con lil gestore delle label, dopo averne deciso
+ * todo: sostituire le LABEL esplicite con il gestore delle label, dopo averne deciso
  */
 public class BinExpNode extends ExpNode {
 

@@ -41,7 +41,6 @@ public class Instruction {
         return argInt;
     }
 
-    //TODO check if it's necessary to initialize the arguments of the builder
     public static class InstructionBuilder {
         private String instruction;
         private String arg1 = null;
@@ -50,9 +49,6 @@ public class Instruction {
         private String arg3 = null;
         private int argInt = 0;
 
-        public InstructionBuilder(String instruction) {
-            this.instruction = instruction;
-        }
 
         public InstructionBuilder instruction(String instruction) {
             this.instruction = instruction;

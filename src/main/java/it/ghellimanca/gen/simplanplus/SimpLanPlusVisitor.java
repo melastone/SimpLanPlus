@@ -1,4 +1,4 @@
-package it.ghellimanca.gen;// Generated from /home/melania/Documents/UNI-BOH/1 ANNO/CI/progetto/SimpLanPlus/src/main/antlr/SimpLanPlus.g4 by ANTLR 4.9.2
+package it.ghellimanca.gen.simplanplus;// Generated from SimpLanPlus/src/main/antlr/SimpLanPlus.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**

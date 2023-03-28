@@ -174,7 +174,7 @@ public class ProgramNode implements Node {
         // restore registers and stack
         buff.append("lw $fp 0($sp)\n");
         buff.append("pop\n");   // pop olf $fp
-        buff.append("mv $ra 0($sp)\n");
+        buff.append("lw $ra 0($sp)\n");
         buff.append("pop\n");   // pop RA
         if (this.declarations != null) {
             buff.append("addi $sp $sp ").append(declarations.size()).append("\n");

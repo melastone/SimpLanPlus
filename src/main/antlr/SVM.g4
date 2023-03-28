@@ -1,6 +1,7 @@
 grammar SVM;
 
 @header {
+package it.ghellimanca.gen.svm;
 import java.util.HashMap;
 }
 
@@ -9,51 +10,69 @@ import java.util.HashMap;
 }
 
 program: instruction* ;
-instruction : push
-            | pop
-            | add
-            | addi
-            | sub
-            | subi
-            | lw
-            | li
-            | sw
-            | mv
-            | b
-            | beq
-            | label
-            | jal
-            | jr;
+instruction : push      #pushIntoStack
+            | pop       #popFromStack
+            | add   #sum
+            | addi  #addInteger
+            | sub   #subtraction
+            | subi  #subInt
+            | mult  #multiplication
+            | multi #multInt
+            | div   #division
+            | and   #logicAnd
+            | or    #logicOr
+            | not   #logicNot
+            | lw      #loadWord
+            | li      #loadInteger
+            | sw      #storeWord
+            | mv      #move
+            | b         #branchToLabel
+            | beq       #branchIfEq
+            | bleq      #branchIfMoreOrEqual
+            | jal       #jumpAndSaveRA
+            | jr        #jumpToRegister
+            | LABEL ':'     #label
+            | 'halt'        #halt
+            | 'print' src=REG   #print
+            ;
 
-push    : 'push' src=REG;                       #push
-pop     : 'pop';                                #pop
 
-add     : 'add' dest=REG reg1=REG reg2=REG;         #add
-addi    : 'addi' dest=REG reg1=REG val=NUMBER;      #addInt
-sub     : 'sub' dest=REG reg1=REG reg2=REG;         #sub
-subi    : 'subi' dest=REG reg1=REG val=NUMBER;      #subInt
+push    : 'push' src=REG;
+pop     : 'pop';
 
-lw      : 'lw' dest=REG offset=NUMBER '(' src=REG ')'; #loadWord
-li      : 'li' dest=REG val=NUMBER;                    #loadInteger
-sw      : 'sw' src=REG offset=NUMBER '(' dest=REG ')'; #storeWord
-mv      : 'mv' dest=REG src=REG                        #move
+add     : 'add' dest=REG reg1=REG reg2=REG;
+addi    : 'addi' dest=REG reg1=REG val=NUMBER;
+sub     : 'sub' dest=REG reg1=REG reg2=REG;
+subi    : 'subi' dest=REG reg1=REG val=NUMBER;
+mult     : 'mult' dest=REG reg1=REG reg2=REG;
+multi    : 'multi' dest=REG reg1=REG val=NUMBER;
+div     : 'div' dest=REG reg1=REG reg2=REG;
 
-b       : 'b' dest=LABEL                            #branch
-beq     : 'beq' reg1=REG reg2=REG dest=LABEL        #branchIfEq
-label   : LABEL ':'                                 #label
+and      : 'and' reg1=REG reg2=REG;
+or      : 'or' reg1=REG reg2=REG;
+not      : 'not' reg1=REG reg2=REG;
 
-jal     : 'jal' dest=LABEL                          #jumpAndSaveRA
-jr      : 'jr'  dest=REG                            #jumpToLabel
+lw      : 'lw' dest=REG offset=NUMBER '(' src=REG ')';
+li      : 'li' dest=REG val=NUMBER;
+sw      : 'sw' src=REG offset=NUMBER '(' dest=REG ')';
+mv      : 'mv' dest=REG src=REG;
+
+b       : 'b' dest=LABEL;
+beq     : 'beq' reg1=REG reg2=REG dest=LABEL;
+bleq     : 'bleq' reg1=REG reg2=REG dest=LABEL;
+
+jal     : 'jal' dest=LABEL;
+jr      : 'jr'  dest=REG;
 
 
 fragment DIGIT  : '0'..'9';
+NUMBER : '0' | ('-')? DIGIT;
 REG : '$'('t'DIGIT|'a0'|'ra'|'sp'|'fp'|'al');
 
 fragment CHAR : ('a'..'z'|'A'..'Z');
-LABEL : CHAR+;
+LABEL : CHAR+('_'CHAR+)*;
 
 // ESCAPE SEQUENCES
 WS  : ( '\t' | ' ' | '\r' | '\n' )+   -> skip;
 LINECOMMENTS 	: ';' (~('\n'|'\r'))* -> skip;
 
-ERR: . { errors.add("Invalid character: "+ getText()); } -> channel(HIDDEN);

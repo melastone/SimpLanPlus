@@ -17,14 +17,13 @@ import java.util.Map;
 /**
  * Node of the AST for a block
  *
- *todo: aggiorna la codegen in caso di aggiunta registri al RdA, o in caso si usi meglio il RA
+ *todo: aggiorna la codegen in caso si usi meglio il RA
  */
 public class BlockNode extends StatementNode {
 
     final private List<DecVarNode> variableDeclarations;
     final private List<StatementNode> statements;
 
-    private String funId;
     private boolean isFunctionBody;
 
 
@@ -51,7 +50,6 @@ public class BlockNode extends StatementNode {
 
     @Override
     public void setFunId(String funId){
-        this.funId = funId;
         for (StatementNode stm : statements) {
             stm.setFunId(funId);
         }

@@ -10,7 +10,6 @@ import java.util.List;
 /**
  * Represents the result of dereferencing something as a node in the AST.
  *
- * todo: capisci se la codeGen deve fare altro
  */
 public class DerExpNode extends ExpNode {
 

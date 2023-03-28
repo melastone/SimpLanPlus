@@ -1,8 +1,12 @@
 package it.ghellimanca;
 
 import it.ghellimanca.ast.ProgramNode;
-import it.ghellimanca.gen.SimpLanPlusLexer;
-import it.ghellimanca.gen.SimpLanPlusParser;
+import it.ghellimanca.gen.simplanplus.SimpLanPlusLexer;
+import it.ghellimanca.gen.simplanplus.SimpLanPlusParser;
+import it.ghellimanca.gen.svm.SVMLexer;
+import it.ghellimanca.gen.svm.SVMParser;
+import it.ghellimanca.interpreter.SVMInterpreter;
+import it.ghellimanca.interpreter.SVMPTVisitor;
 import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.MissingInitializationException;
@@ -21,6 +25,7 @@ import java.util.ArrayList;
  * This is the main class.
  * Implements both the compiler and interpreter.
  *
+ * todo: stampare gli errori lessicali/sintattici presenti nell'assebly
  */
 
 public class SimpLanPlus {
@@ -42,6 +47,9 @@ public class SimpLanPlus {
         var assembly = compile(fileContent);
 
         // Creating file object. Deleting errors.txt file if it exists
+        if (filename.indexOf(".") > 0) {
+            filename = filename.substring(0, filename.lastIndexOf("."));
+        }
         File file = new File(filename + ".svm");
 
         file.delete();
@@ -209,11 +217,49 @@ public class SimpLanPlus {
      */
     private static void run(String assemblyCode) {
 
-        //VM lexer
 
-        //VM parser
+        /* VM LEXER */
 
-        //VM Interpreter
+        // Instantiate the lexer
+        SVMLexer svmLexer = new SVMLexer(CharStreams.fromString(assemblyCode));
+        CommonTokenStream svmLexerTokens = new CommonTokenStream(svmLexer);
+
+        SimpLanPlusErrorListener svmErrorListenerLexer = new SimpLanPlusErrorListener();
+        svmLexer.removeErrorListeners();
+        svmLexer.addErrorListener(svmErrorListenerLexer);
+
+        // Checking for lexical errors.
+        if (svmErrorListenerLexer.getErrors().size() > 0) {
+            System.err.println("There are lexical errors in the generated Assembly code. It cannot compile.");
+            System.exit(1);
+        }
+
+
+        /* VM PARSER */
+
+        // Instantiate the parser
+        SVMParser svmParser = new SVMParser(svmLexerTokens);
+
+        SimpLanPlusErrorListener svmErrorListenerParser = new SimpLanPlusErrorListener();
+        svmParser.removeErrorListeners();
+        svmParser.addErrorListener(svmErrorListenerParser);
+
+         // Visiting the tree and generating the AST.
+        SVMPTVisitor svmVisitor = new SVMPTVisitor();
+        //var code = svmVisitor.visit(svmParser.program());
+
+
+        /* VM INTERPRETER */
+
+//        try {
+//            SVMInterpreter svmInterpreter = new SVMInterpreter(code, memsize);
+//            System.out.println("Program output (can be empty):");
+//            svmInterpreter.run(flags.debugcpu());
+//        } catch (MemoryAccessException | CodeSizeTooSmallException | UninitializedVariableException exc) {
+//            System.err.println("Error: " + exc.getMessage());
+//            System.exit(1);
+//        }
+
 
     }
 

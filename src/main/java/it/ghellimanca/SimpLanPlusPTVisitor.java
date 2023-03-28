@@ -7,11 +7,11 @@ import it.ghellimanca.ast.exp.*;
 import it.ghellimanca.ast.statement.*;
 import it.ghellimanca.ast.statement.CallNode;
 import it.ghellimanca.ast.type.*;
-import it.ghellimanca.gen.*;
 import it.ghellimanca.ast.*;
+import it.ghellimanca.gen.simplanplus.SimpLanPlusBaseVisitor;
+import it.ghellimanca.gen.simplanplus.SimpLanPlusParser;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +21,6 @@ import java.util.List;
  * Parse Tree Visitor.
  *
  * Extends SimpLanPlusBaseVisitor, empty implementation of SimpLanPlusVisitor Interface
- * @todo: improve the code where making several null controls
  *
  */
 public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
