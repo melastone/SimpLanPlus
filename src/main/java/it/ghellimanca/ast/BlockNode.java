@@ -24,11 +24,15 @@ public class BlockNode extends StatementNode {
     final private List<DecVarNode> variableDeclarations;
     final private List<StatementNode> statements;
 
+    private String funId;
+    private boolean isFunctionBody;
+
 
 
     public BlockNode(List<DecVarNode> variableDeclarations, List<StatementNode> statements) {
         this.variableDeclarations = variableDeclarations;
         this.statements = statements;
+        this.isFunctionBody = false;
     }
 
 
@@ -41,7 +45,13 @@ public class BlockNode extends StatementNode {
         return statements;
     }
 
+    public void setFunctionBody(boolean functionBody) {
+        isFunctionBody = functionBody;
+    }
+
+    @Override
     public void setFunId(String funId){
+        this.funId = funId;
         for (StatementNode stm : statements) {
             stm.setFunId(funId);
         }
@@ -79,7 +89,9 @@ public class BlockNode extends StatementNode {
         ArrayList<SemanticWarning> err = new ArrayList<>();
         Map<String, STEntry> currentScope;
 
-        env.newScope();
+        if (!isFunctionBody) {
+            env.newScope();
+        }
 
         if (this.variableDeclarations != null) {
             for (DeclarationNode dec : variableDeclarations) {
@@ -93,27 +105,31 @@ public class BlockNode extends StatementNode {
             }
         }
 
-        // CHECK ERRORS IN BLOCK FOR EFFECT ANALYSIS
-
-        // getting sigma_1'' from sigma'' = sigma_0'' ⋅ sigma_1''
-        currentScope = env.currentScope();
-
-        // for every x_i in dom(sigma_1'')
-        for (var id : currentScope.keySet()) {
-
-            var idEntry = currentScope.get(id);
-            var idStatus = idEntry.getVarStatus();
-
-            // sigma_1''(x) has to be <= USED otherwise there was an error
-            if (idStatus.equals(new Effect(Effect.ERROR))) {
-                throw new MissingInitializationException(id + " was used before initialization.");
-            } else if (idStatus.equals(new Effect(Effect.INIT)) || idStatus.equals(new Effect(Effect.DECLARED))) {
-                err.add(new SemanticWarning("Variable " + id + " was declared but never used."));
-            }
-        }
 
         // returning just sigma_0''
-        env.exitScope();
+        if (!isFunctionBody) {
+
+            // CHECK ERRORS IN BLOCK FOR EFFECT ANALYSIS
+            // getting sigma_1'' from sigma'' = sigma_0'' ⋅ sigma_1''
+            currentScope = env.currentScope();
+
+            // for every x_i in dom(sigma_1'')
+            for (var id : currentScope.keySet()) {
+
+                var idEntry = currentScope.get(id);
+                var idStatus = idEntry.getVarStatus();
+
+                // sigma_1''(x) has to be <= USED otherwise there was an error
+                if (idStatus.equals(new Effect(Effect.ERROR))) {
+                    throw new MissingInitializationException(id + " was used before initialization.");
+                } else if (idStatus.equals(new Effect(Effect.INIT)) || idStatus.equals(new Effect(Effect.DECLARED))) {
+                        err.add(new SemanticWarning("Variable " + id + " was declared but never used."));
+                }
+            }
+
+            env.exitScope();
+
+        }
 
         return err;
     }

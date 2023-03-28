@@ -4,7 +4,9 @@
     L'analisi degli effetti dovrebbe terminare con errore: nella chiamata di h(5,a,b,c) verrà fatto, sin dalla prima
     chiamata ricorsiva, un assegnamento di una variabile non inizializzata.
     L'algoritmo del punto fisso viene eseguito con successo, individuando come punto fisso [2,2,2,2].
-    L'errore deve essere sollevato dalla Invk-E, processata per l'ultima riga di codice.
+    L'errore viene sollevato dalla Invk-E, processata per l'ultima riga di codice.
+    Anche se la prima variabile in ordine temporale ad andare in stato di errore è la b (1 chiamata ricorsiva), l'analisi
+    degli effetti rileva lo stato di errore per a per prima. Questo perché fa una seq tra [0,0,1] e [3,3,2].
     */
 
     int a; int b; int c = 1 ;
@@ -15,6 +17,6 @@
             x = y ; h(n-1,y,z,x) ;
         }
     }
-     h(5,a,b,c) ;
+    h(5,a,b,c) ;
 
 }

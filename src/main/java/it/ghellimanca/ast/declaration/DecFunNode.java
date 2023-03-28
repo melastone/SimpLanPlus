@@ -78,6 +78,10 @@ public class DecFunNode extends DeclarationNode {
         id.setStEntry(env.addDeclaration(id.getIdentifier(), funType, Effect.INIT));
         // id.getStEntry().setFunNode(this);   // adding reference to this node in order to access arguments during call node effects analysis
 
+        body.setFunctionBody(true);
+        // set reference to this function in all body's statements
+        body.setFunId(id.getIdentifier());
+
         STEntry funEntryCopy = id.getStEntry();
 
         // build Sigma0 - domain of the function - and initPars
@@ -167,6 +171,24 @@ public class DecFunNode extends DeclarationNode {
         funEntryCopy.setInitPars(initPars);
         id.setStEntry(funEntryCopy);
 
+        // before popping current scope, check that there are no variables whose status are either error or not used
+        // getting sigma_1'' from sigma'' = sigma_0'' ⋅ sigma_1''
+        var currentScope = env.currentScope();
+
+        // for every x_i in dom(sigma_1'')
+        for (var varId : currentScope.keySet()) {
+
+            var idEntry = currentScope.get(varId);
+            var idStatus = idEntry.getVarStatus();
+
+            // sigma_1''(x) has to be <= USED otherwise there was an error
+            if (idStatus.equals(new Effect(Effect.ERROR))) {
+                throw new MissingInitializationException(varId + " was used before initialization.");
+            } else if (!varId.equals(id.getIdentifier()) && idStatus.equals(new Effect(Effect.INIT)) || idStatus.equals(new Effect(Effect.DECLARED))) {
+                    err.add(new SemanticWarning("Variable " + varId + " was declared but never used."));
+            }
+        }
+
         env.popScope();
 
         // update function STEntry
@@ -210,7 +232,7 @@ public class DecFunNode extends DeclarationNode {
         buff.append("mv $fp $sp\n");
 
         // set reference to this function in all body's statements
-        body.setFunId(id.getIdentifier());
+        //body.setFunId(id.getIdentifier());
 
         // generate code for body's declarations (only vars)
         decs.forEach(dec -> buff.append(dec.codeGeneration()));

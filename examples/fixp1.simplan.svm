@@ -11,7 +11,6 @@ push $ra
 push $fp
 mv $fp $sp
 mv $al $fp
-lw $al 0($al)
 lw $a0 2($al)
 push $a0
 li $a0 0
@@ -45,11 +44,9 @@ push $fp
 mv $fp $sp
 mv $al $fp
 lw $al 0($al)
-lw $al 0($al)
 lw $a0 2($al)
 push $a0
 mv $al $fp
-lw $al 0($al)
 lw $al 0($al)
 lw $a0 2($al)
 push $a0
