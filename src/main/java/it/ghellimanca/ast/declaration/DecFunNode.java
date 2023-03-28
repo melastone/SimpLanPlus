@@ -198,9 +198,9 @@ public class DecFunNode extends DeclarationNode {
         buff.append(id.getIdentifier().toUpperCase()).append("_ENTRY:\n");
 
         // allocate variable declarations
-        ArrayList<DecVarNode> decs = (ArrayList<DecVarNode>) body.getVariableDeclarations();
+        var decs = new ArrayList<>(body.getVariableDeclarations());
         int nDecs = 0;
-        if (decs != null && decs.size() > 0) {
+        if (decs.size() > 0) {
             nDecs = decs.size();
             buff.append("subi $sp $sp ").append(decs.size()).append('\n');
         }
@@ -211,6 +211,9 @@ public class DecFunNode extends DeclarationNode {
 
         // set reference to this function in all body's statements
         body.setFunId(id.getIdentifier());
+
+        // generate code for body's declarations (only vars)
+        decs.forEach(dec -> buff.append(dec.codeGeneration()));
 
         // generate code for body's statements
         var funStatements = new ArrayList<>(body.getStatements());
@@ -228,8 +231,8 @@ public class DecFunNode extends DeclarationNode {
                 if (isVar) {
                     nVar++;
                     int argOffset = arg.getId().getStEntry().getOffset();
-                    buff.append("lw $t1 ").append(argOffset + 2).append("($fp)\n");     // get its value
-                    buff.append("lw $t2 ").append(argOffset + 3).append("($fp)\n");     // get its address
+                    buff.append("lw $t1 ").append(argOffset + 2 + nDecs).append("($fp)\n");     // get its value
+                    buff.append("lw $t2 ").append(argOffset + 3 + nDecs).append("($fp)\n");     // get its address
                     buff.append("sw $t1 0($t2)\n");
                 }
             }
