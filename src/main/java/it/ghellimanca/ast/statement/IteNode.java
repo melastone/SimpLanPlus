@@ -51,6 +51,14 @@ public class IteNode extends StatementNode {
     @Override
     public String toString() { return toPrint("");}
 
+    @Override
+    public void setFunId(String funId){
+        stm1.setFunId(funId);
+        if (stm2 != null) {
+            stm2.setFunId(funId);
+        }
+    }
+
 
     @Override
     public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {

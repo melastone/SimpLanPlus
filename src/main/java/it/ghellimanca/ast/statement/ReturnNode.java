@@ -6,7 +6,6 @@ import it.ghellimanca.ast.exp.ExpNode;
 import it.ghellimanca.ast.type.TypeNode;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 
 /**
@@ -21,6 +20,8 @@ public class ReturnNode extends StatementNode {
 
     final private ExpNode exp;
 
+    private String funId;
+
 
 
     public ReturnNode() {
@@ -32,6 +33,11 @@ public class ReturnNode extends StatementNode {
         this.exp = exp;
     }
 
+
+
+    public void setFunId(String funId) {
+        this.funId = funId;
+    }
 
 
     @Override

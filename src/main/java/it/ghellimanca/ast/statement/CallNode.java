@@ -213,14 +213,14 @@ public class CallNode extends StatementNode {
         // push actual params in reverse order
         if (this.params != null && this.params.size() > 0){
             for (int i = (this.params.size() - 1); i >= 0; i--){
-                DerExpNode par = (DerExpNode) this.params.get(i);
-                STEntry parEntry = par.getId().getStEntry();
+                ExpNode par = (ExpNode) this.params.get(i);
 
                 // check if it's var; if so push var address
                 boolean isVar = (argsType.get(i) instanceof VarTypeNode);
                 if (isVar) {
                     buffer.append("mv $al $fp").append("\n");
 
+                    STEntry parEntry = par.variables().get(0).getStEntry();
                     for (int j = 0; j < id.getCurrNestingLevel() - parEntry.getNestingLevel(); j++) {
                         buffer.append("lw $al 0($al)").append("\n");
                     }

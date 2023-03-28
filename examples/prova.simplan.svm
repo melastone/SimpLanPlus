@@ -1,12 +1,12 @@
-subi $sp $sp2
+subi $sp $sp 2
 li $t0 0
 push $t0
 push $fp
 mv $fp $sp
-li $a01
+li $a0 1
 sw $a0 2($fp)
-b f_JUMP
-f_ENTRY:
+b F_JUMP
+F_ENTRY:
 subi $sp $sp 1
 push $ra
 push $fp
@@ -25,7 +25,7 @@ lw $ra 0($sp)
 pop
 addi $sp $sp 3
 jr $ra
-f_JUMP:
+F_JUMP:
 mv $al $fp
 mv $t1 $al
 addi $t1 $t1 2
@@ -38,5 +38,5 @@ lw $fp 0($sp)
 pop
 mv $ra 0($sp)
 pop
-addi $sp $sp2
+addi $sp $sp 2
 halt
