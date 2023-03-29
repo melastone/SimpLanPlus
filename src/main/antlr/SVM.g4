@@ -20,9 +20,9 @@ instruction : 'push' src=REG    #push
             | 'multi' dest=REG reg1=REG val=NUMBER  #multInt
             | 'div' dest=REG reg1=REG reg2=REG      #div
             | 'divi' dest=REG reg1=REG val=NUMBER   #divInt
-            | 'and' reg1=REG reg2=REG           #and
-            | 'or' reg1=REG reg2=REG            #or
-            | 'not' reg1=REG reg2=REG           #not
+            | 'and' dest=REG reg1=REG reg2=REG           #and
+            | 'or' dest=REG reg1=REG reg2=REG            #or
+            | 'not' dest=REG reg1=REG                    #not
             | 'lw' dest=REG offset=NUMBER '(' src=REG ')'      #loadWord
             | 'li' dest=REG val=NUMBER                         #loadInteger
             | 'sw' src=REG offset=NUMBER '(' dest=REG ')'      #storeWord
