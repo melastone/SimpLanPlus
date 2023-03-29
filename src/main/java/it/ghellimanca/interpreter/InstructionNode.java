@@ -11,7 +11,7 @@ package it.ghellimanca.interpreter;
  */
 public class InstructionNode {
 
-    private final String instruction;
+    private final String opCode;
     private final String arg1; // either label or register
     private final int offset;
     private final String arg2;
@@ -21,7 +21,7 @@ public class InstructionNode {
 
 
     public InstructionNode(InstructionBuilder instructionBuilder) {
-        this.instruction = instructionBuilder.instruction;
+        this.opCode = instructionBuilder.opCode;
         this.arg1 = instructionBuilder.arg1;
         this.offset = instructionBuilder.offset;
         this.arg2 = instructionBuilder.arg2;
@@ -31,8 +31,8 @@ public class InstructionNode {
 
 
 
-    public String getInstruction() {
-        return instruction;
+    public String getOpcode() {
+        return opCode;
     }
 
     public String getArg1() {
@@ -58,7 +58,7 @@ public class InstructionNode {
 
 
     public static class InstructionBuilder {
-        private String instruction;
+        private String opCode;
         private String arg1 = null;
         private int offset = 0;
         private String arg2 = null;
@@ -66,8 +66,8 @@ public class InstructionNode {
         private int argInt = 0;
 
 
-        public InstructionBuilder instruction(String instruction) {
-            this.instruction = instruction;
+        public InstructionBuilder opCode(String instruction) {
+            this.opCode = instruction;
             return this;
         }
 
