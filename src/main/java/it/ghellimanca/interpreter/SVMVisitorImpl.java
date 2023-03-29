@@ -225,22 +225,52 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 
     @Override
     public Void visitLoadWord(SVMParser.LoadWordContext ctx) {
-        return super.visitLoadWord(ctx);
+
+        code.add(new InstructionNode.InstructionBuilder()
+                .instruction("lw")
+                .arg1(ctx.dest.getText())
+                .offset(Integer.parseInt(ctx.offset.getText()))
+                .arg2(ctx.src.getText())
+                .build());
+
+        return null;
     }
 
     @Override
     public Void visitLoadInteger(SVMParser.LoadIntegerContext ctx) {
-        return super.visitLoadInteger(ctx);
+
+        code.add(new InstructionNode.InstructionBuilder()
+                .instruction("li")
+                .arg1(ctx.dest.getText())
+                .argInt(Integer.parseInt(ctx.val.getText()))
+                .build());
+
+        return null;
     }
 
     @Override
     public Void visitStoreWord(SVMParser.StoreWordContext ctx) {
-        return super.visitStoreWord(ctx);
+
+        code.add(new InstructionNode.InstructionBuilder()
+                .instruction("sw")
+                .arg1(ctx.src.getText())
+                .offset(Integer.parseInt(ctx.offset.getText()))
+                .arg2(ctx.dest.getText())
+                .build());
+
+        return null;
     }
 
     @Override
     public Void visitMove(SVMParser.MoveContext ctx) {
-        return super.visitMove(ctx);
+
+        code.add(new InstructionNode.InstructionBuilder()
+                .instruction("mv")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.src.getText())
+                .build());
+
+        return null;
     }
 
     @Override
@@ -298,6 +328,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
                 .instruction("jal")
                 .arg1(label)
                 .build());
+
         labelReferences.put(code.size(),label);
 
         return null;
@@ -305,7 +336,14 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 
     @Override
     public Void visitJumpToRegister(SVMParser.JumpToRegisterContext ctx) {
-        return super.visitJumpToRegister(ctx);
+
+        code.add(new InstructionNode.InstructionBuilder()
+                .instruction("jr")
+                .arg1(ctx.dest.getText())
+                .build()
+        );
+
+        return null;
     }
 
     @Override
@@ -318,12 +356,23 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 
     @Override
     public Void visitHalt(SVMParser.HaltContext ctx) {
-        return super.visitHalt(ctx);
+
+        code.add(new InstructionNode.InstructionBuilder()
+                .instruction("halt")
+                .build());
+
+        return null;
     }
 
     @Override
     public Void visitPrint(SVMParser.PrintContext ctx) {
-        return super.visitPrint(ctx);
+
+        code.add(new InstructionNode.InstructionBuilder()
+                .instruction("print")
+                .arg1(ctx.src.getText())
+                .build());
+
+        return null;
     }
 
 
