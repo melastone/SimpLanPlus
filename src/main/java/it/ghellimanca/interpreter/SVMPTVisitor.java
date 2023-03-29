@@ -56,7 +56,7 @@ public class SVMPTVisitor extends SVMBaseVisitor<List<Instruction>> {
         code.add(new Instruction.InstructionBuilder().instruction("addi")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.reg1.getText())
-                .arg3(ctx.NUMBER().getText())
+                .argInt(ctx.NUMBER().getText())
                 .build());
 
         return code;
@@ -83,7 +83,7 @@ public class SVMPTVisitor extends SVMBaseVisitor<List<Instruction>> {
         code.add(new Instruction.InstructionBuilder().instruction("subi")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.reg1.getText())
-                .arg3(ctx.NUMBER().getText())
+                .argInt(ctx.NUMBER().getText())
                 .build());
 
         return code;
@@ -110,7 +110,7 @@ public class SVMPTVisitor extends SVMBaseVisitor<List<Instruction>> {
         code.add(new Instruction.InstructionBuilder().instruction("multi")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.reg1.getText())
-                .arg3(ctx.NUMBER().getText())
+                .argInt(ctx.NUMBER().getText())
                 .build());
 
         return code;
@@ -137,7 +137,7 @@ public class SVMPTVisitor extends SVMBaseVisitor<List<Instruction>> {
         code.add(new Instruction.InstructionBuilder().instruction("divi")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.reg1.getText())
-                .arg3(ctx.NUMBER().getText())
+                .argInt(ctx.NUMBER().getText())
                 .build());
 
         return code;
