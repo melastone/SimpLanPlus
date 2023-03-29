@@ -73,57 +73,140 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 
     @Override
     public Void visitAdd(SVMParser.AddContext ctx) {
-        return super.visitAdd(ctx);
+
+        code.add(new InstructionNode.InstructionBuilder()
+                .instruction("addi")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .arg3(ctx.reg2.getText())
+                .build());
+
+        return null;
     }
 
     @Override
     public Void visitAddInt(SVMParser.AddIntContext ctx) {
-        return super.visitAddInt(ctx);
+
+        code.add(new InstructionNode.InstructionBuilder().instruction("addi")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .argInt(ctx.NUMBER().getText())
+                .build());
+
+        return null;
     }
 
     @Override
     public Void visitSub(SVMParser.SubContext ctx) {
-        return super.visitSub(ctx);
+
+        code.add(new InstructionNode.InstructionBuilder()
+                .instruction("sub")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .arg3(ctx.reg2.getText())
+                .build());
+
+        return null;
     }
 
     @Override
     public Void visitSubInt(SVMParser.SubIntContext ctx) {
-        return super.visitSubInt(ctx);
+
+        code.add(new InstructionNode.InstructionBuilder().instruction("subi")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .argInt(ctx.NUMBER().getText())
+                .build());
+
+        return null;
     }
 
     @Override
     public Void visitMult(SVMParser.MultContext ctx) {
-        return super.visitMult(ctx);
+
+        code.add(new InstructionNode.InstructionBuilder()
+                .instruction("mult")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .arg3(ctx.reg2.getText())
+                .build());
+
+        return null;
     }
 
     @Override
     public Void visitMultInt(SVMParser.MultIntContext ctx) {
-        return super.visitMultInt(ctx);
+
+        code.add(new InstructionNode.InstructionBuilder().instruction("multi")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .argInt(ctx.NUMBER().getText())
+                .build());
+
+        return null;
     }
 
     @Override
     public Void visitDiv(SVMParser.DivContext ctx) {
-        return super.visitDiv(ctx);
+
+        code.add(new InstructionNode.InstructionBuilder()
+                .instruction("div")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .arg3(ctx.reg2.getText())
+                .build());
+
+        return null;
     }
 
     @Override
     public Void visitDivInt(SVMParser.DivIntContext ctx) {
-        return super.visitDivInt(ctx);
+
+        code.add(new InstructionNode.InstructionBuilder().instruction("divi")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .argInt(ctx.NUMBER().getText())
+                .build());
+
+        return null;
     }
 
     @Override
     public Void visitAnd(SVMParser.AndContext ctx) {
-        return super.visitAnd(ctx);
+
+        code.add(new InstructionNode.InstructionBuilder()
+                .instruction("and")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .arg3(ctx.reg2.getText())
+                .build());
+
+        return null;
     }
 
     @Override
     public Void visitOr(SVMParser.OrContext ctx) {
-        return super.visitOr(ctx);
+
+        code.add(new InstructionNode.InstructionBuilder()
+                .instruction("or")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .arg3(ctx.reg2.getText())
+                .build());
+
+        return null;
     }
 
     @Override
     public Void visitNot(SVMParser.NotContext ctx) {
-        return super.visitNot(ctx);
+
+        code.add(new InstructionNode.InstructionBuilder()
+                .instruction("not")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .build());
+
+        return null;
     }
 
     @Override
