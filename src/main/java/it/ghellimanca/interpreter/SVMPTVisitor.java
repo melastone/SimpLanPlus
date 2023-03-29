@@ -145,17 +145,43 @@ public class SVMPTVisitor extends SVMBaseVisitor<List<Instruction>> {
 
     @Override
     public List<Instruction> visitAnd(SVMParser.AndContext ctx) {
-        return super.visitAnd(ctx);
+        List<Instruction> code = new ArrayList<>();
+
+        code.add(new Instruction.InstructionBuilder()
+                .instruction("and")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .arg3(ctx.reg2.getText())
+                .build());
+
+        return code;
     }
 
     @Override
     public List<Instruction> visitOr(SVMParser.OrContext ctx) {
-        return super.visitOr(ctx);
+        List<Instruction> code = new ArrayList<>();
+
+        code.add(new Instruction.InstructionBuilder()
+                .instruction("or")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .arg3(ctx.reg2.getText())
+                .build());
+
+        return code;
     }
 
     @Override
     public List<Instruction> visitNot(SVMParser.NotContext ctx) {
-        return super.visitNot(ctx);
+        List<Instruction> code = new ArrayList<>();
+
+        code.add(new Instruction.InstructionBuilder()
+                .instruction("not")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .build());
+
+        return code;
     }
 
     //------------------------------------------------------------------------------------------------
@@ -211,12 +237,25 @@ public class SVMPTVisitor extends SVMBaseVisitor<List<Instruction>> {
 
     @Override
     public List<Instruction> visitHalt(SVMParser.HaltContext ctx) {
-        return super.visitHalt(ctx);
+        List<Instruction> code = new ArrayList<>();
+
+        code.add(new Instruction.InstructionBuilder()
+                .instruction("halt")
+                .build());
+
+        return code;
     }
 
     @Override
     public List<Instruction> visitPrint(SVMParser.PrintContext ctx) {
-        return super.visitPrint(ctx);
+        List<Instruction> code = new ArrayList<>();
+
+        code.add(new Instruction.InstructionBuilder()
+                .instruction("print")
+                .arg1(ctx.REG().getText())
+                .build());
+
+        return code;
     }
 
 
