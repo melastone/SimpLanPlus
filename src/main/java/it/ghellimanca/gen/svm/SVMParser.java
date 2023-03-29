@@ -22,33 +22,31 @@ public class SVMParser extends Parser {
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
 		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
-		T__17=18, T__18=19, NUMBER=20, REG=21, LABEL=22, WS=23, LINECOMMENTS=24;
+		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
+		T__24=25, T__25=26, T__26=27, NUMBER=28, REG=29, LABEL=30, WS=31, LINECOMMENTS=32;
 	public static final int
-		RULE_program = 0, RULE_instruction = 1, RULE_push = 2, RULE_pop = 3, RULE_add = 4, 
-		RULE_addi = 5, RULE_sub = 6, RULE_subi = 7, RULE_lw = 8, RULE_li = 9, 
-		RULE_sw = 10, RULE_mv = 11, RULE_b = 12, RULE_beq = 13, RULE_jal = 14, 
-		RULE_jr = 15;
+		RULE_program = 0, RULE_instruction = 1;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"program", "instruction", "push", "pop", "add", "addi", "sub", "subi", 
-			"lw", "li", "sw", "mv", "b", "beq", "jal", "jr"
+			"program", "instruction"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "':'", "'halt'", "'print'", "'push'", "'pop'", "'add'", "'addi'", 
-			"'sub'", "'subi'", "'lw'", "'('", "')'", "'li'", "'sw'", "'mv'", "'b'", 
-			"'beq'", "'jal'", "'jr'"
+			null, "'push'", "'pop'", "'add'", "'addi'", "'sub'", "'subi'", "'mult'", 
+			"'multi'", "'div'", "'divi'", "'and'", "'or'", "'not'", "'lw'", "'('", 
+			"')'", "'li'", "'sw'", "'mv'", "'b'", "'beq'", "'bleq'", "'jal'", "'jr'", 
+			"':'", "'halt'", "'print'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, null, null, null, null, "NUMBER", "REG", "LABEL", 
-			"WS", "LINECOMMENTS"
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, null, null, null, "NUMBER", "REG", "LABEL", "WS", "LINECOMMENTS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -127,17 +125,17 @@ public class SVMParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(35);
+			setState(7);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__2) | (1L << T__3) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << T__9) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << T__16) | (1L << T__17) | (1L << T__18) | (1L << LABEL))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__2) | (1L << T__3) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << T__9) | (1L << T__10) | (1L << T__11) | (1L << T__12) | (1L << T__13) | (1L << T__16) | (1L << T__17) | (1L << T__18) | (1L << T__19) | (1L << T__20) | (1L << T__21) | (1L << T__22) | (1L << T__23) | (1L << T__25) | (1L << T__26) | (1L << LABEL))) != 0)) {
 				{
 				{
-				setState(32);
+				setState(4);
 				instruction();
 				}
 				}
-				setState(37);
+				setState(9);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -165,9 +163,210 @@ public class SVMParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+	public static class SubContext extends InstructionContext {
+		public Token dest;
+		public Token reg1;
+		public Token reg2;
+		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
+		public TerminalNode REG(int i) {
+			return getToken(SVMParser.REG, i);
+		}
+		public SubContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitSub(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class MultContext extends InstructionContext {
+		public Token dest;
+		public Token reg1;
+		public Token reg2;
+		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
+		public TerminalNode REG(int i) {
+			return getToken(SVMParser.REG, i);
+		}
+		public MultContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitMult(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class MultIntContext extends InstructionContext {
+		public Token dest;
+		public Token reg1;
+		public Token val;
+		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
+		public TerminalNode REG(int i) {
+			return getToken(SVMParser.REG, i);
+		}
+		public TerminalNode NUMBER() { return getToken(SVMParser.NUMBER, 0); }
+		public MultIntContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitMultInt(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class BranchToLabelContext extends InstructionContext {
+		public Token dest;
+		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
+		public BranchToLabelContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitBranchToLabel(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class PopContext extends InstructionContext {
+		public PopContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitPop(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class DivContext extends InstructionContext {
+		public Token dest;
+		public Token reg1;
+		public Token reg2;
+		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
+		public TerminalNode REG(int i) {
+			return getToken(SVMParser.REG, i);
+		}
+		public DivContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitDiv(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class StoreWordContext extends InstructionContext {
+		public Token src;
+		public Token offset;
+		public Token dest;
+		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
+		public TerminalNode REG(int i) {
+			return getToken(SVMParser.REG, i);
+		}
+		public TerminalNode NUMBER() { return getToken(SVMParser.NUMBER, 0); }
+		public StoreWordContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitStoreWord(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class NotContext extends InstructionContext {
+		public Token reg1;
+		public Token reg2;
+		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
+		public TerminalNode REG(int i) {
+			return getToken(SVMParser.REG, i);
+		}
+		public NotContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitNot(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class LoadWordContext extends InstructionContext {
+		public Token dest;
+		public Token offset;
+		public Token src;
+		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
+		public TerminalNode REG(int i) {
+			return getToken(SVMParser.REG, i);
+		}
+		public TerminalNode NUMBER() { return getToken(SVMParser.NUMBER, 0); }
+		public LoadWordContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitLoadWord(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class SubIntContext extends InstructionContext {
+		public Token dest;
+		public Token reg1;
+		public Token val;
+		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
+		public TerminalNode REG(int i) {
+			return getToken(SVMParser.REG, i);
+		}
+		public TerminalNode NUMBER() { return getToken(SVMParser.NUMBER, 0); }
+		public SubIntContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitSubInt(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class BranchIfMoreEqualContext extends InstructionContext {
+		public Token reg1;
+		public Token reg2;
+		public Token dest;
+		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
+		public TerminalNode REG(int i) {
+			return getToken(SVMParser.REG, i);
+		}
+		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
+		public BranchIfMoreEqualContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitBranchIfMoreEqual(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class AndContext extends InstructionContext {
+		public Token reg1;
+		public Token reg2;
+		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
+		public TerminalNode REG(int i) {
+			return getToken(SVMParser.REG, i);
+		}
+		public AndContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitAnd(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class LoadIntegerContext extends InstructionContext {
+		public Token dest;
+		public Token val;
+		public TerminalNode REG() { return getToken(SVMParser.REG, 0); }
+		public TerminalNode NUMBER() { return getToken(SVMParser.NUMBER, 0); }
+		public LoadIntegerContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitLoadInteger(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class AddContext extends InstructionContext {
+		public Token dest;
+		public Token reg1;
+		public Token reg2;
+		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
+		public TerminalNode REG(int i) {
+			return getToken(SVMParser.REG, i);
+		}
+		public AddContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitAdd(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class MoveContext extends InstructionContext {
-		public MvContext mv() {
-			return getRuleContext(MvContext.class,0);
+		public Token dest;
+		public Token src;
+		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
+		public TerminalNode REG(int i) {
+			return getToken(SVMParser.REG, i);
 		}
 		public MoveContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
@@ -176,10 +375,23 @@ public class SVMParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class JumpAndSaveRAContext extends InstructionContext {
-		public JalContext jal() {
-			return getRuleContext(JalContext.class,0);
+	public static class OrContext extends InstructionContext {
+		public Token reg1;
+		public Token reg2;
+		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
+		public TerminalNode REG(int i) {
+			return getToken(SVMParser.REG, i);
 		}
+		public OrContext(InstructionContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitOr(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class JumpAndSaveRAContext extends InstructionContext {
+		public Token dest;
+		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
 		public JumpAndSaveRAContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
@@ -188,57 +400,12 @@ public class SVMParser extends Parser {
 		}
 	}
 	public static class JumpToRegisterContext extends InstructionContext {
-		public JrContext jr() {
-			return getRuleContext(JrContext.class,0);
-		}
+		public Token dest;
+		public TerminalNode REG() { return getToken(SVMParser.REG, 0); }
 		public JumpToRegisterContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitJumpToRegister(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class SubtractionContext extends InstructionContext {
-		public SubContext sub() {
-			return getRuleContext(SubContext.class,0);
-		}
-		public SubtractionContext(InstructionContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitSubtraction(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class BranchIfEqContext extends InstructionContext {
-		public BeqContext beq() {
-			return getRuleContext(BeqContext.class,0);
-		}
-		public BranchIfEqContext(InstructionContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitBranchIfEq(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class SumContext extends InstructionContext {
-		public AddContext add() {
-			return getRuleContext(AddContext.class,0);
-		}
-		public SumContext(InstructionContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitSum(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class BranchToLabelContext extends InstructionContext {
-		public BContext b() {
-			return getRuleContext(BContext.class,0);
-		}
-		public BranchToLabelContext(InstructionContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitBranchToLabel(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -251,36 +418,13 @@ public class SVMParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class AddIntegerContext extends InstructionContext {
-		public AddiContext addi() {
-			return getRuleContext(AddiContext.class,0);
-		}
-		public AddIntegerContext(InstructionContext ctx) { copyFrom(ctx); }
+	public static class PushContext extends InstructionContext {
+		public Token src;
+		public TerminalNode REG() { return getToken(SVMParser.REG, 0); }
+		public PushContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitAddInteger(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class PushIntoStackContext extends InstructionContext {
-		public PushContext push() {
-			return getRuleContext(PushContext.class,0);
-		}
-		public PushIntoStackContext(InstructionContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitPushIntoStack(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class StoreWordContext extends InstructionContext {
-		public SwContext sw() {
-			return getRuleContext(SwContext.class,0);
-		}
-		public StoreWordContext(InstructionContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitStoreWord(this);
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitPush(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -302,47 +446,51 @@ public class SVMParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class LoadWordContext extends InstructionContext {
-		public LwContext lw() {
-			return getRuleContext(LwContext.class,0);
+	public static class BranchIfEqualContext extends InstructionContext {
+		public Token reg1;
+		public Token reg2;
+		public Token dest;
+		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
+		public TerminalNode REG(int i) {
+			return getToken(SVMParser.REG, i);
 		}
-		public LoadWordContext(InstructionContext ctx) { copyFrom(ctx); }
+		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
+		public BranchIfEqualContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitLoadWord(this);
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitBranchIfEqual(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class SubIntContext extends InstructionContext {
-		public SubiContext subi() {
-			return getRuleContext(SubiContext.class,0);
+	public static class AddIntContext extends InstructionContext {
+		public Token dest;
+		public Token reg1;
+		public Token val;
+		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
+		public TerminalNode REG(int i) {
+			return getToken(SVMParser.REG, i);
 		}
-		public SubIntContext(InstructionContext ctx) { copyFrom(ctx); }
+		public TerminalNode NUMBER() { return getToken(SVMParser.NUMBER, 0); }
+		public AddIntContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitSubInt(this);
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitAddInt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class PopFromStackContext extends InstructionContext {
-		public PopContext pop() {
-			return getRuleContext(PopContext.class,0);
+	public static class DivIntContext extends InstructionContext {
+		public Token dest;
+		public Token reg1;
+		public Token val;
+		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
+		public TerminalNode REG(int i) {
+			return getToken(SVMParser.REG, i);
 		}
-		public PopFromStackContext(InstructionContext ctx) { copyFrom(ctx); }
+		public TerminalNode NUMBER() { return getToken(SVMParser.NUMBER, 0); }
+		public DivIntContext(InstructionContext ctx) { copyFrom(ctx); }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitPopFromStack(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class LoadIntegerContext extends InstructionContext {
-		public LiContext li() {
-			return getRuleContext(LiContext.class,0);
-		}
-		public LoadIntegerContext(InstructionContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitLoadInteger(this);
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitDivInt(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -351,146 +499,318 @@ public class SVMParser extends Parser {
 		InstructionContext _localctx = new InstructionContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_instruction);
 		try {
-			setState(57);
+			setState(91);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case T__3:
-				_localctx = new PushIntoStackContext(_localctx);
+			case T__0:
+				_localctx = new PushContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(38);
-				push();
-				}
-				break;
-			case T__4:
-				_localctx = new PopFromStackContext(_localctx);
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(39);
-				pop();
-				}
-				break;
-			case T__5:
-				_localctx = new SumContext(_localctx);
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(40);
-				add();
-				}
-				break;
-			case T__6:
-				_localctx = new AddIntegerContext(_localctx);
-				enterOuterAlt(_localctx, 4);
-				{
-				setState(41);
-				addi();
-				}
-				break;
-			case T__7:
-				_localctx = new SubtractionContext(_localctx);
-				enterOuterAlt(_localctx, 5);
-				{
-				setState(42);
-				sub();
-				}
-				break;
-			case T__8:
-				_localctx = new SubIntContext(_localctx);
-				enterOuterAlt(_localctx, 6);
-				{
-				setState(43);
-				subi();
-				}
-				break;
-			case T__9:
-				_localctx = new LoadWordContext(_localctx);
-				enterOuterAlt(_localctx, 7);
-				{
-				setState(44);
-				lw();
-				}
-				break;
-			case T__12:
-				_localctx = new LoadIntegerContext(_localctx);
-				enterOuterAlt(_localctx, 8);
-				{
-				setState(45);
-				li();
-				}
-				break;
-			case T__13:
-				_localctx = new StoreWordContext(_localctx);
-				enterOuterAlt(_localctx, 9);
-				{
-				setState(46);
-				sw();
-				}
-				break;
-			case T__14:
-				_localctx = new MoveContext(_localctx);
-				enterOuterAlt(_localctx, 10);
-				{
-				setState(47);
-				mv();
-				}
-				break;
-			case T__15:
-				_localctx = new BranchToLabelContext(_localctx);
-				enterOuterAlt(_localctx, 11);
-				{
-				setState(48);
-				b();
-				}
-				break;
-			case T__16:
-				_localctx = new BranchIfEqContext(_localctx);
-				enterOuterAlt(_localctx, 12);
-				{
-				setState(49);
-				beq();
-				}
-				break;
-			case T__17:
-				_localctx = new JumpAndSaveRAContext(_localctx);
-				enterOuterAlt(_localctx, 13);
-				{
-				setState(50);
-				jal();
-				}
-				break;
-			case T__18:
-				_localctx = new JumpToRegisterContext(_localctx);
-				enterOuterAlt(_localctx, 14);
-				{
-				setState(51);
-				jr();
-				}
-				break;
-			case LABEL:
-				_localctx = new LabelContext(_localctx);
-				enterOuterAlt(_localctx, 15);
-				{
-				setState(52);
-				match(LABEL);
-				setState(53);
+				setState(10);
 				match(T__0);
+				setState(11);
+				((PushContext)_localctx).src = match(REG);
 				}
 				break;
 			case T__1:
-				_localctx = new HaltContext(_localctx);
-				enterOuterAlt(_localctx, 16);
+				_localctx = new PopContext(_localctx);
+				enterOuterAlt(_localctx, 2);
 				{
-				setState(54);
+				setState(12);
 				match(T__1);
 				}
 				break;
 			case T__2:
-				_localctx = new PrintContext(_localctx);
+				_localctx = new AddContext(_localctx);
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(13);
+				match(T__2);
+				setState(14);
+				((AddContext)_localctx).dest = match(REG);
+				setState(15);
+				((AddContext)_localctx).reg1 = match(REG);
+				setState(16);
+				((AddContext)_localctx).reg2 = match(REG);
+				}
+				break;
+			case T__3:
+				_localctx = new AddIntContext(_localctx);
+				enterOuterAlt(_localctx, 4);
+				{
+				setState(17);
+				match(T__3);
+				setState(18);
+				((AddIntContext)_localctx).dest = match(REG);
+				setState(19);
+				((AddIntContext)_localctx).reg1 = match(REG);
+				setState(20);
+				((AddIntContext)_localctx).val = match(NUMBER);
+				}
+				break;
+			case T__4:
+				_localctx = new SubContext(_localctx);
+				enterOuterAlt(_localctx, 5);
+				{
+				setState(21);
+				match(T__4);
+				setState(22);
+				((SubContext)_localctx).dest = match(REG);
+				setState(23);
+				((SubContext)_localctx).reg1 = match(REG);
+				setState(24);
+				((SubContext)_localctx).reg2 = match(REG);
+				}
+				break;
+			case T__5:
+				_localctx = new SubIntContext(_localctx);
+				enterOuterAlt(_localctx, 6);
+				{
+				setState(25);
+				match(T__5);
+				setState(26);
+				((SubIntContext)_localctx).dest = match(REG);
+				setState(27);
+				((SubIntContext)_localctx).reg1 = match(REG);
+				setState(28);
+				((SubIntContext)_localctx).val = match(NUMBER);
+				}
+				break;
+			case T__6:
+				_localctx = new MultContext(_localctx);
+				enterOuterAlt(_localctx, 7);
+				{
+				setState(29);
+				match(T__6);
+				setState(30);
+				((MultContext)_localctx).dest = match(REG);
+				setState(31);
+				((MultContext)_localctx).reg1 = match(REG);
+				setState(32);
+				((MultContext)_localctx).reg2 = match(REG);
+				}
+				break;
+			case T__7:
+				_localctx = new MultIntContext(_localctx);
+				enterOuterAlt(_localctx, 8);
+				{
+				setState(33);
+				match(T__7);
+				setState(34);
+				((MultIntContext)_localctx).dest = match(REG);
+				setState(35);
+				((MultIntContext)_localctx).reg1 = match(REG);
+				setState(36);
+				((MultIntContext)_localctx).val = match(NUMBER);
+				}
+				break;
+			case T__8:
+				_localctx = new DivContext(_localctx);
+				enterOuterAlt(_localctx, 9);
+				{
+				setState(37);
+				match(T__8);
+				setState(38);
+				((DivContext)_localctx).dest = match(REG);
+				setState(39);
+				((DivContext)_localctx).reg1 = match(REG);
+				setState(40);
+				((DivContext)_localctx).reg2 = match(REG);
+				}
+				break;
+			case T__9:
+				_localctx = new DivIntContext(_localctx);
+				enterOuterAlt(_localctx, 10);
+				{
+				setState(41);
+				match(T__9);
+				setState(42);
+				((DivIntContext)_localctx).dest = match(REG);
+				setState(43);
+				((DivIntContext)_localctx).reg1 = match(REG);
+				setState(44);
+				((DivIntContext)_localctx).val = match(NUMBER);
+				}
+				break;
+			case T__10:
+				_localctx = new AndContext(_localctx);
+				enterOuterAlt(_localctx, 11);
+				{
+				setState(45);
+				match(T__10);
+				setState(46);
+				((AndContext)_localctx).reg1 = match(REG);
+				setState(47);
+				((AndContext)_localctx).reg2 = match(REG);
+				}
+				break;
+			case T__11:
+				_localctx = new OrContext(_localctx);
+				enterOuterAlt(_localctx, 12);
+				{
+				setState(48);
+				match(T__11);
+				setState(49);
+				((OrContext)_localctx).reg1 = match(REG);
+				setState(50);
+				((OrContext)_localctx).reg2 = match(REG);
+				}
+				break;
+			case T__12:
+				_localctx = new NotContext(_localctx);
+				enterOuterAlt(_localctx, 13);
+				{
+				setState(51);
+				match(T__12);
+				setState(52);
+				((NotContext)_localctx).reg1 = match(REG);
+				setState(53);
+				((NotContext)_localctx).reg2 = match(REG);
+				}
+				break;
+			case T__13:
+				_localctx = new LoadWordContext(_localctx);
+				enterOuterAlt(_localctx, 14);
+				{
+				setState(54);
+				match(T__13);
+				setState(55);
+				((LoadWordContext)_localctx).dest = match(REG);
+				setState(56);
+				((LoadWordContext)_localctx).offset = match(NUMBER);
+				setState(57);
+				match(T__14);
+				setState(58);
+				((LoadWordContext)_localctx).src = match(REG);
+				setState(59);
+				match(T__15);
+				}
+				break;
+			case T__16:
+				_localctx = new LoadIntegerContext(_localctx);
+				enterOuterAlt(_localctx, 15);
+				{
+				setState(60);
+				match(T__16);
+				setState(61);
+				((LoadIntegerContext)_localctx).dest = match(REG);
+				setState(62);
+				((LoadIntegerContext)_localctx).val = match(NUMBER);
+				}
+				break;
+			case T__17:
+				_localctx = new StoreWordContext(_localctx);
+				enterOuterAlt(_localctx, 16);
+				{
+				setState(63);
+				match(T__17);
+				setState(64);
+				((StoreWordContext)_localctx).src = match(REG);
+				setState(65);
+				((StoreWordContext)_localctx).offset = match(NUMBER);
+				setState(66);
+				match(T__14);
+				setState(67);
+				((StoreWordContext)_localctx).dest = match(REG);
+				setState(68);
+				match(T__15);
+				}
+				break;
+			case T__18:
+				_localctx = new MoveContext(_localctx);
 				enterOuterAlt(_localctx, 17);
 				{
-				setState(55);
-				match(T__2);
-				setState(56);
+				setState(69);
+				match(T__18);
+				setState(70);
+				((MoveContext)_localctx).dest = match(REG);
+				setState(71);
+				((MoveContext)_localctx).src = match(REG);
+				}
+				break;
+			case T__19:
+				_localctx = new BranchToLabelContext(_localctx);
+				enterOuterAlt(_localctx, 18);
+				{
+				setState(72);
+				match(T__19);
+				setState(73);
+				((BranchToLabelContext)_localctx).dest = match(LABEL);
+				}
+				break;
+			case T__20:
+				_localctx = new BranchIfEqualContext(_localctx);
+				enterOuterAlt(_localctx, 19);
+				{
+				setState(74);
+				match(T__20);
+				setState(75);
+				((BranchIfEqualContext)_localctx).reg1 = match(REG);
+				setState(76);
+				((BranchIfEqualContext)_localctx).reg2 = match(REG);
+				setState(77);
+				((BranchIfEqualContext)_localctx).dest = match(LABEL);
+				}
+				break;
+			case T__21:
+				_localctx = new BranchIfMoreEqualContext(_localctx);
+				enterOuterAlt(_localctx, 20);
+				{
+				setState(78);
+				match(T__21);
+				setState(79);
+				((BranchIfMoreEqualContext)_localctx).reg1 = match(REG);
+				setState(80);
+				((BranchIfMoreEqualContext)_localctx).reg2 = match(REG);
+				setState(81);
+				((BranchIfMoreEqualContext)_localctx).dest = match(LABEL);
+				}
+				break;
+			case T__22:
+				_localctx = new JumpAndSaveRAContext(_localctx);
+				enterOuterAlt(_localctx, 21);
+				{
+				setState(82);
+				match(T__22);
+				setState(83);
+				((JumpAndSaveRAContext)_localctx).dest = match(LABEL);
+				}
+				break;
+			case T__23:
+				_localctx = new JumpToRegisterContext(_localctx);
+				enterOuterAlt(_localctx, 22);
+				{
+				setState(84);
+				match(T__23);
+				setState(85);
+				((JumpToRegisterContext)_localctx).dest = match(REG);
+				}
+				break;
+			case LABEL:
+				_localctx = new LabelContext(_localctx);
+				enterOuterAlt(_localctx, 23);
+				{
+				setState(86);
+				match(LABEL);
+				setState(87);
+				match(T__24);
+				}
+				break;
+			case T__25:
+				_localctx = new HaltContext(_localctx);
+				enterOuterAlt(_localctx, 24);
+				{
+				setState(88);
+				match(T__25);
+				}
+				break;
+			case T__26:
+				_localctx = new PrintContext(_localctx);
+				enterOuterAlt(_localctx, 25);
+				{
+				setState(89);
+				match(T__26);
+				setState(90);
 				((PrintContext)_localctx).src = match(REG);
 				}
 				break;
@@ -509,636 +829,34 @@ public class SVMParser extends Parser {
 		return _localctx;
 	}
 
-	public static class PushContext extends ParserRuleContext {
-		public Token src;
-		public TerminalNode REG() { return getToken(SVMParser.REG, 0); }
-		public PushContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_push; }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitPush(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final PushContext push() throws RecognitionException {
-		PushContext _localctx = new PushContext(_ctx, getState());
-		enterRule(_localctx, 4, RULE_push);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(59);
-			match(T__3);
-			setState(60);
-			((PushContext)_localctx).src = match(REG);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class PopContext extends ParserRuleContext {
-		public PopContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_pop; }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitPop(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final PopContext pop() throws RecognitionException {
-		PopContext _localctx = new PopContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_pop);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(62);
-			match(T__4);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class AddContext extends ParserRuleContext {
-		public Token dest;
-		public Token reg1;
-		public Token reg2;
-		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
-		public TerminalNode REG(int i) {
-			return getToken(SVMParser.REG, i);
-		}
-		public AddContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_add; }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitAdd(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final AddContext add() throws RecognitionException {
-		AddContext _localctx = new AddContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_add);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(64);
-			match(T__5);
-			setState(65);
-			((AddContext)_localctx).dest = match(REG);
-			setState(66);
-			((AddContext)_localctx).reg1 = match(REG);
-			setState(67);
-			((AddContext)_localctx).reg2 = match(REG);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class AddiContext extends ParserRuleContext {
-		public Token dest;
-		public Token reg1;
-		public Token val;
-		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
-		public TerminalNode REG(int i) {
-			return getToken(SVMParser.REG, i);
-		}
-		public TerminalNode NUMBER() { return getToken(SVMParser.NUMBER, 0); }
-		public AddiContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_addi; }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitAddi(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final AddiContext addi() throws RecognitionException {
-		AddiContext _localctx = new AddiContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_addi);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(69);
-			match(T__6);
-			setState(70);
-			((AddiContext)_localctx).dest = match(REG);
-			setState(71);
-			((AddiContext)_localctx).reg1 = match(REG);
-			setState(72);
-			((AddiContext)_localctx).val = match(NUMBER);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class SubContext extends ParserRuleContext {
-		public Token dest;
-		public Token reg1;
-		public Token reg2;
-		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
-		public TerminalNode REG(int i) {
-			return getToken(SVMParser.REG, i);
-		}
-		public SubContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_sub; }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitSub(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final SubContext sub() throws RecognitionException {
-		SubContext _localctx = new SubContext(_ctx, getState());
-		enterRule(_localctx, 12, RULE_sub);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(74);
-			match(T__7);
-			setState(75);
-			((SubContext)_localctx).dest = match(REG);
-			setState(76);
-			((SubContext)_localctx).reg1 = match(REG);
-			setState(77);
-			((SubContext)_localctx).reg2 = match(REG);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class SubiContext extends ParserRuleContext {
-		public Token dest;
-		public Token reg1;
-		public Token val;
-		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
-		public TerminalNode REG(int i) {
-			return getToken(SVMParser.REG, i);
-		}
-		public TerminalNode NUMBER() { return getToken(SVMParser.NUMBER, 0); }
-		public SubiContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_subi; }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitSubi(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final SubiContext subi() throws RecognitionException {
-		SubiContext _localctx = new SubiContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_subi);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(79);
-			match(T__8);
-			setState(80);
-			((SubiContext)_localctx).dest = match(REG);
-			setState(81);
-			((SubiContext)_localctx).reg1 = match(REG);
-			setState(82);
-			((SubiContext)_localctx).val = match(NUMBER);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class LwContext extends ParserRuleContext {
-		public Token dest;
-		public Token offset;
-		public Token src;
-		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
-		public TerminalNode REG(int i) {
-			return getToken(SVMParser.REG, i);
-		}
-		public TerminalNode NUMBER() { return getToken(SVMParser.NUMBER, 0); }
-		public LwContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_lw; }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitLw(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final LwContext lw() throws RecognitionException {
-		LwContext _localctx = new LwContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_lw);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(84);
-			match(T__9);
-			setState(85);
-			((LwContext)_localctx).dest = match(REG);
-			setState(86);
-			((LwContext)_localctx).offset = match(NUMBER);
-			setState(87);
-			match(T__10);
-			setState(88);
-			((LwContext)_localctx).src = match(REG);
-			setState(89);
-			match(T__11);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class LiContext extends ParserRuleContext {
-		public Token dest;
-		public Token val;
-		public TerminalNode REG() { return getToken(SVMParser.REG, 0); }
-		public TerminalNode NUMBER() { return getToken(SVMParser.NUMBER, 0); }
-		public LiContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_li; }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitLi(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final LiContext li() throws RecognitionException {
-		LiContext _localctx = new LiContext(_ctx, getState());
-		enterRule(_localctx, 18, RULE_li);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(91);
-			match(T__12);
-			setState(92);
-			((LiContext)_localctx).dest = match(REG);
-			setState(93);
-			((LiContext)_localctx).val = match(NUMBER);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class SwContext extends ParserRuleContext {
-		public Token src;
-		public Token offset;
-		public Token dest;
-		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
-		public TerminalNode REG(int i) {
-			return getToken(SVMParser.REG, i);
-		}
-		public TerminalNode NUMBER() { return getToken(SVMParser.NUMBER, 0); }
-		public SwContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_sw; }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitSw(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final SwContext sw() throws RecognitionException {
-		SwContext _localctx = new SwContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_sw);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(95);
-			match(T__13);
-			setState(96);
-			((SwContext)_localctx).src = match(REG);
-			setState(97);
-			((SwContext)_localctx).offset = match(NUMBER);
-			setState(98);
-			match(T__10);
-			setState(99);
-			((SwContext)_localctx).dest = match(REG);
-			setState(100);
-			match(T__11);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class MvContext extends ParserRuleContext {
-		public Token dest;
-		public Token src;
-		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
-		public TerminalNode REG(int i) {
-			return getToken(SVMParser.REG, i);
-		}
-		public MvContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_mv; }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitMv(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final MvContext mv() throws RecognitionException {
-		MvContext _localctx = new MvContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_mv);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(102);
-			match(T__14);
-			setState(103);
-			((MvContext)_localctx).dest = match(REG);
-			setState(104);
-			((MvContext)_localctx).src = match(REG);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class BContext extends ParserRuleContext {
-		public Token dest;
-		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
-		public BContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_b; }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitB(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final BContext b() throws RecognitionException {
-		BContext _localctx = new BContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_b);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(106);
-			match(T__15);
-			setState(107);
-			((BContext)_localctx).dest = match(LABEL);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class BeqContext extends ParserRuleContext {
-		public Token reg1;
-		public Token reg2;
-		public Token dest;
-		public List<TerminalNode> REG() { return getTokens(SVMParser.REG); }
-		public TerminalNode REG(int i) {
-			return getToken(SVMParser.REG, i);
-		}
-		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
-		public BeqContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_beq; }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitBeq(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final BeqContext beq() throws RecognitionException {
-		BeqContext _localctx = new BeqContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_beq);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(109);
-			match(T__16);
-			setState(110);
-			((BeqContext)_localctx).reg1 = match(REG);
-			setState(111);
-			((BeqContext)_localctx).reg2 = match(REG);
-			setState(112);
-			((BeqContext)_localctx).dest = match(LABEL);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class JalContext extends ParserRuleContext {
-		public Token dest;
-		public TerminalNode LABEL() { return getToken(SVMParser.LABEL, 0); }
-		public JalContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_jal; }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitJal(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final JalContext jal() throws RecognitionException {
-		JalContext _localctx = new JalContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_jal);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(114);
-			match(T__17);
-			setState(115);
-			((JalContext)_localctx).dest = match(LABEL);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class JrContext extends ParserRuleContext {
-		public Token dest;
-		public TerminalNode REG() { return getToken(SVMParser.REG, 0); }
-		public JrContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_jr; }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitJr(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final JrContext jr() throws RecognitionException {
-		JrContext _localctx = new JrContext(_ctx, getState());
-		enterRule(_localctx, 30, RULE_jr);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(117);
-			match(T__18);
-			setState(118);
-			((JrContext)_localctx).dest = match(REG);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\32{\4\2\t\2\4\3\t"+
-		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4"+
-		"\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\3\2\7\2$\n\2\f"+
-		"\2\16\2\'\13\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
-		"\3\3\3\3\3\3\3\3\3\3\5\3<\n\3\3\4\3\4\3\4\3\5\3\5\3\6\3\6\3\6\3\6\3\6"+
-		"\3\7\3\7\3\7\3\7\3\7\3\b\3\b\3\b\3\b\3\b\3\t\3\t\3\t\3\t\3\t\3\n\3\n\3"+
-		"\n\3\n\3\n\3\n\3\n\3\13\3\13\3\13\3\13\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\r"+
-		"\3\r\3\r\3\r\3\16\3\16\3\16\3\17\3\17\3\17\3\17\3\17\3\20\3\20\3\20\3"+
-		"\21\3\21\3\21\3\21\2\2\22\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \2\2"+
-		"\2{\2%\3\2\2\2\4;\3\2\2\2\6=\3\2\2\2\b@\3\2\2\2\nB\3\2\2\2\fG\3\2\2\2"+
-		"\16L\3\2\2\2\20Q\3\2\2\2\22V\3\2\2\2\24]\3\2\2\2\26a\3\2\2\2\30h\3\2\2"+
-		"\2\32l\3\2\2\2\34o\3\2\2\2\36t\3\2\2\2 w\3\2\2\2\"$\5\4\3\2#\"\3\2\2\2"+
-		"$\'\3\2\2\2%#\3\2\2\2%&\3\2\2\2&\3\3\2\2\2\'%\3\2\2\2(<\5\6\4\2)<\5\b"+
-		"\5\2*<\5\n\6\2+<\5\f\7\2,<\5\16\b\2-<\5\20\t\2.<\5\22\n\2/<\5\24\13\2"+
-		"\60<\5\26\f\2\61<\5\30\r\2\62<\5\32\16\2\63<\5\34\17\2\64<\5\36\20\2\65"+
-		"<\5 \21\2\66\67\7\30\2\2\67<\7\3\2\28<\7\4\2\29:\7\5\2\2:<\7\27\2\2;("+
-		"\3\2\2\2;)\3\2\2\2;*\3\2\2\2;+\3\2\2\2;,\3\2\2\2;-\3\2\2\2;.\3\2\2\2;"+
-		"/\3\2\2\2;\60\3\2\2\2;\61\3\2\2\2;\62\3\2\2\2;\63\3\2\2\2;\64\3\2\2\2"+
-		";\65\3\2\2\2;\66\3\2\2\2;8\3\2\2\2;9\3\2\2\2<\5\3\2\2\2=>\7\6\2\2>?\7"+
-		"\27\2\2?\7\3\2\2\2@A\7\7\2\2A\t\3\2\2\2BC\7\b\2\2CD\7\27\2\2DE\7\27\2"+
-		"\2EF\7\27\2\2F\13\3\2\2\2GH\7\t\2\2HI\7\27\2\2IJ\7\27\2\2JK\7\26\2\2K"+
-		"\r\3\2\2\2LM\7\n\2\2MN\7\27\2\2NO\7\27\2\2OP\7\27\2\2P\17\3\2\2\2QR\7"+
-		"\13\2\2RS\7\27\2\2ST\7\27\2\2TU\7\26\2\2U\21\3\2\2\2VW\7\f\2\2WX\7\27"+
-		"\2\2XY\7\26\2\2YZ\7\r\2\2Z[\7\27\2\2[\\\7\16\2\2\\\23\3\2\2\2]^\7\17\2"+
-		"\2^_\7\27\2\2_`\7\26\2\2`\25\3\2\2\2ab\7\20\2\2bc\7\27\2\2cd\7\26\2\2"+
-		"de\7\r\2\2ef\7\27\2\2fg\7\16\2\2g\27\3\2\2\2hi\7\21\2\2ij\7\27\2\2jk\7"+
-		"\27\2\2k\31\3\2\2\2lm\7\22\2\2mn\7\30\2\2n\33\3\2\2\2op\7\23\2\2pq\7\27"+
-		"\2\2qr\7\27\2\2rs\7\30\2\2s\35\3\2\2\2tu\7\24\2\2uv\7\30\2\2v\37\3\2\2"+
-		"\2wx\7\25\2\2xy\7\27\2\2y!\3\2\2\2\4%;";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\"`\4\2\t\2\4\3\t"+
+		"\3\3\2\7\2\b\n\2\f\2\16\2\13\13\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
+		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
+		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
+		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
+		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
+		"\3\3\3\3\5\3^\n\3\3\3\2\2\4\2\4\2\2\2v\2\t\3\2\2\2\4]\3\2\2\2\6\b\5\4"+
+		"\3\2\7\6\3\2\2\2\b\13\3\2\2\2\t\7\3\2\2\2\t\n\3\2\2\2\n\3\3\2\2\2\13\t"+
+		"\3\2\2\2\f\r\7\3\2\2\r^\7\37\2\2\16^\7\4\2\2\17\20\7\5\2\2\20\21\7\37"+
+		"\2\2\21\22\7\37\2\2\22^\7\37\2\2\23\24\7\6\2\2\24\25\7\37\2\2\25\26\7"+
+		"\37\2\2\26^\7\36\2\2\27\30\7\7\2\2\30\31\7\37\2\2\31\32\7\37\2\2\32^\7"+
+		"\37\2\2\33\34\7\b\2\2\34\35\7\37\2\2\35\36\7\37\2\2\36^\7\36\2\2\37 \7"+
+		"\t\2\2 !\7\37\2\2!\"\7\37\2\2\"^\7\37\2\2#$\7\n\2\2$%\7\37\2\2%&\7\37"+
+		"\2\2&^\7\36\2\2\'(\7\13\2\2()\7\37\2\2)*\7\37\2\2*^\7\37\2\2+,\7\f\2\2"+
+		",-\7\37\2\2-.\7\37\2\2.^\7\36\2\2/\60\7\r\2\2\60\61\7\37\2\2\61^\7\37"+
+		"\2\2\62\63\7\16\2\2\63\64\7\37\2\2\64^\7\37\2\2\65\66\7\17\2\2\66\67\7"+
+		"\37\2\2\67^\7\37\2\289\7\20\2\29:\7\37\2\2:;\7\36\2\2;<\7\21\2\2<=\7\37"+
+		"\2\2=^\7\22\2\2>?\7\23\2\2?@\7\37\2\2@^\7\36\2\2AB\7\24\2\2BC\7\37\2\2"+
+		"CD\7\36\2\2DE\7\21\2\2EF\7\37\2\2F^\7\22\2\2GH\7\25\2\2HI\7\37\2\2I^\7"+
+		"\37\2\2JK\7\26\2\2K^\7 \2\2LM\7\27\2\2MN\7\37\2\2NO\7\37\2\2O^\7 \2\2"+
+		"PQ\7\30\2\2QR\7\37\2\2RS\7\37\2\2S^\7 \2\2TU\7\31\2\2U^\7 \2\2VW\7\32"+
+		"\2\2W^\7\37\2\2XY\7 \2\2Y^\7\33\2\2Z^\7\34\2\2[\\\7\35\2\2\\^\7\37\2\2"+
+		"]\f\3\2\2\2]\16\3\2\2\2]\17\3\2\2\2]\23\3\2\2\2]\27\3\2\2\2]\33\3\2\2"+
+		"\2]\37\3\2\2\2]#\3\2\2\2]\'\3\2\2\2]+\3\2\2\2]/\3\2\2\2]\62\3\2\2\2]\65"+
+		"\3\2\2\2]8\3\2\2\2]>\3\2\2\2]A\3\2\2\2]G\3\2\2\2]J\3\2\2\2]L\3\2\2\2]"+
+		"P\3\2\2\2]T\3\2\2\2]V\3\2\2\2]X\3\2\2\2]Z\3\2\2\2][\3\2\2\2^\5\3\2\2\2"+
+		"\4\t]";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

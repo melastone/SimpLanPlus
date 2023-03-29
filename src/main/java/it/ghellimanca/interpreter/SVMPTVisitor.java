@@ -14,33 +14,80 @@ public class SVMPTVisitor extends SVMBaseVisitor<List<Instruction>> {
     }
 
     @Override
-    public List<Instruction> visitPushIntoStack(SVMParser.PushIntoStackContext ctx) {
-        return super.visitPushIntoStack(ctx);
+    public List<Instruction> visitPush(SVMParser.PushContext ctx) {
+        List<Instruction> code = new ArrayList<>();
+
+        code.add(new Instruction.InstructionBuilder()
+                .instruction("push").arg1(ctx.REG().getText())
+                .build());
+
+        return code;
     }
 
     @Override
-    public List<Instruction> visitPopFromStack(SVMParser.PopFromStackContext ctx) {
-        return super.visitPopFromStack(ctx);
+    public List<Instruction> visitPop(SVMParser.PopContext ctx) {
+        List<Instruction> code = new ArrayList<>();
+
+        code.add(new Instruction.InstructionBuilder()
+                .instruction("pop")
+                .build());
+
+        return code;
     }
 
     @Override
-    public List<Instruction> visitSum(SVMParser.SumContext ctx) {
-        return super.visitSum(ctx);
+    public List<Instruction> visitAdd(SVMParser.AddContext ctx) {
+        return super.visitAdd(ctx);
     }
 
     @Override
-    public List<Instruction> visitAddInteger(SVMParser.AddIntegerContext ctx) {
-        return super.visitAddInteger(ctx);
+    public List<Instruction> visitAddInt(SVMParser.AddIntContext ctx) {
+        return super.visitAddInt(ctx);
     }
 
     @Override
-    public List<Instruction> visitSubtraction(SVMParser.SubtractionContext ctx) {
-        return super.visitSubtraction(ctx);
+    public List<Instruction> visitSub(SVMParser.SubContext ctx) {
+        return super.visitSub(ctx);
     }
 
     @Override
     public List<Instruction> visitSubInt(SVMParser.SubIntContext ctx) {
         return super.visitSubInt(ctx);
+    }
+
+    @Override
+    public List<Instruction> visitMult(SVMParser.MultContext ctx) {
+        return super.visitMult(ctx);
+    }
+
+    @Override
+    public List<Instruction> visitMultInt(SVMParser.MultIntContext ctx) {
+        return super.visitMultInt(ctx);
+    }
+
+    @Override
+    public List<Instruction> visitDiv(SVMParser.DivContext ctx) {
+        return super.visitDiv(ctx);
+    }
+
+    @Override
+    public List<Instruction> visitDivInt(SVMParser.DivIntContext ctx) {
+        return super.visitDivInt(ctx);
+    }
+
+    @Override
+    public List<Instruction> visitAnd(SVMParser.AndContext ctx) {
+        return super.visitAnd(ctx);
+    }
+
+    @Override
+    public List<Instruction> visitOr(SVMParser.OrContext ctx) {
+        return super.visitOr(ctx);
+    }
+
+    @Override
+    public List<Instruction> visitNot(SVMParser.NotContext ctx) {
+        return super.visitNot(ctx);
     }
 
     @Override
@@ -69,8 +116,13 @@ public class SVMPTVisitor extends SVMBaseVisitor<List<Instruction>> {
     }
 
     @Override
-    public List<Instruction> visitBranchIfEq(SVMParser.BranchIfEqContext ctx) {
-        return super.visitBranchIfEq(ctx);
+    public List<Instruction> visitBranchIfEqual(SVMParser.BranchIfEqualContext ctx) {
+        return super.visitBranchIfEqual(ctx);
+    }
+
+    @Override
+    public List<Instruction> visitBranchIfMoreEqual(SVMParser.BranchIfMoreEqualContext ctx) {
+        return super.visitBranchIfMoreEqual(ctx);
     }
 
     @Override
@@ -98,85 +150,5 @@ public class SVMPTVisitor extends SVMBaseVisitor<List<Instruction>> {
         return super.visitPrint(ctx);
     }
 
-    @Override
-    public List<Instruction> visitPush(SVMParser.PushContext ctx) {
-        List<Instruction> code = new ArrayList<>();
 
-        code.add(new Instruction.InstructionBuilder()
-        .instruction("push").arg1(ctx.REG().getText())
-        .build());
-
-        return code;
-    }
-
-    @Override
-    public List<Instruction> visitPop(SVMParser.PopContext ctx) {
-        List<Instruction> code = new ArrayList<>();
-
-        code.add(new Instruction.InstructionBuilder()
-                .instruction("pop")
-                .build());
-
-        return code;
-    }
-
-    @Override
-    public List<Instruction> visitAdd(SVMParser.AddContext ctx) {
-        return super.visitAdd(ctx);
-    }
-
-    @Override
-    public List<Instruction> visitAddi(SVMParser.AddiContext ctx) {
-        return super.visitAddi(ctx);
-    }
-
-    @Override
-    public List<Instruction> visitSub(SVMParser.SubContext ctx) {
-        return super.visitSub(ctx);
-    }
-
-    @Override
-    public List<Instruction> visitSubi(SVMParser.SubiContext ctx) {
-        return super.visitSubi(ctx);
-    }
-
-    @Override
-    public List<Instruction> visitLw(SVMParser.LwContext ctx) {
-        return super.visitLw(ctx);
-    }
-
-    @Override
-    public List<Instruction> visitLi(SVMParser.LiContext ctx) {
-        return super.visitLi(ctx);
-    }
-
-    @Override
-    public List<Instruction> visitSw(SVMParser.SwContext ctx) {
-        return super.visitSw(ctx);
-    }
-
-    @Override
-    public List<Instruction> visitMv(SVMParser.MvContext ctx) {
-        return super.visitMv(ctx);
-    }
-
-    @Override
-    public List<Instruction> visitB(SVMParser.BContext ctx) {
-        return super.visitB(ctx);
-    }
-
-    @Override
-    public List<Instruction> visitBeq(SVMParser.BeqContext ctx) {
-        return super.visitBeq(ctx);
-    }
-
-    @Override
-    public List<Instruction> visitJal(SVMParser.JalContext ctx) {
-        return super.visitJal(ctx);
-    }
-
-    @Override
-    public List<Instruction> visitJr(SVMParser.JrContext ctx) {
-        return super.visitJr(ctx);
-    }
 }

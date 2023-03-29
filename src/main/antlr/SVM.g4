@@ -10,59 +10,32 @@ import java.util.HashMap;
 }
 
 program: instruction* ;
-instruction : push      #pushIntoStack
-            | pop       #popFromStack
-            | add   #sum
-            | addi  #addInteger
-            | sub   #subtraction
-            | subi  #subInt
-            | mult  #multiplication
-            | multi #multInt
-            | div   #division
-            | and   #logicAnd
-            | or    #logicOr
-            | not   #logicNot
-            | lw      #loadWord
-            | li      #loadInteger
-            | sw      #storeWord
-            | mv      #move
-            | b         #branchToLabel
-            | beq       #branchIfEq
-            | bleq      #branchIfMoreOrEqual
-            | jal       #jumpAndSaveRA
-            | jr        #jumpToRegister
-            | LABEL ':'     #label
-            | 'halt'        #halt
-            | 'print' src=REG   #print
+instruction : 'push' src=REG    #push
+            | 'pop'             #pop
+            | 'add' dest=REG reg1=REG reg2=REG      #add
+            | 'addi' dest=REG reg1=REG val=NUMBER   #addInt
+            | 'sub' dest=REG reg1=REG reg2=REG      #sub
+            | 'subi' dest=REG reg1=REG val=NUMBER   #subInt
+            | 'mult' dest=REG reg1=REG reg2=REG     #mult
+            | 'multi' dest=REG reg1=REG val=NUMBER  #multInt
+            | 'div' dest=REG reg1=REG reg2=REG      #div
+            | 'divi' dest=REG reg1=REG val=NUMBER   #divInt
+            | 'and' reg1=REG reg2=REG           #and
+            | 'or' reg1=REG reg2=REG            #or
+            | 'not' reg1=REG reg2=REG           #not
+            | 'lw' dest=REG offset=NUMBER '(' src=REG ')'      #loadWord
+            | 'li' dest=REG val=NUMBER                         #loadInteger
+            | 'sw' src=REG offset=NUMBER '(' dest=REG ')'      #storeWord
+            | 'mv' dest=REG src=REG                            #move
+            | 'b' dest=LABEL                           #branchToLabel
+            | 'beq' reg1=REG reg2=REG dest=LABEL       #branchIfEqual
+            | 'bleq' reg1=REG reg2=REG dest=LABEL      #branchIfMoreEqual
+            | 'jal' dest=LABEL                      #jumpAndSaveRA
+            | 'jr'  dest=REG                        #jumpToRegister
+            | LABEL ':'                         #label
+            | 'halt'                            #halt
+            | 'print' src=REG                   #print
             ;
-
-
-push    : 'push' src=REG;
-pop     : 'pop';
-
-add     : 'add' dest=REG reg1=REG reg2=REG;
-addi    : 'addi' dest=REG reg1=REG val=NUMBER;
-sub     : 'sub' dest=REG reg1=REG reg2=REG;
-subi    : 'subi' dest=REG reg1=REG val=NUMBER;
-mult     : 'mult' dest=REG reg1=REG reg2=REG;
-multi    : 'multi' dest=REG reg1=REG val=NUMBER;
-div     : 'div' dest=REG reg1=REG reg2=REG;
-
-and      : 'and' reg1=REG reg2=REG;
-or      : 'or' reg1=REG reg2=REG;
-not      : 'not' reg1=REG reg2=REG;
-
-lw      : 'lw' dest=REG offset=NUMBER '(' src=REG ')';
-li      : 'li' dest=REG val=NUMBER;
-sw      : 'sw' src=REG offset=NUMBER '(' dest=REG ')';
-mv      : 'mv' dest=REG src=REG;
-
-b       : 'b' dest=LABEL;
-beq     : 'beq' reg1=REG reg2=REG dest=LABEL;
-bleq     : 'bleq' reg1=REG reg2=REG dest=LABEL;
-
-jal     : 'jal' dest=LABEL;
-jr      : 'jr'  dest=REG;
 
 
 fragment DIGIT  : '0'..'9';

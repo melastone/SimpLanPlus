@@ -20,40 +20,40 @@ public interface SVMVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProgram(SVMParser.ProgramContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code pushIntoStack}
+	 * Visit a parse tree produced by the {@code push}
 	 * labeled alternative in {@link SVMParser#instruction}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPushIntoStack(SVMParser.PushIntoStackContext ctx);
+	T visitPush(SVMParser.PushContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code popFromStack}
+	 * Visit a parse tree produced by the {@code pop}
 	 * labeled alternative in {@link SVMParser#instruction}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPopFromStack(SVMParser.PopFromStackContext ctx);
+	T visitPop(SVMParser.PopContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code sum}
+	 * Visit a parse tree produced by the {@code add}
 	 * labeled alternative in {@link SVMParser#instruction}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSum(SVMParser.SumContext ctx);
+	T visitAdd(SVMParser.AddContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code addInteger}
+	 * Visit a parse tree produced by the {@code addInt}
 	 * labeled alternative in {@link SVMParser#instruction}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAddInteger(SVMParser.AddIntegerContext ctx);
+	T visitAddInt(SVMParser.AddIntContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code subtraction}
+	 * Visit a parse tree produced by the {@code sub}
 	 * labeled alternative in {@link SVMParser#instruction}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSubtraction(SVMParser.SubtractionContext ctx);
+	T visitSub(SVMParser.SubContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code subInt}
 	 * labeled alternative in {@link SVMParser#instruction}.
@@ -61,6 +61,55 @@ public interface SVMVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitSubInt(SVMParser.SubIntContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code mult}
+	 * labeled alternative in {@link SVMParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMult(SVMParser.MultContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code multInt}
+	 * labeled alternative in {@link SVMParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMultInt(SVMParser.MultIntContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code div}
+	 * labeled alternative in {@link SVMParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDiv(SVMParser.DivContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code divInt}
+	 * labeled alternative in {@link SVMParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDivInt(SVMParser.DivIntContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code and}
+	 * labeled alternative in {@link SVMParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnd(SVMParser.AndContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code or}
+	 * labeled alternative in {@link SVMParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOr(SVMParser.OrContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code not}
+	 * labeled alternative in {@link SVMParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNot(SVMParser.NotContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code loadWord}
 	 * labeled alternative in {@link SVMParser#instruction}.
@@ -97,12 +146,19 @@ public interface SVMVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBranchToLabel(SVMParser.BranchToLabelContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code branchIfEq}
+	 * Visit a parse tree produced by the {@code branchIfEqual}
 	 * labeled alternative in {@link SVMParser#instruction}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBranchIfEq(SVMParser.BranchIfEqContext ctx);
+	T visitBranchIfEqual(SVMParser.BranchIfEqualContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code branchIfMoreEqual}
+	 * labeled alternative in {@link SVMParser#instruction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBranchIfMoreEqual(SVMParser.BranchIfMoreEqualContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code jumpAndSaveRA}
 	 * labeled alternative in {@link SVMParser#instruction}.
@@ -138,88 +194,4 @@ public interface SVMVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPrint(SVMParser.PrintContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SVMParser#push}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPush(SVMParser.PushContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SVMParser#pop}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPop(SVMParser.PopContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SVMParser#add}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAdd(SVMParser.AddContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SVMParser#addi}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAddi(SVMParser.AddiContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SVMParser#sub}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSub(SVMParser.SubContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SVMParser#subi}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSubi(SVMParser.SubiContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SVMParser#lw}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLw(SVMParser.LwContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SVMParser#li}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLi(SVMParser.LiContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SVMParser#sw}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSw(SVMParser.SwContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SVMParser#mv}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMv(SVMParser.MvContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SVMParser#b}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitB(SVMParser.BContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SVMParser#beq}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBeq(SVMParser.BeqContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SVMParser#jal}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitJal(SVMParser.JalContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SVMParser#jr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitJr(SVMParser.JrContext ctx);
 }
