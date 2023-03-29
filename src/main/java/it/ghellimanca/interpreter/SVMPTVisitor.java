@@ -37,42 +37,110 @@ public class SVMPTVisitor extends SVMBaseVisitor<List<Instruction>> {
 
     @Override
     public List<Instruction> visitAdd(SVMParser.AddContext ctx) {
-        return super.visitAdd(ctx);
+        List<Instruction> code = new ArrayList<>();
+
+        code.add(new Instruction.InstructionBuilder()
+                .instruction("add")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .arg3(ctx.reg2.getText())
+                .build());
+
+        return code;
     }
 
     @Override
     public List<Instruction> visitAddInt(SVMParser.AddIntContext ctx) {
-        return super.visitAddInt(ctx);
+        List<Instruction> code = new ArrayList<>();
+
+        code.add(new Instruction.InstructionBuilder().instruction("addi")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .arg3(ctx.NUMBER().getText())
+                .build());
+
+        return code;
     }
 
     @Override
     public List<Instruction> visitSub(SVMParser.SubContext ctx) {
-        return super.visitSub(ctx);
+        List<Instruction> code = new ArrayList<>();
+
+        code.add(new Instruction.InstructionBuilder()
+                .instruction("sub")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .arg3(ctx.reg2.getText())
+                .build());
+
+        return code;
     }
 
     @Override
     public List<Instruction> visitSubInt(SVMParser.SubIntContext ctx) {
-        return super.visitSubInt(ctx);
+        List<Instruction> code = new ArrayList<>();
+
+        code.add(new Instruction.InstructionBuilder().instruction("subi")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .arg3(ctx.NUMBER().getText())
+                .build());
+
+        return code;
     }
 
     @Override
     public List<Instruction> visitMult(SVMParser.MultContext ctx) {
-        return super.visitMult(ctx);
+        List<Instruction> code = new ArrayList<>();
+
+        code.add(new Instruction.InstructionBuilder()
+                .instruction("mult")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .arg3(ctx.reg2.getText())
+                .build());
+
+        return code;
     }
 
     @Override
     public List<Instruction> visitMultInt(SVMParser.MultIntContext ctx) {
-        return super.visitMultInt(ctx);
+        List<Instruction> code = new ArrayList<>();
+
+        code.add(new Instruction.InstructionBuilder().instruction("multi")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .arg3(ctx.NUMBER().getText())
+                .build());
+
+        return code;
     }
 
     @Override
     public List<Instruction> visitDiv(SVMParser.DivContext ctx) {
-        return super.visitDiv(ctx);
+        List<Instruction> code = new ArrayList<>();
+
+        code.add(new Instruction.InstructionBuilder()
+                .instruction("div")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .arg3(ctx.reg2.getText())
+                .build());
+
+        return code;
     }
 
     @Override
     public List<Instruction> visitDivInt(SVMParser.DivIntContext ctx) {
-        return super.visitDivInt(ctx);
+        List<Instruction> code = new ArrayList<>();
+
+        code.add(new Instruction.InstructionBuilder().instruction("divi")
+                .arg1(ctx.dest.getText())
+                .arg2(ctx.reg1.getText())
+                .arg3(ctx.NUMBER().getText())
+                .build());
+
+        return code;
     }
 
     @Override
@@ -90,6 +158,7 @@ public class SVMPTVisitor extends SVMBaseVisitor<List<Instruction>> {
         return super.visitNot(ctx);
     }
 
+    //------------------------------------------------------------------------------------------------
     @Override
     public List<Instruction> visitLoadWord(SVMParser.LoadWordContext ctx) {
         return super.visitLoadWord(ctx);
