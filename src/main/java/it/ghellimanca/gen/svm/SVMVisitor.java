@@ -14,11 +14,11 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface SVMVisitor<T> extends ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by {@link SVMParser#program}.
+	 * Visit a parse tree produced by {@link SVMParser#assembly}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitProgram(SVMParser.ProgramContext ctx);
+	T visitAssembly(SVMParser.AssemblyContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code push}
 	 * labeled alternative in {@link SVMParser#instruction}.

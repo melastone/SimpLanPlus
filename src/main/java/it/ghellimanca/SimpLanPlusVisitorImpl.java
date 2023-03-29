@@ -23,7 +23,7 @@ import java.util.List;
  * Extends SimpLanPlusBaseVisitor, empty implementation of SimpLanPlusVisitor Interface
  *
  */
-public class SimpLanPlusPTVisitor extends SimpLanPlusBaseVisitor<Node> {
+public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
 
     @Override

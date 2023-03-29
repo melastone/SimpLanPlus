@@ -25,10 +25,10 @@ public class SVMParser extends Parser {
 		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
 		T__24=25, T__25=26, T__26=27, NUMBER=28, REG=29, LABEL=30, WS=31, LINECOMMENTS=32;
 	public static final int
-		RULE_program = 0, RULE_instruction = 1;
+		RULE_assembly = 0, RULE_instruction = 1;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"program", "instruction"
+			"assembly", "instruction"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -100,27 +100,27 @@ public class SVMParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
-	public static class ProgramContext extends ParserRuleContext {
+	public static class AssemblyContext extends ParserRuleContext {
 		public List<InstructionContext> instruction() {
 			return getRuleContexts(InstructionContext.class);
 		}
 		public InstructionContext instruction(int i) {
 			return getRuleContext(InstructionContext.class,i);
 		}
-		public ProgramContext(ParserRuleContext parent, int invokingState) {
+		public AssemblyContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_program; }
+		@Override public int getRuleIndex() { return RULE_assembly; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitProgram(this);
+			if ( visitor instanceof SVMVisitor ) return ((SVMVisitor<? extends T>)visitor).visitAssembly(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final ProgramContext program() throws RecognitionException {
-		ProgramContext _localctx = new ProgramContext(_ctx, getState());
-		enterRule(_localctx, 0, RULE_program);
+	public final AssemblyContext assembly() throws RecognitionException {
+		AssemblyContext _localctx = new AssemblyContext(_ctx, getState());
+		enterRule(_localctx, 0, RULE_assembly);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);

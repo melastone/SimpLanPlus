@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 }
 
-program: instruction* ;
+assembly: instruction* ;
 instruction : 'push' src=REG    #push
             | 'pop'             #pop
             | 'add' dest=REG reg1=REG reg2=REG      #add

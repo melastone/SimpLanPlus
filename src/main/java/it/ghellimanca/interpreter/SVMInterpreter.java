@@ -3,7 +3,7 @@ package it.ghellimanca.interpreter;
 import java.util.*;
 
 public class SVMInterpreter {
-    private final List<Instruction> code;
+    private final List<InstructionNode> code;
 
     private final Map<String, Integer> registers;
 
@@ -11,7 +11,7 @@ public class SVMInterpreter {
 
     private final int memorySize; //TODO decide if we want to set it from the command line, not necessary to set from command line
 
-    public SVMInterpreter(List<Instruction> code, int memorySize) {
+    public SVMInterpreter(List<InstructionNode> code, int memorySize) {
         this.code = code;
         this.memorySize = memorySize;
 

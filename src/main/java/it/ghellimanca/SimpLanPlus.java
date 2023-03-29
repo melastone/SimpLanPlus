@@ -5,8 +5,7 @@ import it.ghellimanca.gen.simplanplus.SimpLanPlusLexer;
 import it.ghellimanca.gen.simplanplus.SimpLanPlusParser;
 import it.ghellimanca.gen.svm.SVMLexer;
 import it.ghellimanca.gen.svm.SVMParser;
-import it.ghellimanca.interpreter.SVMInterpreter;
-import it.ghellimanca.interpreter.SVMPTVisitor;
+import it.ghellimanca.interpreter.SVMVisitorImpl;
 import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.semanticanalysis.Environment;
 import it.ghellimanca.semanticanalysis.MissingInitializationException;
@@ -100,7 +99,7 @@ public class SimpLanPlus {
         slpParser.addErrorListener(slpErrorListenerParser);
 
         // Creating the tree visitor
-        SimpLanPlusPTVisitor parseTreeVisitor = new SimpLanPlusPTVisitor();
+        SimpLanPlusVisitorImpl parseTreeVisitor = new SimpLanPlusVisitorImpl();
 
         System.out.println("Parsing...");
 
@@ -245,7 +244,7 @@ public class SimpLanPlus {
         svmParser.addErrorListener(svmErrorListenerParser);
 
          // Visiting the tree and generating the AST.
-        SVMPTVisitor svmVisitor = new SVMPTVisitor();
+        SVMVisitorImpl svmVisitor = new SVMVisitorImpl();
         //var code = svmVisitor.visit(svmParser.program());
 
 

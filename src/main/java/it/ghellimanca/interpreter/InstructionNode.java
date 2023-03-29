@@ -1,6 +1,16 @@
 package it.ghellimanca.interpreter;
 
-public class Instruction {
+/**
+ * This class represents an Instruction Node.
+ *
+ * Instruction Nodes are the products of code generation. Each node
+ * corresponds to a single assembly instruction.
+ * Instruction Nodes will be the basic builing blocks for code after
+ * the Parse Tree visit.
+ *
+ */
+public class InstructionNode {
+
     private final String instruction;
     private final String arg1; // either label or register
     private final int offset;
@@ -8,7 +18,9 @@ public class Instruction {
     private final String arg3; // either label or register
     private final int argInt; // to be used with arithmetic instructions
 
-    public Instruction(InstructionBuilder instructionBuilder) {
+
+
+    public InstructionNode(InstructionBuilder instructionBuilder) {
         this.instruction = instructionBuilder.instruction;
         this.arg1 = instructionBuilder.arg1;
         this.offset = instructionBuilder.offset;
@@ -16,6 +28,8 @@ public class Instruction {
         this.arg3 = instructionBuilder.arg3;
         this.argInt = instructionBuilder.argInt;
     }
+
+
 
     public String getInstruction() {
         return instruction;
@@ -40,6 +54,8 @@ public class Instruction {
     public int getArgInt() {
         return argInt;
     }
+
+
 
     public static class InstructionBuilder {
         private String instruction;
@@ -85,8 +101,8 @@ public class Instruction {
             return this;
         }
 
-        public Instruction build() {
-            return new Instruction(this);
+        public InstructionNode build() {
+            return new InstructionNode(this);
         }
     }
 }
