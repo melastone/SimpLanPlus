@@ -7,6 +7,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
+/**
+ *
+ * SVM grammar Parse Tree Visitor.
+ *
+ * Creates a list of Instruction Nodes from the Parse Tree generated with Antlr.
+ *
+ */
 public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 
     final private List<InstructionNode> code;
@@ -19,6 +27,12 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
         this.labels = new HashMap<>();
         this.labelReferences = new HashMap<>();
     }
+
+
+    public List<InstructionNode> getCode() {
+        return code;
+    }
+
 
     @Override
     public Void visitAssembly(SVMParser.AssemblyContext ctx) {

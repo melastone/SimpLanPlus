@@ -245,13 +245,13 @@ public class SimpLanPlus {
 
          // Visiting the tree and generating the AST.
         SVMVisitorImpl svmVisitor = new SVMVisitorImpl();
-        //var code = svmVisitor.visit(svmParser.program());
+        //svmVisitor.visit(svmParser.program());
 
 
         /* VM INTERPRETER */
 
 //        try {
-//            SVMInterpreter svmInterpreter = new SVMInterpreter(code, memsize);
+//            SVMInterpreter svmInterpreter = new SVMInterpreter(svmVisitor.getCode(), memsize);
 //            System.out.println("Program output (can be empty):");
 //            svmInterpreter.run(flags.debugcpu());
 //        } catch (MemoryAccessException | CodeSizeTooSmallException | UninitializedVariableException exc) {
