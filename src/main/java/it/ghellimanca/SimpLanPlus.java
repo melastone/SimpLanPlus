@@ -23,10 +23,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
+ *
  * This is the main class.
  * Implements both the compiler and interpreter.
  *
- * todo: stampare gli errori lessicali/sintattici presenti nell'assebly
+ * todo: stampare gli errori lessicali/sintattici presenti nell'assembly
  */
 
 public class SimpLanPlus {
