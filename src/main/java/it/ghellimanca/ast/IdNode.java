@@ -3,6 +3,7 @@ package it.ghellimanca.ast;
 import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.ast.type.VarTypeNode;
 import it.ghellimanca.semanticanalysis.*;
+import it.ghellimanca.semanticanalysis.errors.*;
 
 import java.util.ArrayList;
 

@@ -3,8 +3,9 @@ package it.ghellimanca.semanticanalysis;
 import java.util.*;
 import java.util.function.BiFunction;
 
-import it.ghellimanca.ast.type.ArrowTypeNode;
 import it.ghellimanca.ast.type.TypeNode;
+import it.ghellimanca.semanticanalysis.errors.MissingDeclarationException;
+import it.ghellimanca.semanticanalysis.errors.MultipleDeclarationException;
 
 
 /**

@@ -1,4 +1,4 @@
-package it.ghellimanca.semanticanalysis;
+package it.ghellimanca.semanticanalysis.errors;
 
 public class ParametersException extends Exception{
 

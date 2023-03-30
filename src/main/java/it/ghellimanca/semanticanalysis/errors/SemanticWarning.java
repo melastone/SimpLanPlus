@@ -1,4 +1,4 @@
-package it.ghellimanca.semanticanalysis;
+package it.ghellimanca.semanticanalysis.errors;
 
 /**
  * Represents warnings outputted by Node::checkSemantics()

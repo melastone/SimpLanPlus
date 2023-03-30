@@ -4,6 +4,7 @@ import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.ast.type.IntTypeNode;
 import it.ghellimanca.ast.type.TypeNode;
+import it.ghellimanca.semanticanalysis.errors.*;
 
 import java.util.ArrayList;
 import java.util.List;

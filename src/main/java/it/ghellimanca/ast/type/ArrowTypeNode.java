@@ -1,6 +1,7 @@
 package it.ghellimanca.ast.type;
 
 import it.ghellimanca.semanticanalysis.*;
+import it.ghellimanca.semanticanalysis.errors.*;
 
 import java.util.ArrayList;
 import java.util.List;

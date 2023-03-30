@@ -7,6 +7,7 @@ import it.ghellimanca.ast.ArgNode;
 import it.ghellimanca.ast.BlockNode;
 import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.ast.type.TypeNode;
+import it.ghellimanca.semanticanalysis.errors.*;
 
 import java.util.ArrayList;
 import java.util.List;

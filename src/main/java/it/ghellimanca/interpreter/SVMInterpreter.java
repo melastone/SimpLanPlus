@@ -1,7 +1,17 @@
 package it.ghellimanca.interpreter;
 
+import it.ghellimanca.interpreter.exception.AssemblyInstructionException;
+import it.ghellimanca.interpreter.exception.SmallCodeSizeException;
+
 import java.util.*;
 
+
+/**
+ *
+ * Interpreter for SVM assembly code.
+ *
+ * todo: controlla se è giusto $sp = $sp - 1 o se invece va corretto con $sp = $sp - 4
+ */
 public class SVMInterpreter {
 
     public static final int CODESIZE = 10000;
@@ -20,7 +30,11 @@ public class SVMInterpreter {
 
 
 
-    public SVMInterpreter(List<InstructionNode> code) {
+    public SVMInterpreter(List<InstructionNode> code) throws SmallCodeSizeException {
+
+        if (code.size() > CODESIZE) {
+            throw new SmallCodeSizeException("Compiled assemply code size " + code.size() + " bigger than available codesie " + CODESIZE);
+        }
 
         this.code = code;
         this.memory = new int[MEMSIZE];
@@ -34,7 +48,7 @@ public class SVMInterpreter {
     }
 
 
-    private void setRegister(String reg, int value) {
+    private void setRegister(String reg, int value) throws AssemblyInstructionException {
         switch (reg) {
             case "$sp":
                 this.$sp = value;
@@ -58,13 +72,12 @@ public class SVMInterpreter {
                 this.$t1 = value;
                 break;
             default:
-                // invalid reg name exception
-                break;
+                throw new AssemblyInstructionException("Unrecognized Assembly instruction; " + reg + " register unknown.");
 
         }
     }
 
-    private int getRegister(String reg) {
+    private int getRegister(String reg) throws AssemblyInstructionException {
         switch (reg) {
             case "$sp":
                 return this.$sp;
@@ -81,14 +94,13 @@ public class SVMInterpreter {
             case "t1":
                 return this.$t1;
             default:
-                // invalid reg name exception
-                return -1;
+                throw new AssemblyInstructionException("Unrecognized Assembly instruction; " + reg + " register unknown.");
 
         }
     }
 
 
-    public void run() {
+    public void run() throws AssemblyInstructionException {
 
         while ($ip < code.size()) {
 
@@ -104,11 +116,13 @@ public class SVMInterpreter {
             switch (instruction.getOpcode()) {
                 case "push":
                     // diminuisco il valore del registro $sp
+                    setRegister("$sp", $sp - 1);
                     // scrivo in memoria il dato che sto pushando
                     break;
                 case "pop":
                     // facoltativo: libera la cella di memoria
                     // diminuisce il valore del registro
+                    setRegister("$sp", $sp + 1);
                     break;
                 case "add":
                     setRegister(arg1, getRegister(arg2) + getRegister(arg3));
@@ -150,8 +164,8 @@ public class SVMInterpreter {
                 case "halt":
                     return;
                 default:
-                    System.err.println("ERROR: Unrecognized Assembly instruction: " + instruction + ".");
-                    return;
+                    throw new AssemblyInstructionException("Unrecognized Assembly instruction: " + instruction + " ; opCode unknown.");
+                    //System.err.println("ERROR: Unrecognized Assembly instruction: " + instruction + ".");
             }
 
         }
