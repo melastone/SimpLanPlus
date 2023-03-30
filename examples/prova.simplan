@@ -5,12 +5,12 @@
 
     int a = 1;
 
-    void f(var int x, int y, int z) {
+    void f(var int x) {
         int k = 1;
         print x;
     }
 
-    f(a, a, a);
+    f(a);
 
     /*
     n == 3

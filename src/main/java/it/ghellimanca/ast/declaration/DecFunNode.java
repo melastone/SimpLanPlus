@@ -1,5 +1,6 @@
 package it.ghellimanca.ast.declaration;
 
+import it.ghellimanca.ast.statement.StatementNode;
 import it.ghellimanca.ast.type.ArrowTypeNode;
 import it.ghellimanca.ast.type.VarTypeNode;
 import it.ghellimanca.semanticanalysis.*;
@@ -103,9 +104,24 @@ public class DecFunNode extends DeclarationNode {
         // open a new scope where to evaluate function body and calculating Sigma1
         env.newScope();
 
+        // adding fun body variable declaration into the new scope
+        // doing this now cause we want offsets to be calculate in reverse order
+        var varDecsInsideFunBody = body.getVariableDeclarations();
+        for (DecVarNode dec : varDecsInsideFunBody) {
+            err.addAll(dec.checkSemantics(env));
+        }
+
         // adding arguments declarations into the new scope. set them to INIT in order to correctly calculate Sigma1
-        for (ArgNode arg : arguments) {
+        for (int argId = 0; argId < arguments.size(); argId++) {
+            var arg = arguments.get(argId);
+            var isVar = argsType.get(argId) instanceof VarTypeNode;
+
             arg.getId().setStEntry(env.safeAddDeclaration(arg.getId().getIdentifier(), arg.getType(), Effect.INIT));
+
+            if (isVar) {
+                env.setOffset(env.getOffset() + 1);
+            }
+
         }
 
         // adding function declaration into the new scope in order to enable recursive calls
@@ -126,8 +142,10 @@ public class DecFunNode extends DeclarationNode {
         // set reference to this function in all body's statements
         //body.setFunId(id.getIdentifier());
 
-        // it will create a new scope with function body info only
-        err.addAll(body.checkSemantics(env));
+        var statementsInsideFunBody = body.getStatements();
+        for (StatementNode stm : statementsInsideFunBody) {
+            err.addAll(stm.checkSemantics(env));
+        }
 
         // update Sigma1 with changes made by body evaluation
         List<Effect> updatedStatuses = arguments.stream().map(argNode -> env.safeLookup(argNode.getId().getIdentifier()).getVarStatus())
@@ -147,7 +165,9 @@ public class DecFunNode extends DeclarationNode {
             oldSigma1 = localFunEntryCopy.getFunStatus().get(1);
 
             // repeating the check of the body
-            err.addAll(body.checkSemantics(env));
+            for (StatementNode stm : statementsInsideFunBody) {
+                err.addAll(stm.checkSemantics(env));
+            }
 
             localFunEntryCopy.setFunStatus(1, arguments.stream().map(argument -> env.safeLookup(argument.getId().getIdentifier()).getVarStatus())
                     .collect(Collectors.toList()));

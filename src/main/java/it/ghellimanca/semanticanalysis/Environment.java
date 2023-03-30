@@ -84,6 +84,9 @@ public class Environment {
         return offset;
     }
 
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
 
     /**
      * @return the current active scope.
