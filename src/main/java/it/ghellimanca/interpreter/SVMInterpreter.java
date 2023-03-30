@@ -3,7 +3,11 @@ package it.ghellimanca.interpreter;
 import java.util.*;
 
 public class SVMInterpreter {
+    public static final int CODESIZE = 10000;
+    public static final int MEMSIZE = 10000;    //TODO decide if we want to set it from the command line, not necessary to set from command line
+
     private final List<InstructionNode> code;
+    private final int[] memory;
 
     //private final Map<String, Integer> registers;
     private int $ip;
@@ -14,8 +18,9 @@ public class SVMInterpreter {
     private int $t0, $t1;
 
 
-    public SVMInterpreter(List<InstructionNode> code, int memorySize) {
+    public SVMInterpreter(List<InstructionNode> code) {
         this.code = code;
+        this.memory = new int[MEMSIZE];
 
         this.$ip = 0;
 
@@ -80,7 +85,7 @@ public class SVMInterpreter {
     }
 
 
-    public void run() {
+    public void run() throws MemoryAccessException {
 
         while ($ip < code.size()) {
 
@@ -95,59 +100,13 @@ public class SVMInterpreter {
 
             switch (instruction.getOpcode()) {
                 case "push":
-                    // diminuisco il valore del registro $sp
-                    // scrivo in memoria il dato che sto pushando
+                    setRegister("$sp", getRegister("$sp") - 1);
+                    writeMemory(getRegister("$sp"), getRegister(arg1));
                     break;
                 case "pop":
                     // facoltativo: libera la cella di memoria
-                    // diminuisce il valore del registro
+                    setRegister("$sp", getRegister("$sp") + 1);
                     break;
-                case "lw":
-                    int srcLw = registers.get(arg2); // prendo indirizzo da registro in arg2
-
-                    registers.put(arg1, readMemory(offset + srcLw)); // prendo valore da memoria a indirizzo src + offset e metto in registro arg1
-                    break;
-                case "li":
-                    registers.put(arg1, argInt); // metto valore in argInt in registro arg1
-                    break;
-                case "sw":
-                    int srcSw = registers.get(arg1);  // prendo valore da mettere in memoria da registro in arg1
-                    int destSw = registers.get(arg2); // prendo valore indirizzo memoria da registro in arg2
-
-                    writeMemory(destSw + offset, srcSw); // scrivo in memoria a indirizzo dest + offset il valore
-                    break;
-                case "mv":
-                    int srcMv = registers.get(arg2); // prendo valore da spostare dal registro in arg2
-
-                    registers.put(arg1, srcMv); // metto nel registro in arg1 il valore preso
-                    break;
-                case "b":
-                    $ip = argInt;
-                    break;
-                case "beq":
-                    int reg1Beq = registers.get(arg1); // prendo valore da registro in arg1
-
-                    int reg2Beq = registers.get(arg2);
-
-                    // se i valori sono uguali salto
-                    if (reg1Beq == reg2Beq) {
-                        $ip = argInt;
-                    }
-                    break;
-                case "bleq":
-                    // prendo valore da registro in arg1
-                    int reg1Bleq = registers.get(arg1);
-                    // prendo valore da registro in arg2
-                    int reg2Bleq = registers.get(arg2);
-
-                    // se il primo valore è minore o uguale del secondo salto
-                    if (reg1Bleq <= reg2Bleq) {
-                        $ip = argInt;
-                    }
-                    break;
-                case "jal":
-                    registers.put("$ra", $ip);
-
                 case "add":
                     setRegister(arg1, getRegister(arg2) + getRegister(arg3));
                     break;
@@ -185,6 +144,52 @@ public class SVMInterpreter {
                 case "not":
                     setRegister(arg1, getRegister(arg2) == 1 ? 0 : 1);
                     break;
+                case "lw":
+                    int srcLw = getRegister(arg2);
+
+                    setRegister(arg1, readMemory(offset + srcLw));
+                    break;
+                case "li":
+                    setRegister(arg1, argInt);
+                    break;
+                case "sw":
+                    int srcSw = getRegister(arg1);
+                    int destSw = getRegister(arg2);
+
+                    writeMemory(destSw + offset, srcSw);
+                    break;
+                case "mv":
+                    int srcMv = getRegister(arg2);
+
+                    setRegister(arg1, srcMv);
+                    break;
+                case "b":
+                    $ip = argInt;
+                    break;
+                case "beq":
+                    int reg1Beq = getRegister(arg1);
+
+                    int reg2Beq = getRegister(arg2);
+
+                    if (reg1Beq == reg2Beq) {
+                        $ip = argInt;
+                    }
+                    break;
+                case "bleq":
+                    int reg1Bleq = getRegister(arg1);
+                    int reg2Bleq = getRegister(arg2);
+
+                    if (reg1Bleq <= reg2Bleq) {
+                        $ip = argInt;
+                    }
+                    break;
+                case "jal":
+                    setRegister("$ra", $ip);
+                    $ip = argInt;
+                    break;
+                case "jr":
+                    $ip = getRegister(arg1);
+                    break;
                 case "halt":
                     return;
                 default:
@@ -196,20 +201,19 @@ public class SVMInterpreter {
 
     }
 
-    private int readMemory(int address) {
+    private int readMemory(int address) throws MemoryAccessException {
         try {
             return memory[address];
         } catch (IndexOutOfBoundsException e) {
-            //throw new MemoryAccessException("Address " + address + " cannot be accessed.");
-            return -1;
+            throw new MemoryAccessException("Error: address " + address + " cannot be accessed.");
         }
     }
 
-    private void writeMemory(int address, int data) {
+    private void writeMemory(int address, int data) throws MemoryAccessException {
         try {
             memory[address] = data;
         } catch (IndexOutOfBoundsException e) {
-            //throw new MemoryAccessException("Address " + address + " cannot be accessed.");
+            throw new MemoryAccessException("Error: address " + address + " cannot be accessed.");
         }
     }
 }

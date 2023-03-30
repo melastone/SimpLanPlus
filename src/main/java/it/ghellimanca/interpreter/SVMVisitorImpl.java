@@ -32,9 +32,9 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
             int lineToJump = labels.get(label);
 
             InstructionNode instructionToModify = code.get(codeLine);
-            if (instructionToModify.getInstruction().equals("beq") || instructionToModify.getInstruction().equals("bleq")) {
+            if (instructionToModify.getOpcode().equals("beq") || instructionToModify.getOpcode().equals("bleq")) {
                 code.set(codeLine, new InstructionNode.InstructionBuilder()
-                        .instruction(instructionToModify.getInstruction())
+                        .opCode(instructionToModify.getOpcode())
                         .arg1(instructionToModify.getArg1())
                         .arg2(instructionToModify.getArg2())
                         .argInt(lineToJump)
@@ -55,7 +55,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     public Void visitPush(SVMParser.PushContext ctx) {
 
         code.add(new InstructionNode.InstructionBuilder()
-                .instruction("push").arg1(ctx.REG().getText())
+                .opCode("push").arg1(ctx.REG().getText())
                 .build());
 
         return null;
@@ -65,7 +65,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     public Void visitPop(SVMParser.PopContext ctx) {
 
         code.add(new InstructionNode.InstructionBuilder()
-                .instruction("pop")
+                .opCode("pop")
                 .build());
 
         return null;
@@ -75,7 +75,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     public Void visitAdd(SVMParser.AddContext ctx) {
 
         code.add(new InstructionNode.InstructionBuilder()
-                .instruction("addi")
+                .opCode("addi")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.reg1.getText())
                 .arg3(ctx.reg2.getText())
@@ -101,7 +101,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     public Void visitSub(SVMParser.SubContext ctx) {
 
         code.add(new InstructionNode.InstructionBuilder()
-                .instruction("sub")
+                .opCode("sub")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.reg1.getText())
                 .arg3(ctx.reg2.getText())
@@ -113,7 +113,8 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     @Override
     public Void visitSubInt(SVMParser.SubIntContext ctx) {
 
-        code.add(new InstructionNode.InstructionBuilder().instruction("subi")
+        code.add(new InstructionNode.InstructionBuilder()
+                .opCode("subi")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.reg1.getText())
                 .argInt(ctx.NUMBER().getText())
@@ -126,7 +127,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     public Void visitMult(SVMParser.MultContext ctx) {
 
         code.add(new InstructionNode.InstructionBuilder()
-                .instruction("mult")
+                .opCode("mult")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.reg1.getText())
                 .arg3(ctx.reg2.getText())
@@ -138,7 +139,8 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     @Override
     public Void visitMultInt(SVMParser.MultIntContext ctx) {
 
-        code.add(new InstructionNode.InstructionBuilder().instruction("multi")
+        code.add(new InstructionNode.InstructionBuilder()
+                .opCode("multi")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.reg1.getText())
                 .argInt(ctx.NUMBER().getText())
@@ -151,7 +153,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     public Void visitDiv(SVMParser.DivContext ctx) {
 
         code.add(new InstructionNode.InstructionBuilder()
-                .instruction("div")
+                .opCode("div")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.reg1.getText())
                 .arg3(ctx.reg2.getText())
@@ -163,7 +165,8 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     @Override
     public Void visitDivInt(SVMParser.DivIntContext ctx) {
 
-        code.add(new InstructionNode.InstructionBuilder().instruction("divi")
+        code.add(new InstructionNode.InstructionBuilder()
+                .opCode("divi")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.reg1.getText())
                 .argInt(ctx.NUMBER().getText())
@@ -176,7 +179,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     public Void visitAnd(SVMParser.AndContext ctx) {
 
         code.add(new InstructionNode.InstructionBuilder()
-                .instruction("and")
+                .opCode("and")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.reg1.getText())
                 .arg3(ctx.reg2.getText())
@@ -189,7 +192,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     public Void visitOr(SVMParser.OrContext ctx) {
 
         code.add(new InstructionNode.InstructionBuilder()
-                .instruction("or")
+                .opCode("or")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.reg1.getText())
                 .arg3(ctx.reg2.getText())
@@ -202,7 +205,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     public Void visitNot(SVMParser.NotContext ctx) {
 
         code.add(new InstructionNode.InstructionBuilder()
-                .instruction("not")
+                .opCode("not")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.reg1.getText())
                 .build());
@@ -214,7 +217,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     public Void visitLoadWord(SVMParser.LoadWordContext ctx) {
 
         code.add(new InstructionNode.InstructionBuilder()
-                .instruction("lw")
+                .opCode("lw")
                 .arg1(ctx.dest.getText())
                 .offset(Integer.parseInt(ctx.offset.getText()))
                 .arg2(ctx.src.getText())
@@ -227,7 +230,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     public Void visitLoadInteger(SVMParser.LoadIntegerContext ctx) {
 
         code.add(new InstructionNode.InstructionBuilder()
-                .instruction("li")
+                .opCode("li")
                 .arg1(ctx.dest.getText())
                 .argInt(Integer.parseInt(ctx.val.getText()))
                 .build());
@@ -239,7 +242,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     public Void visitStoreWord(SVMParser.StoreWordContext ctx) {
 
         code.add(new InstructionNode.InstructionBuilder()
-                .instruction("sw")
+                .opCode("sw")
                 .arg1(ctx.src.getText())
                 .offset(Integer.parseInt(ctx.offset.getText()))
                 .arg2(ctx.dest.getText())
@@ -252,7 +255,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     public Void visitMove(SVMParser.MoveContext ctx) {
 
         code.add(new InstructionNode.InstructionBuilder()
-                .instruction("mv")
+                .opCode("mv")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.src.getText())
                 .build());
@@ -266,7 +269,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
         var label = ctx.LABEL().getText();
 
         code.add(new InstructionNode.InstructionBuilder()
-                .instruction("b")
+                .opCode("b")
                 .arg1(label)
                 .build());
         labelReferences.put(code.size(),label);
@@ -280,7 +283,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
         var label = ctx.LABEL().getText();
 
         code.add(new InstructionNode.InstructionBuilder()
-                .instruction("beq")
+                .opCode("beq")
                 .arg1(ctx.reg1.getText())
                 .arg2(ctx.reg2.getText())
                 .arg3(label)
@@ -296,7 +299,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
         var label = ctx.LABEL().getText();
 
         code.add(new InstructionNode.InstructionBuilder()
-                .instruction("bleq")
+                .opCode("bleq")
                 .arg1(ctx.reg1.getText())
                 .arg2(ctx.reg2.getText())
                 .arg3(label)
@@ -312,7 +315,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
         var label = ctx.LABEL().getText();
 
         code.add(new InstructionNode.InstructionBuilder()
-                .instruction("jal")
+                .opCode("jal")
                 .arg1(label)
                 .build());
 
@@ -325,7 +328,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     public Void visitJumpToRegister(SVMParser.JumpToRegisterContext ctx) {
 
         code.add(new InstructionNode.InstructionBuilder()
-                .instruction("jr")
+                .opCode("jr")
                 .arg1(ctx.dest.getText())
                 .build()
         );
@@ -345,7 +348,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     public Void visitHalt(SVMParser.HaltContext ctx) {
 
         code.add(new InstructionNode.InstructionBuilder()
-                .instruction("halt")
+                .opCode("halt")
                 .build());
 
         return null;
@@ -355,7 +358,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     public Void visitPrint(SVMParser.PrintContext ctx) {
 
         code.add(new InstructionNode.InstructionBuilder()
-                .instruction("print")
+                .opCode("print")
                 .arg1(ctx.src.getText())
                 .build());
 
@@ -363,4 +366,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     }
 
 
+    public List<InstructionNode> getCode() {
+        return this.code;
+    }
 }
