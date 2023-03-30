@@ -27,9 +27,9 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
         // update jump/branch to label instruction
         // with the actual label address
         for (var labelToJump : labelReferences.entrySet()) {
-            Integer codeLine = labelToJump.getKey();
+            int codeLine = labelToJump.getKey();
             String label = labelToJump.getValue();
-            Integer lineToJump = labels.get(label);
+            int lineToJump = labels.get(label);
 
             InstructionNode instructionToModify = code.get(codeLine);
             if (instructionToModify.getInstruction().equals("beq") || instructionToModify.getInstruction().equals("bleq")) {
@@ -37,13 +37,13 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
                         .instruction(instructionToModify.getInstruction())
                         .arg1(instructionToModify.getArg1())
                         .arg2(instructionToModify.getArg2())
-                        .arg3(lineToJump.toString())
+                        .argInt(lineToJump)
                         .build());
             } else {
-                // b and jal instructions
+                // b e jal
                 code.set(codeLine, new InstructionNode.InstructionBuilder()
-                        .instruction(instructionToModify.getInstruction())
-                        .arg1(lineToJump.toString())
+                        .opCode(instructionToModify.getOpcode())
+                        .argInt(lineToJump)
                         .build());
             }
         }
@@ -86,8 +86,9 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 
     @Override
     public Void visitAddInt(SVMParser.AddIntContext ctx) {
-
-        code.add(new InstructionNode.InstructionBuilder().instruction("addi")
+        
+        code.add(new InstructionNode.InstructionBuilder()
+                .opCode("addi")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.reg1.getText())
                 .argInt(ctx.NUMBER().getText())
