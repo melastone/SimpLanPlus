@@ -48,6 +48,10 @@ public class SVMInterpreter {
     }
 
 
+    public List<InstructionNode> getCode() {
+        return code;
+    }
+
     private void setRegister(String reg, int value) throws AssemblyInstructionException {
         switch (reg) {
             case "$sp":
@@ -68,7 +72,7 @@ public class SVMInterpreter {
             case "$t0":
                 this.$t0 = value;
                 break;
-            case "t1":
+            case "$t1":
                 this.$t1 = value;
                 break;
             default:
@@ -91,7 +95,7 @@ public class SVMInterpreter {
                 return this.$a0;
             case "$t0":
                 return this.$t0;
-            case "t1":
+            case "$t1":
                 return this.$t1;
             default:
                 throw new AssemblyInstructionException("Unrecognized Assembly instruction; " + reg + " register unknown.");
@@ -206,6 +210,9 @@ public class SVMInterpreter {
                 case "jr":
                     $ip = getRegister(arg1);
                     break;
+                case "print":
+                    System.out.println("printin " + getRegister(arg1));
+                    break;
                 case "halt":
                     return;
                 default:
@@ -221,7 +228,7 @@ public class SVMInterpreter {
         try {
             return memory[address];
         } catch (IndexOutOfBoundsException e) {
-            throw new MemoryAccessException("Error: address " + address + " cannot be accessed.");
+            throw new MemoryAccessException("memory address " + address + " cannot be accessed in reading mode .");
         }
     }
 
@@ -229,7 +236,7 @@ public class SVMInterpreter {
         try {
             memory[address] = data;
         } catch (IndexOutOfBoundsException e) {
-            throw new MemoryAccessException("Error: address " + address + " cannot be accessed.");
+            throw new MemoryAccessException("memory address " + address + " cannot be accessed in writing mode.");
         }
     }
 }

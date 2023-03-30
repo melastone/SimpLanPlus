@@ -56,6 +56,18 @@ public class InstructionNode {
     }
 
 
+    @Override
+    public String toString() {
+        return "SVMInstruction{" +
+                "opCode='" + opCode + '\'' +
+                ", arg1='" + arg1 + '\'' +
+                ", offset=" + offset +
+                ", arg2='" + arg2 + '\'' +
+                ", arg3='" + arg3 + '\'' +
+                ", argInt='" + argInt + '\'' +
+                "}\n";
+    }
+
 
     public static class InstructionBuilder {
         private String opCode;

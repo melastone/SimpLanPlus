@@ -24,6 +24,9 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     public Void visitAssembly(SVMParser.AssemblyContext ctx) {
         visitChildren(ctx);
 
+        System.out.println(labels);
+        System.out.println(labelReferences);
+
         // update jump/branch to label instruction
         // with the actual label address
         for (var labelToJump : labelReferences.entrySet()) {
@@ -119,6 +122,8 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
                 .arg2(ctx.reg1.getText())
                 .argInt(ctx.NUMBER().getText())
                 .build());
+
+        System.out.println("subi " + ctx.dest.getText() + " " + ctx.reg1.getText() + " " + ctx.NUMBER().getText() + "\n");
 
         return null;
     }
@@ -272,7 +277,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
                 .opCode("b")
                 .arg1(label)
                 .build());
-        labelReferences.put(code.size(),label);
+        labelReferences.put(code.size() - 1,label);
 
         return null;
     }
@@ -288,7 +293,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
                 .arg2(ctx.reg2.getText())
                 .arg3(label)
                 .build());
-        labelReferences.put(code.size(),label);
+        labelReferences.put(code.size() - 1,label);
 
         return null;
     }
@@ -304,7 +309,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
                 .arg2(ctx.reg2.getText())
                 .arg3(label)
                 .build());
-        labelReferences.put(code.size(),label);
+        labelReferences.put(code.size() - 1,label);
 
         return null;
     }
@@ -319,7 +324,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
                 .arg1(label)
                 .build());
 
-        labelReferences.put(code.size(),label);
+        labelReferences.put(code.size() - 1,label);
 
         return null;
     }
