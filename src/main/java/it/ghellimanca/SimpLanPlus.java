@@ -5,7 +5,7 @@ import it.ghellimanca.gen.simplanplus.SimpLanPlusLexer;
 import it.ghellimanca.gen.simplanplus.SimpLanPlusParser;
 import it.ghellimanca.gen.svm.SVMLexer;
 import it.ghellimanca.gen.svm.SVMParser;
-import it.ghellimanca.interpreter.MemoryAccessException;
+import it.ghellimanca.interpreter.exception.MemoryAccessException;
 import it.ghellimanca.interpreter.SVMInterpreter;
 import it.ghellimanca.interpreter.SVMVisitorImpl;
 import it.ghellimanca.interpreter.exception.AssemblyInstructionException;

@@ -1,4 +1,4 @@
-package it.ghellimanca.interpreter;
+package it.ghellimanca.interpreter.exception;
 
 public class MemoryAccessException extends Exception {
 

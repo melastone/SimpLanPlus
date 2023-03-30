@@ -1,6 +1,7 @@
 package it.ghellimanca.interpreter;
 
 import it.ghellimanca.interpreter.exception.AssemblyInstructionException;
+import it.ghellimanca.interpreter.exception.MemoryAccessException;
 import it.ghellimanca.interpreter.exception.SmallCodeSizeException;
 
 import java.util.*;
