@@ -5,6 +5,7 @@ import it.ghellimanca.gen.simplanplus.SimpLanPlusLexer;
 import it.ghellimanca.gen.simplanplus.SimpLanPlusParser;
 import it.ghellimanca.gen.svm.SVMLexer;
 import it.ghellimanca.gen.svm.SVMParser;
+import it.ghellimanca.interpreter.exception.MemoryAccessException;
 import it.ghellimanca.interpreter.SVMInterpreter;
 import it.ghellimanca.interpreter.SVMVisitorImpl;
 import it.ghellimanca.interpreter.exception.AssemblyInstructionException;
@@ -64,7 +65,7 @@ public class SimpLanPlus {
         writer.close();
 
         /* INTERPRETER */
-        //run(assembly);
+        run(assembly);
 
     }
 
@@ -254,9 +255,9 @@ public class SimpLanPlus {
 
         try {
             SVMInterpreter svmInterpreter = new SVMInterpreter(svmVisitor.getCode());
-            System.out.println("Program output (can be empty):");
+            System.out.println("Program output:");
             svmInterpreter.run();
-          } catch (AssemblyInstructionException | SmallCodeSizeException exc) {
+        } catch (AssemblyInstructionException | SmallCodeSizeException | MemoryAccessException exc) {
             System.err.println("Error: " + exc.getMessage());
             System.exit(1);
         }

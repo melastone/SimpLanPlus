@@ -7,14 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
-/**
- *
- * SVM grammar Parse Tree Visitor.
- *
- * Creates a list of Instruction Nodes from the Parse Tree generated with Antlr.
- *
- */
 public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 
     final private List<InstructionNode> code;
@@ -28,12 +20,6 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
         this.labelReferences = new HashMap<>();
     }
 
-
-    public List<InstructionNode> getCode() {
-        return code;
-    }
-
-
     @Override
     public Void visitAssembly(SVMParser.AssemblyContext ctx) {
         visitChildren(ctx);
@@ -41,9 +27,9 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
         // update jump/branch to label instruction
         // with the actual label address
         for (var labelToJump : labelReferences.entrySet()) {
-            Integer codeLine = labelToJump.getKey();
+            int codeLine = labelToJump.getKey();
             String label = labelToJump.getValue();
-            Integer lineToJump = labels.get(label);
+            int lineToJump = labels.get(label);
 
             InstructionNode instructionToModify = code.get(codeLine);
             if (instructionToModify.getOpcode().equals("beq") || instructionToModify.getOpcode().equals("bleq")) {
@@ -51,13 +37,13 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
                         .opCode(instructionToModify.getOpcode())
                         .arg1(instructionToModify.getArg1())
                         .arg2(instructionToModify.getArg2())
-                        .arg3(lineToJump.toString())
+                        .argInt(lineToJump)
                         .build());
             } else {
-                // b and jal instructions
+                // b e jal
                 code.set(codeLine, new InstructionNode.InstructionBuilder()
                         .opCode(instructionToModify.getOpcode())
-                        .arg1(lineToJump.toString())
+                        .argInt(lineToJump)
                         .build());
             }
         }
@@ -100,8 +86,9 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 
     @Override
     public Void visitAddInt(SVMParser.AddIntContext ctx) {
-
-        code.add(new InstructionNode.InstructionBuilder().opCode("addi")
+        
+        code.add(new InstructionNode.InstructionBuilder()
+                .opCode("addi")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.reg1.getText())
                 .argInt(ctx.NUMBER().getText())
@@ -126,7 +113,8 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     @Override
     public Void visitSubInt(SVMParser.SubIntContext ctx) {
 
-        code.add(new InstructionNode.InstructionBuilder().opCode("subi")
+        code.add(new InstructionNode.InstructionBuilder()
+                .opCode("subi")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.reg1.getText())
                 .argInt(ctx.NUMBER().getText())
@@ -151,7 +139,8 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     @Override
     public Void visitMultInt(SVMParser.MultIntContext ctx) {
 
-        code.add(new InstructionNode.InstructionBuilder().opCode("multi")
+        code.add(new InstructionNode.InstructionBuilder()
+                .opCode("multi")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.reg1.getText())
                 .argInt(ctx.NUMBER().getText())
@@ -176,7 +165,8 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     @Override
     public Void visitDivInt(SVMParser.DivIntContext ctx) {
 
-        code.add(new InstructionNode.InstructionBuilder().opCode("divi")
+        code.add(new InstructionNode.InstructionBuilder()
+                .opCode("divi")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.reg1.getText())
                 .argInt(ctx.NUMBER().getText())
@@ -376,4 +366,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     }
 
 
+    public List<InstructionNode> getCode() {
+        return this.code;
+    }
 }
