@@ -4,6 +4,7 @@ import it.ghellimanca.ast.type.BoolTypeNode;
 import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.ast.exp.ExpNode;
 import it.ghellimanca.ast.type.TypeNode;
+import it.ghellimanca.semanticanalysis.errors.*;
 
 import java.util.ArrayList;
 

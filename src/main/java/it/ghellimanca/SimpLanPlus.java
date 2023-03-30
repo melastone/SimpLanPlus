@@ -8,10 +8,11 @@ import it.ghellimanca.gen.svm.SVMParser;
 import it.ghellimanca.interpreter.MemoryAccessException;
 import it.ghellimanca.interpreter.SVMInterpreter;
 import it.ghellimanca.interpreter.SVMVisitorImpl;
-import it.ghellimanca.semanticanalysis.*;
+import it.ghellimanca.interpreter.exception.AssemblyInstructionException;
+import it.ghellimanca.interpreter.exception.SmallCodeSizeException;
 import it.ghellimanca.semanticanalysis.Environment;
-import it.ghellimanca.semanticanalysis.MissingInitializationException;
-import it.ghellimanca.semanticanalysis.TypeCheckingException;
+import it.ghellimanca.semanticanalysis.errors.*;
+import it.ghellimanca.semanticanalysis.errors.TypeCheckingException;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
@@ -63,7 +64,7 @@ public class SimpLanPlus {
         writer.close();
 
         /* INTERPRETER */
-        //run(assembly);
+        run(assembly);
 
     }
 
@@ -238,7 +239,6 @@ public class SimpLanPlus {
 
         /* VM PARSER */
 
-        // Instantiate the parser
         SVMParser svmParser = new SVMParser(svmLexerTokens);
 
         SimpLanPlusErrorListener svmErrorListenerParser = new SimpLanPlusErrorListener();
@@ -256,7 +256,7 @@ public class SimpLanPlus {
             SVMInterpreter svmInterpreter = new SVMInterpreter(svmVisitor.getCode());
             System.out.println("Program output:");
             svmInterpreter.run();
-        } catch (MemoryAccessException exc) {
+        } catch (AssemblyInstructionException | SmallCodeSizeException | MemoryAccessException exc) {
             System.err.println("Error: " + exc.getMessage());
             System.exit(1);
         }
