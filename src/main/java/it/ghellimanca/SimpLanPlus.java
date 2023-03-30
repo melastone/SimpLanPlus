@@ -5,6 +5,7 @@ import it.ghellimanca.gen.simplanplus.SimpLanPlusLexer;
 import it.ghellimanca.gen.simplanplus.SimpLanPlusParser;
 import it.ghellimanca.gen.svm.SVMLexer;
 import it.ghellimanca.gen.svm.SVMParser;
+import it.ghellimanca.interpreter.SVMInterpreter;
 import it.ghellimanca.interpreter.SVMVisitorImpl;
 import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.semanticanalysis.Environment;
@@ -245,15 +246,15 @@ public class SimpLanPlus {
 
          // Visiting the tree and generating the AST.
         SVMVisitorImpl svmVisitor = new SVMVisitorImpl();
-        //var code = svmVisitor.visit(svmParser.program());
+        svmVisitor.visit(svmParser.assembly());
 
 
         /* VM INTERPRETER */
 
 //        try {
-//            SVMInterpreter svmInterpreter = new SVMInterpreter(code, memsize);
-//            System.out.println("Program output (can be empty):");
-//            svmInterpreter.run(flags.debugcpu());
+            SVMInterpreter svmInterpreter = new SVMInterpreter(svmVisitor.getCode());
+            System.out.println("Program output (can be empty):");
+            svmInterpreter.run();
 //        } catch (MemoryAccessException | CodeSizeTooSmallException | UninitializedVariableException exc) {
 //            System.err.println("Error: " + exc.getMessage());
 //            System.exit(1);

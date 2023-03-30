@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  *
- * Parse Tree Visitor.
+ * SimpLanPlus grammar Parse Tree Visitor.
  *
  * Extends SimpLanPlusBaseVisitor, empty implementation of SimpLanPlusVisitor Interface
  *
