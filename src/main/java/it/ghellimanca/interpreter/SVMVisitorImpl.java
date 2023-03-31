@@ -78,7 +78,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
     public Void visitAdd(SVMParser.AddContext ctx) {
 
         code.add(new InstructionNode.InstructionBuilder()
-                .opCode("addi")
+                .opCode("add")
                 .arg1(ctx.dest.getText())
                 .arg2(ctx.reg1.getText())
                 .arg3(ctx.reg2.getText())

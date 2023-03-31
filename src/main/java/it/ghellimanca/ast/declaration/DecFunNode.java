@@ -274,8 +274,9 @@ public class DecFunNode extends DeclarationNode {
                 if (isVar) {
                     nVar++;
                     int argOffset = arg.getId().getStEntry().getOffset();
-                    buff.append("lw $t0 ").append(argOffset + 2 + nDecs).append("($fp)\n");     // get its value
-                    buff.append("lw $t1 ").append(argOffset + 3 + nDecs).append("($fp)\n");     // get its address
+                    System.out.println(argOffset);
+                    buff.append("lw $t0 ").append(argOffset + 2).append("($fp)\n");     // get its value
+                    buff.append("lw $t1 ").append(argOffset + 3).append("($fp)\n");     // get its address
                     buff.append("sw $t0 0($t1)\n");
                 }
             }

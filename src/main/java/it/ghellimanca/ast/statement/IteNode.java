@@ -116,7 +116,7 @@ public class IteNode extends StatementNode {
 
         buff.append(exp.codeGeneration());
         buff.append("li $t1 0\n");
-        buff.append("beq $t1 $a0").append(falseBranch).append("\n");
+        buff.append("beq $t1 $a0 ").append(falseBranch).append("\n");
 
         buff.append(stm1.codeGeneration());
         buff.append("b ").append(endIf).append('\n');
