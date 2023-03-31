@@ -128,7 +128,7 @@ public class BinExpNode extends ExpNode {
                 break;
             case "<":
                 String lessEqTrueBrLabel = "LESS_EQ_TRUE_BRANCH";
-                String endLessLabel = "END LESS";
+                String endLessLabel = "END_LESS";
                 String lessLeqTrueBrLabel = "LESS_LEQ_TRUE_BRANCH";
 
                 res.append("beq $a0 $t1 ").append(lessEqTrueBrLabel).append("\n");
@@ -153,7 +153,7 @@ public class BinExpNode extends ExpNode {
                 break;
             case "<=":
                 String leqTrueBrLabel = "LEQ_TRUE_BRANCH";
-                String endLeqLabel = "END LEQ";
+                String endLeqLabel = "END_LEQ";
 
                 res.append("bleq $a0 $t1 ").append(leqTrueBrLabel).append("\n");
 
@@ -168,7 +168,7 @@ public class BinExpNode extends ExpNode {
                 break;
             case ">":
                 String grEqTrueBrLabel = "GR_EQ_TRUE_BRANCH";
-                String endGrLabel = "END GR";
+                String endGrLabel = "END_GR";
 
                 res.append("bleq $a0 $t1 ").append(grEqTrueBrLabel).append("\n");
 
@@ -185,7 +185,7 @@ public class BinExpNode extends ExpNode {
             case ">=":
                 String geqTrueBrLabel = "GEQ_TRUE_BRANCH";
                 String geqFalseBrLabel = "GEQ_FALSE_BRANCH";
-                String endGeqLabel = "END GEQ";
+                String endGeqLabel = "END_GEQ";
 
                 res.append("beq $a0 $t1 ").append(geqTrueBrLabel).append("\n");
 
@@ -208,7 +208,7 @@ public class BinExpNode extends ExpNode {
                 break;
             case "==":
                 String eqTrueBrLabel = "EQ_TRUE_BRANCH";
-                String endEqLabel = "END EQ";
+                String endEqLabel = "END_EQ";
 
                 res.append("beq $a0 $t1 ").append(eqTrueBrLabel).append("\n");
 
@@ -223,7 +223,7 @@ public class BinExpNode extends ExpNode {
                 break;
             case "!=":
                 String uneqTrueBrLabel = "UNEQ_TRUE_BRANCH";
-                String endUneqLabel = "END UNEQ";
+                String endUneqLabel = "END_UNEQ";
 
                 res.append("beq $a0 $t1 ").append(uneqTrueBrLabel).append("\n");
 
