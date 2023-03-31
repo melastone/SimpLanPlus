@@ -4,13 +4,13 @@
     */
 
     int x = 1;
-    void f(int n){
+    void f(int n, var int x){
 	    if (n == 0) {
 	        print(x) ;
 	    } else {
 	        x = x * n ;
-	        f(n-1) ;
+	        f(n-1, x) ;
 	    }
     }
-    f(10) ;
+    f(10, x) ;
 }

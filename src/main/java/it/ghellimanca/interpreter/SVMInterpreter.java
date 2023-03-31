@@ -121,23 +121,23 @@ public class SVMInterpreter {
 
             switch (instruction.getOpcode()) {
                 case "push":
-                    System.out.println("Push:");
-                    System.out.println("Setting $sp: " + getRegister("$sp") + " - 1");
+//                    System.out.println("Push:");
+//                    System.out.println("Setting $sp: " + getRegister("$sp") + " - 1");
                     setRegister("$sp", getRegister("$sp") - 1);
 
-                    System.out.println("Writing in memory: value " + getRegister(arg1) + " in $sp address that is " + getRegister("$sp") + "\n");
+//                    System.out.println("Writing in memory: value " + getRegister(arg1) + " in $sp address that is " + getRegister("$sp") + "\n");
                     writeMemory(getRegister("$sp"), getRegister(arg1));
 
                     break;
                 case "pop":
                     // facoltativo: libera la cella di memoria
-                    System.out.println("Pop:");
-                    System.out.println("Setting $sp: " + getRegister("$sp") + " + 1\n");
+//                    System.out.println("Pop:");
+//                    System.out.println("Setting $sp: " + getRegister("$sp") + " + 1\n");
                     setRegister("$sp", getRegister("$sp") + 1);
                     break;
                 case "add":
-                    System.out.println("Add:");
-                    System.out.println("Setting " + arg1 + ": " + getRegister(arg2) +" + "+ getRegister(arg3)+"\n");
+//                    System.out.println("Add:");
+//                    System.out.println("Setting " + arg1 + ": " + getRegister(arg2) +" + "+ getRegister(arg3)+"\n");
                     setRegister(arg1, getRegister(arg2) + getRegister(arg3));
                     break;
                 case "addi":
@@ -147,13 +147,14 @@ public class SVMInterpreter {
                     setRegister(arg1, getRegister(arg2) - getRegister(arg3));
                     break;
                 case "subi":
-                    System.out.println("Load integer:");
-                    System.out.println("Putting " + getRegister(arg2) + " (from "+arg2+" register) - " + argInt +" in "+ arg1+" register\n");
+//                    System.out.println("Load integer:");
+//                    System.out.println("Putting " + getRegister(arg2) + " (from "+arg2+" register) - " + argInt +" in "+ arg1+" register\n");
 
                     setRegister(arg1, getRegister(arg2) - argInt);
                     break;
                 case "mult":
                     setRegister(arg1, getRegister(arg2) * getRegister(arg3));
+                    System.out.println("Mult " + getRegister(arg2) + " per " + getRegister(arg3));
                     break;
                 case "multi":
                     setRegister(arg1, getRegister(arg2) * argInt);
@@ -179,14 +180,14 @@ public class SVMInterpreter {
                     break;
                 case "lw":
                     int srcLw = getRegister(arg2);
-                    System.out.println("Load word:");
-                    System.out.println("Reading, using "+arg2+" register, " + offset + "("+srcLw+ ") address which is " +readMemory(offset + srcLw) + " and putting it in " + arg1+"\n");
+//                    System.out.println("Load word:");
+//                    System.out.println("Reading, using "+arg2+" register, " + offset + "("+srcLw+ ") address which is " +readMemory(offset + srcLw) + " and putting it in " + arg1+"\n");
 
                     setRegister(arg1, readMemory(offset + srcLw));
                     break;
                 case "li":
-                    System.out.println("Load integer:");
-                    System.out.println("Putting " + argInt+" in "+ arg1+" register\n");
+//                    System.out.println("Load integer:");
+//                    System.out.println("Putting " + argInt+" in "+ arg1+" register\n");
 
                     setRegister(arg1, argInt);
                     break;
@@ -194,16 +195,16 @@ public class SVMInterpreter {
                     int srcSw = getRegister(arg1);
                     int destSw = getRegister(arg2);
 
-                    System.out.println("Store word:");
-                    System.out.println("Writing in memory: value "+srcSw+" in "+ destSw+" + "+offset+ " address\n");
+//                    System.out.println("Store word:");
+//                    System.out.println("Writing in memory: value "+srcSw+" in "+ destSw+" + "+offset+ " address\n");
 
                     writeMemory(destSw + offset, srcSw);
                     break;
                 case "mv":
                     int srcMv = getRegister(arg2);
 
-                    System.out.println("Move:");
-                    System.out.println("Moving in "+ arg1 +" register value in "+arg2+" address which is "+ srcMv + "\n");
+//                    System.out.println("Move:");
+//                    System.out.println("Moving in "+ arg1 +" register value in "+arg2+" address which is "+ srcMv + "\n");
 
 
                     setRegister(arg1, srcMv);

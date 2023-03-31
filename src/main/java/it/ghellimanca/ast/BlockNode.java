@@ -182,7 +182,7 @@ public class BlockNode extends StatementNode {
 
         // build AR
         if (this.variableDeclarations != null){
-            buff.append("subi $sp $sp").append(variableDeclarations.size()).append("\n");
+            buff.append("subi $sp $sp ").append(variableDeclarations.size()).append("\n");
         }
         buff.append("li $t0 0\n");    // using a fake RA
         buff.append("push $t0\n");

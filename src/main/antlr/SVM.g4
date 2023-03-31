@@ -39,7 +39,7 @@ instruction : 'push' src=REG    #push
 
 
 fragment DIGIT  : '0'..'9';
-NUMBER : '0' | ('-')? DIGIT;
+NUMBER : '0' | ('-')? DIGIT+;
 REG : '$'('t'DIGIT|'a0'|'ra'|'sp'|'fp'|'al');
 
 fragment CHAR : ('a'..'z'|'A'..'Z');

@@ -237,7 +237,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
         code.add(new InstructionNode.InstructionBuilder()
                 .opCode("li")
                 .arg1(ctx.dest.getText())
-                .argInt(Integer.parseInt(ctx.val.getText()))
+                .argInt(ctx.NUMBER().getText())
                 .build());
 
         return null;
