@@ -9,6 +9,7 @@ import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.semanticanalysis.errors.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Node of the AST for an assignment statement
@@ -33,6 +34,8 @@ public class AssignmentNode extends StatementNode {
     public String toPrint(String indent) {
         return "\n" + indent + "ASSIGNMENT" + id.toPrint(indent + "\t") + exp.toPrint(indent + "\t");
     }
+
+
 
 
     @Override
@@ -94,6 +97,17 @@ public class AssignmentNode extends StatementNode {
 
         return buffer.toString();
     }
+
+    @Override
+    public List<IdNode> variables() {
+        List<IdNode> tmp = new ArrayList<>();
+
+        tmp.addAll(exp.variables());
+        tmp.add(id);
+
+        return tmp;
+    }
+
 }
 
 

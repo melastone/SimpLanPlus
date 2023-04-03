@@ -1,5 +1,6 @@
 package it.ghellimanca.ast.statement;
 
+import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.ast.type.VoidTypeNode;
 import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.ast.exp.ExpNode;
@@ -7,6 +8,7 @@ import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.semanticanalysis.errors.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -91,5 +93,10 @@ public class ReturnNode extends StatementNode {
         buff.append("b ").append(funId).append("_END\n");
 
         return buff.toString();
+    }
+
+    @Override
+    public List<IdNode> variables() {
+        return exp != null ? exp.variables() : new ArrayList<>();
     }
 }

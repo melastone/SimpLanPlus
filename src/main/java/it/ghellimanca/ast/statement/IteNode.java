@@ -1,5 +1,6 @@
 package it.ghellimanca.ast.statement;
 
+import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.ast.type.BoolTypeNode;
 import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.ast.exp.ExpNode;
@@ -7,6 +8,7 @@ import it.ghellimanca.ast.type.TypeNode;
 import it.ghellimanca.semanticanalysis.errors.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -130,5 +132,16 @@ public class IteNode extends StatementNode {
         buff.append(endIf).append(":\n");
 
         return buff.toString();
+    }
+
+    @Override
+    public List<IdNode> variables() {
+        List<IdNode> tmp = new ArrayList<>();
+
+        tmp.addAll(exp.variables());
+        tmp.addAll(stm1.variables());
+        tmp.addAll(stm2 != null ? stm2.variables() : new ArrayList<>());
+
+        return tmp;
     }
 }

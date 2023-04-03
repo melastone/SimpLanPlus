@@ -13,6 +13,7 @@ import it.ghellimanca.semanticanalysis.errors.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -211,5 +212,8 @@ public class BlockNode extends StatementNode {
         return buff.toString();
     }
 
-
+    @Override
+    public List<IdNode> variables() {
+        return statements.stream().flatMap(stm -> stm.variables().stream()).collect(Collectors.toList());
+    }
 }

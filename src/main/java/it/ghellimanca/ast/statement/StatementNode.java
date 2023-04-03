@@ -1,6 +1,9 @@
 package it.ghellimanca.ast.statement;
 
+import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.ast.Node;
+
+import java.util.List;
 
 /**
  * Node of the AST for a generic statement
@@ -18,6 +21,8 @@ public abstract class StatementNode implements Node {
     public String getFunId() {
         return funId;
     }
+
+    public abstract List<IdNode> variables();
 
     public String toString() {
         return toPrint("");

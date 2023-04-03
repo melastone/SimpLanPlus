@@ -31,7 +31,8 @@ push $fp
 mv $fp $sp
 mv $al $fp
 lw $al 0($al)
-lw $a0 3($al)
+lw $al 0($al)
+lw $a0 2($al)
 print $a0
 lw $fp 0($sp)
 pop ;pop old $fp
@@ -46,7 +47,8 @@ push $fp
 mv $fp $sp
 mv $al $fp
 lw $al 0($al)
-lw $a0 3($al)
+lw $al 0($al)
+lw $a0 2($al)
 push $a0
 mv $al $fp
 lw $al 0($al)
@@ -56,16 +58,8 @@ pop
 mult $a0 $t1 $a0
 mv $al $fp
 lw $al 0($al)
-sw $a0 3($al)
-mv $al $fp
 lw $al 0($al)
-mv $t1 $al
-addi $t1 $t1 3
-push $t1
-mv $al $fp
-lw $al 0($al)
-lw $a0 3($al)
-push $a0
+sw $a0 2($al)
 mv $al $fp
 lw $al 0($al)
 lw $a0 2($al)
@@ -82,23 +76,13 @@ pop ;pop fake RA
 addi $sp $sp0
 END_IF:
 F_END:
-lw $t0 3($fp)
-lw $t1 4($fp)
-sw $t0 0($t1)
 lw $fp 0($sp)
 pop
 lw $ra 0($sp)
 pop
-addi $sp $sp 3
+addi $sp $sp 1
 jr $ra
 F_JUMP:
-mv $al $fp
-mv $t1 $al
-addi $t1 $t1 2
-push $t1
-mv $al $fp
-lw $a0 2($al)
-push $a0
 li $a0 10
 push $a0
 jal F_ENTRY

@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
  * voidType is used in case the function is void.
  *
  * todo: aggiungi i controlli di subtyping per le regole di tipaggio (non sarebbero necessarie x questa grammatica, ma il prof le apprezza)
+ * todo: controlla che non serva settare il funid nel body, così cancelli
  */
 public class DecFunNode extends DeclarationNode {
 
@@ -78,10 +79,8 @@ public class DecFunNode extends DeclarationNode {
 
         ArrowTypeNode funType = new ArrowTypeNode(argsType,type);
         id.setStEntry(env.addDeclaration(id.getIdentifier(), funType, Effect.INIT));
-        // id.getStEntry().setFunNode(this);   // adding reference to this node in order to access arguments during call node effects analysis
 
         body.setFunctionBody(true);
-        // set reference to this function in all body's statements
         body.setFunId(id.getIdentifier());
 
         STEntry funEntryCopy = id.getStEntry();
@@ -101,19 +100,22 @@ public class DecFunNode extends DeclarationNode {
         funEntryCopy.setInitPars(initPars);
 
 
-        // open a new scope where to evaluate function body and calculating Sigma1
         env.newScope();
 
-        // adding fun body variable declaration into the new scope
+        // adding fun body variable declarations into the new scope
         // doing this now cause we want offsets to be calculate in reverse order
         var varDecsInsideFunBody = body.getVariableDeclarations();
+        List<IdNode> varIdInsideFunBody = new ArrayList<>();
         for (DecVarNode dec : varDecsInsideFunBody) {
             err.addAll(dec.checkSemantics(env));
+            varIdInsideFunBody.add(dec.getId());
         }
 
         // adding arguments declarations into the new scope. set them to INIT in order to correctly calculate Sigma1
+        List<IdNode> argIds = new ArrayList<>();
         for (int argId = 0; argId < arguments.size(); argId++) {
             var arg = arguments.get(argId);
+            argIds.add(arg.getId());
             var isVar = argsType.get(argId) instanceof VarTypeNode;
 
             arg.getId().setStEntry(env.safeAddDeclaration(arg.getId().getIdentifier(), arg.getType(), Effect.INIT));
@@ -126,7 +128,6 @@ public class DecFunNode extends DeclarationNode {
 
         // adding function declaration into the new scope in order to enable recursive calls
         STEntry localFunEntryCopy = env.safeAddDeclaration(id.getIdentifier(), funType, Effect.INIT);
-        // localFunEntryCopy.setFunNode(this);
 
         // adding funStatuses and initialized initPars to innerEntry
         localFunEntryCopy.setFunStatus(0, Sigma0);
@@ -147,6 +148,14 @@ public class DecFunNode extends DeclarationNode {
             err.addAll(stm.checkSemantics(env));
         }
 
+        // check that variables outside fun scope are not used
+        var vars = body.variables();
+        for (int i=0; i < vars.size(); i++){
+            if (!found(vars.get(i), varIdInsideFunBody, argIds)) {
+                System.out.println("NOOOO! Used var outside fun scope.");
+            }
+        }
+
         // update Sigma1 with changes made by body evaluation
         List<Effect> updatedStatuses = arguments.stream().map(argNode -> env.safeLookup(argNode.getId().getIdentifier()).getVarStatus())
                 .collect(Collectors.toList());
@@ -155,8 +164,6 @@ public class DecFunNode extends DeclarationNode {
         boolean hasCodomainChanged = !localFunEntryCopy.getFunStatus().get(1).equals(oldSigma1);
 
         while (hasCodomainChanged) {
-
-            //System.out.println("Performing another fix-point computation. Updating Sigma1 with Sigma1'.\n");
 
             // we do not want to keep statuses as they were update by previous iteration of the algorithm,
             // so we restore the environment as it was before
@@ -174,15 +181,11 @@ public class DecFunNode extends DeclarationNode {
 
             var newSigma1 = localFunEntryCopy.getFunStatus().get(1);
 
-            //System.out.println("Sigma1:\n" + oldSigma1 + "\nSigma1':\n" + newSigma1 + '\n');
-
             hasCodomainChanged = !newSigma1.equals(oldSigma1);
         }
 
         // update initPars
-        //List<Boolean> initPars = new ArrayList<>();
         for (int argIndex = 0; argIndex < arguments.size(); argIndex++) {
-            //STEntry argEntry = arguments.get(argIndex).getId().getStEntry();
             STEntry argEntry = env.safeLookup(arguments.get(argIndex).getId().getIdentifier());
             initPars.set(argIndex, argEntry.isInitAfterDec());
         }
@@ -193,17 +196,14 @@ public class DecFunNode extends DeclarationNode {
         id.setStEntry(funEntryCopy);
 
         // before popping current scope, check that there are no variables whose status are either error or not used
-        // getting sigma_1'' from sigma'' = sigma_0'' ⋅ sigma_1''
-        var currentScope = env.currentScope();
+        var currentScope = env.currentScope();  // getting sigma_1'' from sigma'' = sigma_0'' ⋅ sigma_1''
 
-        // for every x_i in dom(sigma_1'')
-        for (var varId : currentScope.keySet()) {
+        for (var varId : currentScope.keySet()) {           // for every x_i in dom(sigma_1'')
 
             var idEntry = currentScope.get(varId);
             var idStatus = idEntry.getVarStatus();
 
-            // sigma_1''(x) has to be <= USED otherwise there was an error
-            if (idStatus.equals(new Effect(Effect.ERROR))) {
+            if (idStatus.equals(new Effect(Effect.ERROR))) {    // sigma_1''(x) has to be <= USED otherwise there was an error
                 throw new MissingInitializationException(varId + " was used before initialization.");
             } else if (!varId.equals(id.getIdentifier()) && idStatus.equals(new Effect(Effect.INIT)) || idStatus.equals(new Effect(Effect.DECLARED))) {
                     err.add(new SemanticWarning("Variable " + varId + " was declared but never used."));
@@ -294,5 +294,25 @@ public class DecFunNode extends DeclarationNode {
         buff.append(jumpLabel).append(":\n");
 
         return buff.toString();
+    }
+
+    public boolean found(IdNode id, List<IdNode> l1, List<IdNode> l2) {
+        var tmp = false;
+
+        for (IdNode el1 : l1) {
+            if (id == el1) {
+                tmp = true;
+                break;
+            }
+        }
+
+        for (IdNode el2 : l2) {
+            if (id == el2) {
+                tmp = true;
+                break;
+            }
+        }
+
+        return tmp;
     }
 }
