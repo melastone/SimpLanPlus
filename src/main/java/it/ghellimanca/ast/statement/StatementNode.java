@@ -18,10 +18,6 @@ public abstract class StatementNode implements Node {
         this.funId = funId;
     }
 
-    public String getFunId() {
-        return funId;
-    }
-
     public abstract List<IdNode> variables();
 
     public abstract List<IdNode> getVarDeclarations();

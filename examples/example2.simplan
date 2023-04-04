@@ -1,21 +1,22 @@
 {
+
     /*
-    This program shows the use of recursion.
-    While calling function f in this way:
-      f(5,4);
-    is correct and terminates (output 9), calling:
-      f(4,5);
-    then the program should display:
-      - "Reached max memory limit."
+    This example contains a nested function definition.
+    It will raise a lexical error, because the grammar does not recognize function definitions
+    inside function bodies.
     */
-    void f(int m, int n) {
-        if (m>n) {
-            print(m+n);
+
+    void f() {
+        int b = 20;
+        void g(int x){
+            if (x == 0) {
+                return;
+            }
+            else {
+                g(x - 1);
+            }
         }
-        else {
-            int x = 1;
-            f(m+1,n+1);
-        }
+        g(2);
     }
-    f(5,4);
+
 }

@@ -6,25 +6,28 @@
     The program fails to compile for the presence of returnFromBlock method and should output:
         - "There is code after a return statement."
     */
+
+    /*
     int mult2correct(int a) {
         return a*2;
     }
-    /*
+
     int mult2wrong(int a) {
         return a*2;
         print(13);
     }
-    */
+
     bool returnIte(int a, int b) {
         if(a >= 5) {
             return true;
         } else {
             return b == 5;
         }
-    }
+    }*/
 
     int returnFromBlock() {
         {
+            print 0;
             return 1;
         }
         if (true) {
@@ -33,7 +36,7 @@
     }
 
     //print mult2wrong(10);
-    print mult2correct(10);
-    print returnIte(2+3, 0);
+    //print mult2correct(10);
+    //print returnIte(2+3, 0);
     print returnFromBlock();
 }

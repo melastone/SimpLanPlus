@@ -253,7 +253,7 @@ public class SVMInterpreter {
         try {
             return memory[address];
         } catch (IndexOutOfBoundsException e) {
-            throw new MemoryAccessException("memory address " + address + " cannot be accessed in reading mode .");
+            throw new MemoryAccessException("memory address " + address + " cannot be accessed in reading mode.\n");
         }
     }
 
@@ -261,7 +261,7 @@ public class SVMInterpreter {
         try {
             memory[address] = data;
         } catch (IndexOutOfBoundsException e) {
-            throw new MemoryAccessException("memory address " + address + " cannot be accessed in writing mode." + data);
+            throw new MemoryAccessException("memory address " + address + " cannot be accessed in writing mode.\n");
         }
     }
 }

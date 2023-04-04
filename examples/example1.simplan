@@ -1,7 +1,7 @@
 
 {
     /*
-    This example shows the correct use of recursive functions.
+    This example shows the use of recursive functions.
     The program uses x, which is declared outside function scope. Hence it should output an error.
     */
     int x = 1;

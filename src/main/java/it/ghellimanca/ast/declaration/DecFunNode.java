@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
  * voidType is used in case the function is void.
  *
  * todo: aggiungi i controlli di subtyping per le regole di tipaggio (non sarebbero necessarie x questa grammatica, ma il prof le apprezza)
- * todo: controlla che non serva settare il funid nel body, così cancelli
  */
 public class DecFunNode extends DeclarationNode {
 
@@ -138,8 +137,6 @@ public class DecFunNode extends DeclarationNode {
         // saving current Sigma1 in order to verify whether if it changes or not
         List<Effect> oldSigma1 = localFunEntryCopy.getFunStatus().get(1);
 
-        // set reference to this function in all body's statements
-        //body.setFunId(id.getIdentifier());
 
         var statementsInsideFunBody = body.getStatements();
         for (StatementNode stm : statementsInsideFunBody) {
@@ -149,10 +146,9 @@ public class DecFunNode extends DeclarationNode {
         // check that variables outside fun scope are not used
         var varIdInsideFunBody = body.getVarDeclarations();
         var vars = body.variables();
-        System.out.println(vars + "\n" + varIdInsideFunBody + "\n" + argIds);
         for (int i=0; i < vars.size(); i++){
             if (!found(vars.get(i), varIdInsideFunBody, argIds)) {
-                System.out.println("NOOOO! Used var outside fun scope.");
+                throw new MissingDeclarationException("Function " + id.getIdentifier() + " cannot access variable " + vars.get(i).getIdentifier() + " because it was declared outside function scope.\n");
             }
         }
 
@@ -252,8 +248,6 @@ public class DecFunNode extends DeclarationNode {
         buff.append("push $fp\n");
         buff.append("mv $fp $sp\n");
 
-        // set reference to this function in all body's statements
-        //body.setFunId(id.getIdentifier());
 
         // generate code for body's declarations (only vars)
         decs.forEach(dec -> buff.append(dec.codeGeneration()));

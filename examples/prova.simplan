@@ -3,30 +3,13 @@
     Questo file possiamo usarlo per testare codice al volo.
     */
 
-    int a = 1;
-
-    void f(var int x) {
-        int k = 1;
-        print x;
+    void f(int m, int n){
+	    if (m<n) {
+	        print(1) ;
+	    } else {
+	        print 0 ;
+	    }
     }
+    f(5,5) ;
 
-    f(a);
-
-    /*
-    n == 3
-        a -> BOTTOM
-        n -> USED
-
-    n == 2
-        a -> BOTTOM
-        n -> USED
-
-    n == 1
-        a -> BOTTOM
-        n -> USED
-
-    n == 0
-        a -> INIT
-        n -> USED
-    */
 }

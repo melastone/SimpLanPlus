@@ -43,7 +43,7 @@ NUMBER : '0' | ('-')? DIGIT+;
 REG : '$'('t'DIGIT|'a0'|'ra'|'sp'|'fp'|'al');
 
 fragment CHAR : ('a'..'z'|'A'..'Z');
-LABEL : CHAR+('_'CHAR+)*;
+LABEL : CHAR (CHAR | DIGIT)*('_'CHAR+)*;
 
 // ESCAPE SEQUENCES
 WS  : ( '\t' | ' ' | '\r' | '\n' )+   -> skip;

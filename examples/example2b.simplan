@@ -1,0 +1,25 @@
+{
+    /*
+    This example shows a function that accesses a variable defined in the same scope of the calle,
+    but not in the same of the function definition.
+    It would raise an error cause SimpLanPlus does not allow access to variable outside function
+    scope. In order to obtain this it is necessary to use pass-by-reference parameters.
+    */
+
+    void f() {
+        int a = 20;
+        if (x == 0) {
+            print a;
+            return;
+        } else {
+            print b;
+            f(x - 1);
+        }
+    }
+
+    {
+        int b = 5;
+        f();
+    }
+}
+
