@@ -216,4 +216,23 @@ public class BlockNode extends StatementNode {
     public List<IdNode> variables() {
         return statements.stream().flatMap(stm -> stm.variables().stream()).collect(Collectors.toList());
     }
+
+    @Override
+    public List<IdNode> getVarDeclarations() {
+        List<IdNode> tmp = new ArrayList<>();
+
+        if (variableDeclarations != null) {
+            for (DecVarNode dec : variableDeclarations) {
+                tmp.add(dec.getId());
+            }
+        }
+
+        if (statements != null) {
+            for (StatementNode stm : statements) {
+                tmp.addAll(stm.getVarDeclarations());
+            }
+        }
+
+        return tmp;
+    }
 }

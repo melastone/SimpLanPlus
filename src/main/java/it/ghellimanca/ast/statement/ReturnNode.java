@@ -99,4 +99,9 @@ public class ReturnNode extends StatementNode {
     public List<IdNode> variables() {
         return exp != null ? exp.variables() : new ArrayList<>();
     }
+
+    @Override
+    public List<IdNode> getVarDeclarations() {
+        return new ArrayList<>();
+    }
 }

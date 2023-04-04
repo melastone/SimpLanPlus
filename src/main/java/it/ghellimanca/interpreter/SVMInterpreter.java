@@ -154,7 +154,6 @@ public class SVMInterpreter {
                     break;
                 case "mult":
                     setRegister(arg1, getRegister(arg2) * getRegister(arg3));
-                    System.out.println("Mult " + getRegister(arg2) + " per " + getRegister(arg3));
                     break;
                 case "multi":
                     setRegister(arg1, getRegister(arg2) * argInt);

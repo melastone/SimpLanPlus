@@ -108,6 +108,10 @@ public class AssignmentNode extends StatementNode {
         return tmp;
     }
 
+    @Override
+    public List<IdNode> getVarDeclarations() {
+        return new ArrayList<>();
+    }
 }
 
 

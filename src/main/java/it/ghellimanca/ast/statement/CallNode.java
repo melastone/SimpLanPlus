@@ -249,4 +249,9 @@ public class CallNode extends StatementNode {
     public List<IdNode> variables() {
         return params.stream().flatMap(exp -> exp.variables().stream()).collect(Collectors.toList());
     }
+
+    @Override
+    public List<IdNode> getVarDeclarations() {
+        return new ArrayList<>();
+    }
 }

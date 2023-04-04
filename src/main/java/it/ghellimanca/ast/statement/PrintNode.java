@@ -62,4 +62,9 @@ public class PrintNode extends StatementNode {
     public List<IdNode> variables() {
         return exp.variables();
     }
+
+    @Override
+    public List<IdNode> getVarDeclarations() {
+        return new ArrayList<>();
+    }
 }

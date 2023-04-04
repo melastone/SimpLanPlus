@@ -144,4 +144,14 @@ public class IteNode extends StatementNode {
 
         return tmp;
     }
+
+    @Override
+    public List<IdNode> getVarDeclarations() {
+        List<IdNode> tmp = new ArrayList<>();
+        
+        tmp.addAll(stm1.getVarDeclarations());
+        tmp.addAll(stm2 != null ? stm2.getVarDeclarations() : new ArrayList<>());
+        
+        return tmp;
+    }
 }

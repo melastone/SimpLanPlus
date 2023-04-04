@@ -2,7 +2,7 @@
 {
     /*
     This example shows the correct use of recursive functions.
-    The program is well formed and should output 1.
+    The program uses x, which is declared outside function scope. Hence it should output an error.
     */
     int x = 1;
     void f(int y) {

@@ -24,6 +24,8 @@ public abstract class StatementNode implements Node {
 
     public abstract List<IdNode> variables();
 
+    public abstract List<IdNode> getVarDeclarations();
+
     public String toString() {
         return toPrint("");
     }

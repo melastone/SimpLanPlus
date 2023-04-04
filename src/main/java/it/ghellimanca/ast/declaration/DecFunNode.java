@@ -105,10 +105,8 @@ public class DecFunNode extends DeclarationNode {
         // adding fun body variable declarations into the new scope
         // doing this now cause we want offsets to be calculate in reverse order
         var varDecsInsideFunBody = body.getVariableDeclarations();
-        List<IdNode> varIdInsideFunBody = new ArrayList<>();
         for (DecVarNode dec : varDecsInsideFunBody) {
             err.addAll(dec.checkSemantics(env));
-            varIdInsideFunBody.add(dec.getId());
         }
 
         // adding arguments declarations into the new scope. set them to INIT in order to correctly calculate Sigma1
@@ -149,7 +147,9 @@ public class DecFunNode extends DeclarationNode {
         }
 
         // check that variables outside fun scope are not used
+        var varIdInsideFunBody = body.getVarDeclarations();
         var vars = body.variables();
+        System.out.println(vars + "\n" + varIdInsideFunBody + "\n" + argIds);
         for (int i=0; i < vars.size(); i++){
             if (!found(vars.get(i), varIdInsideFunBody, argIds)) {
                 System.out.println("NOOOO! Used var outside fun scope.");
@@ -274,7 +274,6 @@ public class DecFunNode extends DeclarationNode {
                 if (isVar) {
                     nVar++;
                     int argOffset = arg.getId().getStEntry().getOffset();
-                    System.out.println(argOffset);
                     buff.append("lw $t0 ").append(argOffset + 2).append("($fp)\n");     // get its value
                     buff.append("lw $t1 ").append(argOffset + 3).append("($fp)\n");     // get its address
                     buff.append("sw $t0 0($t1)\n");
@@ -300,14 +299,14 @@ public class DecFunNode extends DeclarationNode {
         var tmp = false;
 
         for (IdNode el1 : l1) {
-            if (id == el1) {
+            if (id.getIdentifier().equals(el1.getIdentifier())) {
                 tmp = true;
                 break;
             }
         }
 
         for (IdNode el2 : l2) {
-            if (id == el2) {
+            if (id.getIdentifier().equals(el2.getIdentifier())) {
                 tmp = true;
                 break;
             }
