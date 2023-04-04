@@ -222,7 +222,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
         code.add(new InstructionNode.InstructionBuilder()
                 .opCode("lw")
                 .arg1(ctx.dest.getText())
-                .offset(Integer.parseInt(ctx.offset.getText()))
+                .offset(ctx.offset.getText())
                 .arg2(ctx.src.getText())
                 .build());
 
@@ -247,7 +247,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
         code.add(new InstructionNode.InstructionBuilder()
                 .opCode("sw")
                 .arg1(ctx.src.getText())
-                .offset(Integer.parseInt(ctx.offset.getText()))
+                .offset(ctx.offset.getText())
                 .arg2(ctx.dest.getText())
                 .build());
 

@@ -93,6 +93,11 @@ public class InstructionNode {
             return this;
         }
 
+        public InstructionBuilder offset(String offset) {
+            this.offset = Integer.parseInt(offset);
+            return this;
+        }
+
         public InstructionBuilder arg2(String arg2) {
             this.arg2 = arg2;
             return this;

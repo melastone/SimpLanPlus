@@ -15,7 +15,6 @@ import java.util.List;
  * Represents a binary expression left=exp op right=exp node in the AST.
  *
  * todo: sostituire le LABEL esplicite con il gestore delle label, dopo averne deciso
- * todo: aggiungere il caso di operazioni binarie con interi nella codegen
  */
 public class BinExpNode extends ExpNode {
 
