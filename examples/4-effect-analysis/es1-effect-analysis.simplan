@@ -1,0 +1,14 @@
+{
+    /*
+    The following example is given together with project specification. It shows Effect Analysis result.
+    The program should output an error: in case of else branch, it is not possible to use b for the assignment since
+    it has not been initialized.
+    */
+
+    int a; int b; int c = 1 ;
+    if (c > 1) {
+        b = c ;
+    } else {
+        a = b ;
+    }
+}

@@ -206,7 +206,7 @@ public class BlockNode extends StatementNode {
         buff.append("pop ;pop old $fp\n");
         buff.append("pop ;pop fake RA\n");
         if (this.variableDeclarations != null){
-            buff.append("addi $sp $sp").append(variableDeclarations.size()).append("\n");
+            buff.append("addi $sp $sp ").append(variableDeclarations.size()).append("\n");
         }
 
         return buff.toString();

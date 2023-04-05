@@ -15,12 +15,12 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+
 /**
  * Node of the AST for a call statement
  *
  * A call statement has the form:
  * ID '(' (exp(',' exp)*)? ')'
- *
  *
  */
 public class CallNode extends StatementNode {

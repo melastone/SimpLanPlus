@@ -1,0 +1,19 @@
+{
+    /*
+    The following example is given together with project specification. It shows Effect Analysis result.
+    The program should output an error for uninitialized variable.
+    Despite the fact that the assignment happens during the first function call,
+    the error is detected during the fixed point calculation, so "a" is the first variable for which the error is raised.
+    */
+
+    int a; int b; int c = 1 ;
+    void h(int n, var int x, var int y, var int z){
+        if (n==0)
+            return ;
+        else {
+            x = y ; h(n-1,y,z,x) ;
+        }
+    }
+    h(5,a,b,c) ;
+
+}

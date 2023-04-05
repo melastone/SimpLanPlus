@@ -9,6 +9,7 @@ import java.util.List;
 /**
  * Represents a function type in the form of
  * T1 x.. x Tn -> T
+ *
  */
 public class ArrowTypeNode extends TypeNode{
 

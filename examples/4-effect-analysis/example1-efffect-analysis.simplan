@@ -1,0 +1,10 @@
+{
+    /*
+    This example shows the results of Effect Analysis.
+    The program should output an error: we cannot increment x when the if statement is performed.
+    */
+
+    int x; int n = 1;
+    if (n > 0) { print n;} else { x = 0; print x;}
+    x = x + 1;
+}

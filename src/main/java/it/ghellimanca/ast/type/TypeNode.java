@@ -4,8 +4,8 @@ import it.ghellimanca.ast.Node;;
 
 /**
  * A generic type node of the AST.
+ *
  */
-
 public abstract class TypeNode implements Node {
 
     @Override

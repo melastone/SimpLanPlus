@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 /**
  * Represents a integer type node in the AST.
+ *
  */
 public class IntTypeNode extends TypeNode {
 

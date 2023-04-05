@@ -18,6 +18,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -49,7 +50,7 @@ public class SimpLanPlus {
 
         var assembly = compile(fileContent);
 
-        // Creating file object. Deleting errors.txt file if it exists
+        // Creating file object.
         if (filename.indexOf(".") > 0) {
             filename = filename.substring(0, filename.lastIndexOf("."));
         }
@@ -215,6 +216,7 @@ public class SimpLanPlus {
 
     }
 
+
     /**
      * Handles the interpretation phase
      */
@@ -274,4 +276,5 @@ public class SimpLanPlus {
             super(message);
         }
     }
+
 }

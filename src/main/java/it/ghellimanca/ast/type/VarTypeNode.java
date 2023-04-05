@@ -5,6 +5,11 @@ import it.ghellimanca.semanticanalysis.errors.*;
 
 import java.util.ArrayList;
 
+/**
+ * Wrapper for a type node that identifies a variable passed by reference.
+ *
+ * ex. var int x
+ */
 public class VarTypeNode extends TypeNode{
 
     final TypeNode type;

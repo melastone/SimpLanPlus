@@ -1,0 +1,13 @@
+{
+    /*
+    The following example is given together with project specification. It shows Effect Analysis result.
+    It contains a sintactic error: if not correct, the program halt with the error.
+    If executed without it, the program ends successfully. Outputs some warning for unused variables.
+    */
+
+    int a; int b; int c ;
+    void f(int n, var int x){
+        x = n ;}
+    }
+    f(1,a) ; f(2,b) ; f(3,c) ;
+}

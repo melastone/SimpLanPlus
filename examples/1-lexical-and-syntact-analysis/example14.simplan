@@ -1,0 +1,21 @@
+{
+    /*
+    This example contains a nested function definition.
+    It will raise a lexical error, because the grammar does not recognize function definitions
+    inside function bodies.
+    */
+
+    void f() {
+        int b = 20;
+        void g(int x){
+            if (x == 0) {
+                return;
+            }
+            else {
+                g(x - 1);
+            }
+        }
+        g(2);
+    }
+
+}

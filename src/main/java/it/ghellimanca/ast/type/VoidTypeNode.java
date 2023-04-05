@@ -5,6 +5,10 @@ import it.ghellimanca.semanticanalysis.errors.*;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a void type node in the AST.
+ *
+ */
 public class VoidTypeNode extends TypeNode {
 
     @Override

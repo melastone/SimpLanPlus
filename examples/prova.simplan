@@ -7,7 +7,7 @@
 	    if (m<n) {
 	        print(1) ;
 	    } else {
-	        print 0 ;
+	        print 0;
 	    }
     }
     f(5,5) ;

@@ -14,6 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * Node of the AST for a program
+ *
+ */
 public class ProgramNode implements Node {
 
     final private List<DeclarationNode> declarations;

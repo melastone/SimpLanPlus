@@ -1,8 +1,8 @@
-
 {
+    // ???
     /*
-    This example shows the use of recursive functions.
-    The program uses x, which is declared outside function scope. Hence it should output an error.
+        This example shows the use of recursive functions.
+        The program uses x, which is declared outside function scope. Hence it should output an error.
     */
 
     int x = 1;
