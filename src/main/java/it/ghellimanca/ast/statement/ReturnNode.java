@@ -58,7 +58,7 @@ public class ReturnNode extends StatementNode {
 
 
     @Override
-    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException, UnreachableStatementException {
         if (this.exp != null) {
             return exp.checkSemantics(env);
         }
@@ -91,6 +91,14 @@ public class ReturnNode extends StatementNode {
             // if there is code written after the return statement, it could affect $a0 status
             // simply ignore it by jumping
             buff.append("b ").append(funId).append("_END\n");
+/*        }
+        else { // return in normal block, not function block
+            // restore registers and stack
+            buff.append("lw $fp 0($sp)\n");
+            buff.append("pop\n");   // pop olf $fp
+            buff.append("lw $ra 0($sp)\n");
+            buff.append("pop\n");   // pop RA
+            buff.append("halt\n");*/
         }
 
         return buff.toString();
@@ -104,5 +112,11 @@ public class ReturnNode extends StatementNode {
     @Override
     public List<IdNode> getVarDeclarations() {
         return new ArrayList<>();
+    }
+
+
+    @Override
+    public boolean hasReturnStatements() {
+        return true;
     }
 }

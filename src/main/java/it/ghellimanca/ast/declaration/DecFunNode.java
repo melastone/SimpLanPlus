@@ -71,7 +71,7 @@ public class DecFunNode extends DeclarationNode {
 
 
     @Override
-    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException, UnreachableStatementException {
         ArrayList<SemanticWarning> err = new ArrayList<>();
 
         List<TypeNode> argsType = arguments.stream().map(ArgNode::getType).collect(Collectors.toList());
@@ -137,7 +137,6 @@ public class DecFunNode extends DeclarationNode {
         // saving current Sigma1 in order to verify whether if it changes or not
         List<Effect> oldSigma1 = localFunEntryCopy.getFunStatus().get(1);
 
-
         var statementsInsideFunBody = body.getStatements();
         for (StatementNode stm : statementsInsideFunBody) {
             err.addAll(stm.checkSemantics(env));
@@ -190,9 +189,27 @@ public class DecFunNode extends DeclarationNode {
         funEntryCopy.setFunStatus(1, localFunEntryCopy.getFunStatus().get(1));
         funEntryCopy.setInitPars(initPars);
         id.setStEntry(funEntryCopy);
-
+        
         // before popping current scope, check that there are no variables whose status are either error or not used
         err.addAll(checkEffectsBeforePop(env));
+
+        // check that there are statements after return
+        body.checkStatementsAfterReturn();
+
+        // check that there are no variables whose status are either error or not used
+        var currentScope = env.currentScope();
+
+        for (var varId : currentScope.keySet()) {
+
+            var idEntry = currentScope.get(varId);
+            var idStatus = idEntry.getVarStatus();
+
+            if (idStatus.equals(new Effect(Effect.ERROR))) {
+                throw new MissingInitializationException(varId + " was used before initialization.");
+            } else if (!varId.equals(id.getIdentifier()) && idStatus.equals(new Effect(Effect.INIT)) || idStatus.equals(new Effect(Effect.DECLARED))) {
+                    err.add(new SemanticWarning("Variable " + varId + " was declared but never used."));
+            }
+        }
 
         env.popScope();
 
