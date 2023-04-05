@@ -1,0 +1,20 @@
+{
+    /*
+    This example is used for testing type-checking for function calls.
+    Tests that actual parameter types corresponds to the declared ones. It should execute without error.
+    */
+
+    int n = 1; bool b = false;
+    void f(int x, bool y) {
+        print x;
+        print y;
+    }
+
+    void g(bool y, int x) {
+        print y;
+        print x;
+    }
+
+    f(n,b);
+    //g(n,b);
+}

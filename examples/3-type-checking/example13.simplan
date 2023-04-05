@@ -1,0 +1,10 @@
+{
+    /*
+    This example is used for testing type-checking for variable assignment.
+    It ends with an error because trying to assign a boolean to a numerical variable.
+    */
+
+    int x; bool b;
+    b = true;
+    x = b;
+}
