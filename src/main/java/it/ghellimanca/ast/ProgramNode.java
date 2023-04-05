@@ -59,7 +59,7 @@ public class ProgramNode implements Node {
 
 
     @Override
-    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException, UnreachableStatementException {
 
         ArrayList<SemanticWarning> err = new ArrayList<>();
         Map<String, STEntry> currentScope;
@@ -76,6 +76,44 @@ public class ProgramNode implements Node {
             for (StatementNode stat : statements) {
                 err.addAll(stat.checkSemantics(env));
             }
+
+            /*CHECK IF A RETURN STATEMENT IS FOLLOWED BY OTHER STATEMENTS*/
+
+            int returnPositionProg = -1; // -1 if there aren't return statements
+
+            // checking in the block's statements
+            // taking the first return statement found
+            var returnStm = statements.stream().filter(stm -> stm instanceof ReturnNode).findFirst();
+
+            if (returnStm.isPresent()) {
+                returnPositionProg = statements.indexOf(returnStm.get());
+                System.out.println("RETURN A BLOCK NODE DEL PROGNODE A LIVELLO "+ returnPositionProg);
+            }
+
+            // if it wasn't in the block's statements, search in the itenodes, if present
+            if (returnPositionProg == -1) {
+                var iteStmRet = statements.stream().filter(stm -> stm instanceof IteNode && stm.hasReturnStatements()).findFirst();
+
+                if (iteStmRet.isPresent()) {
+                    returnPositionProg = statements.indexOf(iteStmRet.get());
+                    System.out.println("RETURN A ITE NODE DEL PROGNODE A LIVELLO "+ returnPositionProg);
+                }
+            }
+
+            // if it wasn't in the block's statements or inside itenodes, search inside block's blocknodes
+            if (returnPositionProg == -1) {
+                var blockStmRet = statements.stream().filter(stm -> stm instanceof BlockNode && stm.hasReturnStatements()).findFirst();
+
+                if (blockStmRet.isPresent()) {
+                    returnPositionProg = statements.indexOf(blockStmRet.get());
+                    System.out.println("RETURN A BLOCK NODE DEL PROGNODE A LIVELLO "+ returnPositionProg);
+                }
+            }
+
+            if (returnPositionProg != -1 && returnPositionProg + 1 < statements.size()) {
+                throw new UnreachableStatementException("Unreachable statement after return.");
+            }
+
         }
 
         // CHECK ERRORS IN BLOCK FOR EFFECT ANALYSIS
