@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 /**
  * Node of the AST for a block
  *
- *todo: aggiorna la codegen in caso si usi meglio il RA
  */
 public class BlockNode extends StatementNode {
 

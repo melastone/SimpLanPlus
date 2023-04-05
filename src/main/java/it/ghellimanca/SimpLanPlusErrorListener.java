@@ -10,7 +10,7 @@ import java.util.List;
  *
  * Handles the error management.
  *
- * @todo: improve underline error for lexical error (not mandatory)
+ *
  * @todo: diversify syntactic error - must change the grammar. now the parser only outputs "no viable alternative etc.." errors
  */
 public class SimpLanPlusErrorListener extends BaseErrorListener {

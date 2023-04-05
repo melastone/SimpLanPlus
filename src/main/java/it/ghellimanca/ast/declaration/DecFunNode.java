@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
  * type is used for int/bool function
  * voidType is used in case the function is void.
  *
- * todo: aggiungi i controlli di subtyping per le regole di tipaggio (non sarebbero necessarie x questa grammatica, ma il prof le apprezza)
  */
 public class DecFunNode extends DeclarationNode {
 

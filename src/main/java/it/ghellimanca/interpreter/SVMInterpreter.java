@@ -10,7 +10,7 @@ import java.util.*;
 /**
  *
  * Interpreter for SVM assembly code.
- * todo decide if we want to set it from the command line, not necessary to set from command line
+ *
  */
 public class SVMInterpreter {
     public static final int CODESIZE = 10000;

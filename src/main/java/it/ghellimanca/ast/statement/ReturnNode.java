@@ -17,7 +17,6 @@ import java.util.List;
  * A return statement has the form:
  * 'return' (exp)?
  *
- * todo: si potrebbe aggiungere il controllo x warning in caso di codice scritto dopo una return....
  */
 public class ReturnNode extends StatementNode {
 
