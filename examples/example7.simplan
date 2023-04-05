@@ -1,5 +1,4 @@
 {
-    // ???
     /*
     This example is the recursive version of the Fibonacci function.
     fib(n) is the n-th number in the Fibonacci series.

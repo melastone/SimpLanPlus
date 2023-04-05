@@ -1,10 +1,8 @@
 {
-    // ???
     /*
     This example shows the correct working of deeply-nested return statements inside a function.
     This program is well formed and should output what is written in the comments on the side of print statements. 
     */
-
     int f(int a){
         if(a > 1){ // a >= 2
             if (a > 4) {
@@ -16,6 +14,7 @@
         return 3; // a == 3 || a == 4 
     }
 
+    print -1;
     print f(2); // Should output 3
     print f(5); // Should output 1
     print f(0); // Should output 2
