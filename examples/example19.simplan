@@ -1,6 +1,6 @@
 {
     /*
-        This example shows what happens with if statements if we do not perform Effect Analysis.
+        This example shows the results of Effect Analysis.
         The program should output a semantic error: we cannot increment x when the if statement is performed.
     */
 

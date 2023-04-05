@@ -13,4 +13,17 @@
 	    }
     }
     f(10) ;
+
+    /*
+    int a = 1;
+    void f(int n, var int x){
+	    if (n == 0) {
+	        print(x) ;
+	    } else {
+	        x = x * n ;
+	        f(n-1, x) ;
+	    }
+    }
+    f(10, a) ;
+    */
 }

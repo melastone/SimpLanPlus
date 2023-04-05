@@ -10,12 +10,11 @@ import java.util.*;
 /**
  *
  * Interpreter for SVM assembly code.
- *
- * todo: controlla se è giusto $sp = $sp - 1 o se invece va corretto con $sp = $sp - 4
+ * todo decide if we want to set it from the command line, not necessary to set from command line
  */
 public class SVMInterpreter {
     public static final int CODESIZE = 10000;
-    public static final int MEMSIZE = 10000;    //TODO decide if we want to set it from the command line, not necessary to set from command line
+    public static final int MEMSIZE = 10000;
 
     private final List<InstructionNode> code;
     private final int[] memory;
@@ -121,13 +120,13 @@ public class SVMInterpreter {
 
             switch (instruction.getOpcode()) {
                 case "push":
-//                    System.out.println("Push:");
-//                    System.out.println("Setting $sp: " + getRegister("$sp") + " - 1");
+                    //System.out.println("Push:");
+                    //System.out.println("Setting $sp: " + getRegister("$sp") + " - 1");
+
                     setRegister("$sp", getRegister("$sp") - 1);
 
-//                    System.out.println("Writing in memory: value " + getRegister(arg1) + " in $sp address that is " + getRegister("$sp") + "\n");
+                    //System.out.println("Writing in memory: value " + getRegister(arg1) + " in $sp address that is " + getRegister("$sp") + "\n");
                     writeMemory(getRegister("$sp"), getRegister(arg1));
-
                     break;
                 case "pop":
                     // facoltativo: libera la cella di memoria
@@ -149,7 +148,6 @@ public class SVMInterpreter {
                 case "subi":
 //                    System.out.println("Load integer:");
 //                    System.out.println("Putting " + getRegister(arg2) + " (from "+arg2+" register) - " + argInt +" in "+ arg1+" register\n");
-
                     setRegister(arg1, getRegister(arg2) - argInt);
                     break;
                 case "mult":
@@ -253,7 +251,7 @@ public class SVMInterpreter {
         try {
             return memory[address];
         } catch (IndexOutOfBoundsException e) {
-            throw new MemoryAccessException("memory address " + address + " cannot be accessed in reading mode.\n");
+            throw new MemoryAccessException("Reached maximum memory, reading.");
         }
     }
 
@@ -261,7 +259,7 @@ public class SVMInterpreter {
         try {
             memory[address] = data;
         } catch (IndexOutOfBoundsException e) {
-            throw new MemoryAccessException("memory address " + address + " cannot be accessed in writing mode.\n");
+            throw new MemoryAccessException("Reached maximum memory, writing.");
         }
     }
 }

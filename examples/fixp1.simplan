@@ -1,8 +1,9 @@
 {
     /*
-    Questo esempio mostra l'esecuzione ricorsiva di una funzione, per cui è necessario utilizzare il punto fisso.
-    L'analisi degli effetti deve terminare con successo - i.e. le variabili non si troveranno in stato di errore.
-    Il punto fisso si stabilizzerà sul codominio [n -> used].
+        This example shows the result of Effect Analysis.
+        It contains a recursive function, for which we need to use the fixed point algorithm.
+        Effect Analysis should end successfully: any variable is in an error status.
+        Fixed point will be [n -> used]
     */
 
     int x = 6;

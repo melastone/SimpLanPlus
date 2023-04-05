@@ -84,9 +84,9 @@ pop
 addi $sp $sp 2
 jr $ra
 F_JUMP:
-li $a0 4
-push $a0
 li $a0 5
+push $a0
+li $a0 4
 push $a0
 jal F_ENTRY
 lw $fp 0($sp)

@@ -1,0 +1,96 @@
+subi $sp $sp 3
+li $t0 0
+push $t0
+push $fp
+mv $fp $sp
+b F_JUMP
+F_ENTRY:
+push $ra
+push $fp
+mv $fp $sp
+li $a0 1
+b F_END
+F_END:
+lw $fp 0($sp)
+pop
+lw $ra 0($sp)
+pop
+addi $sp $sp 0
+jr $ra
+F_JUMP:
+b G_JUMP
+G_ENTRY:
+push $ra
+push $fp
+mv $fp $sp
+li $a0 2
+b G_END
+G_END:
+lw $fp 0($sp)
+pop
+lw $ra 0($sp)
+pop
+addi $sp $sp 0
+jr $ra
+G_JUMP:
+b H_JUMP
+H_ENTRY:
+push $ra
+push $fp
+mv $fp $sp
+mv $al $fp
+lw $a0 2($al)
+push $a0
+li $a0 1
+lw $t1 0($sp)
+pop
+beq $a0 $t1 EQ_TRUE_BRANCH
+li $a0 0
+b END_EQ
+EQ_TRUE_BRANCH:
+li $a0 1
+END_EQ:
+li $t1 0
+beq $t1 $a0 FALSE_BRANCH
+subi $sp $sp 0
+li $t0 0
+push $t0
+push $fp
+mv $fp $sp
+jal G_ENTRY
+print $a0
+lw $fp 0($sp)
+pop ;pop old $fp
+pop ;pop fake RA
+addi $sp $sp0
+b END_IF
+FALSE_BRANCH:
+subi $sp $sp 0
+li $t0 0
+push $t0
+push $fp
+mv $fp $sp
+jal F_ENTRY
+print $a0
+lw $fp 0($sp)
+pop ;pop old $fp
+pop ;pop fake RA
+addi $sp $sp0
+END_IF:
+H_END:
+lw $fp 0($sp)
+pop
+lw $ra 0($sp)
+pop
+addi $sp $sp 1
+jr $ra
+H_JUMP:
+li $a0 1
+push $a0
+jal H_ENTRY
+lw $fp 0($sp)
+pop
+lw $ra 0($sp)
+pop
+addi $sp $sp 3
+halt

@@ -1,4 +1,9 @@
 {
+    /*
+    This example is used for testing type-checking for function calls.
+    It should output an error caused by the number of parameters.
+    */
+
     void toomany(int a, int b, int c) {
         print a;
         print b;

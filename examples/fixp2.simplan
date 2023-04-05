@@ -1,20 +1,37 @@
 {
     /*
-    Questo esempio mostra l'esecuzione ricorsiva di una funzione, per cui è necessario utilizzare il punto fisso.
-    Per n==0 viene incrementata una variabile non inizializzata. Tuttavia l'errore viene sollevato dopo prima Call-E,
-    in quanto la y passata come argomento viene settata a USED (regola per il passaggio per valore).
-    L'analisi degli effetti deve ritornare con ERRORE.
+        This example shows the result of Effect Analysis.
+        It contains a recursive function, for which we need to use the fixed point algorithm.
+        It should output an error: we are passing by value an uninitialized variable during the recursive call.
     */
 
     int a = 2;
 
     int f(int x, int n) {
         if (n==0) {
-            return x + 1;
+            return x;
         } else {
             int y; f(y, n-1);
         }
     }
 
     f(a, 3);
+
+
+    /*
+        Same error, but without recursion.
+
+    int a;
+
+    int f(int x, int n) {
+        if (n==0) {
+            return x;
+        } else {
+            return n;
+        }
+    }
+
+    f(a, 3);
+
+    */
 }
