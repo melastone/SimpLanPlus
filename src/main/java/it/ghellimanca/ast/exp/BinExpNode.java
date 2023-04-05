@@ -41,7 +41,7 @@ public class BinExpNode extends ExpNode {
 
 
     @Override
-    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException, UnreachableStatementException {
 
         ArrayList<SemanticWarning> err = new ArrayList<>();
 

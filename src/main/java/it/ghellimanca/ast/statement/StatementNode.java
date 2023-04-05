@@ -25,4 +25,6 @@ public abstract class StatementNode implements Node {
     public String toString() {
         return toPrint("");
     }
+
+    public abstract boolean hasReturnStatements();
 }
