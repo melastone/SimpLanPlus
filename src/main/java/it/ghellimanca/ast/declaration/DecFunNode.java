@@ -192,19 +192,7 @@ public class DecFunNode extends DeclarationNode {
         id.setStEntry(funEntryCopy);
 
         // before popping current scope, check that there are no variables whose status are either error or not used
-        var currentScope = env.currentScope();  // getting sigma_1'' from sigma'' = sigma_0'' ⋅ sigma_1''
-
-        for (var varId : currentScope.keySet()) {           // for every x_i in dom(sigma_1'')
-
-            var idEntry = currentScope.get(varId);
-            var idStatus = idEntry.getVarStatus();
-
-            if (idStatus.equals(new Effect(Effect.ERROR))) {    // sigma_1''(x) has to be <= USED otherwise there was an error
-                throw new MissingInitializationException(varId + " was used before initialization.");
-            } else if (!varId.equals(id.getIdentifier()) && idStatus.equals(new Effect(Effect.INIT)) || idStatus.equals(new Effect(Effect.DECLARED))) {
-                    err.add(new SemanticWarning("Variable " + varId + " was declared but never used."));
-            }
-        }
+        err.addAll(checkEffectsBeforePop(env));
 
         env.popScope();
 
@@ -308,4 +296,25 @@ public class DecFunNode extends DeclarationNode {
 
         return tmp;
     }
+
+    List<SemanticWarning> checkEffectsBeforePop(Environment env) throws MissingInitializationException {
+        List<SemanticWarning> tmp = new ArrayList<>();
+
+        var currentScope = env.currentScope();  // getting sigma_1'' from sigma'' = sigma_0'' ⋅ sigma_1''
+
+        for (var varId : currentScope.keySet()) {           // for every x_i in dom(sigma_1'')
+
+            var idEntry = currentScope.get(varId);
+            var idStatus = idEntry.getVarStatus();
+
+            if (idStatus.equals(new Effect(Effect.ERROR))) {    // sigma_1''(x) has to be <= USED otherwise there was an error
+                throw new MissingInitializationException(varId + " was used before initialization.");
+            } else if (!varId.equals(id.getIdentifier()) && idStatus.equals(new Effect(Effect.INIT)) || idStatus.equals(new Effect(Effect.DECLARED))) {
+                tmp.add(new SemanticWarning("Variable " + varId + " was declared but never used."));
+            }
+        }
+
+        return tmp;
+    }
+
 }

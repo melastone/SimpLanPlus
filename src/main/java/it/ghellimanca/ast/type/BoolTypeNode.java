@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 /**
  * Represents a boolean type node in the AST.
+ *
  */
 public class BoolTypeNode extends TypeNode {
 

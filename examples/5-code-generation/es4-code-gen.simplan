@@ -1,6 +1,8 @@
 {
     /*
-    Il seguente esempio è fornito con le specifiche del progetto.
+    The following example is given together with project specification. It shows Code Generation and Interpreter at work.
+    The first version contains an access to a global variable, for which a Semantic Error is raised.
+    The second version, which accesses the variable through pass-by-reference, should end successfully. It prints 3628800.
     */
 
     int x = 1;

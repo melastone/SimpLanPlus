@@ -5,6 +5,7 @@
     The program should output:
       - "Missing declaration for ID: g."
     */
+
     void f() {
         print 1;
         g();

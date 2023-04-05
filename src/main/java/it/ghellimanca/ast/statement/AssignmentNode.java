@@ -1,6 +1,5 @@
 package it.ghellimanca.ast.statement;
 
-
 import it.ghellimanca.ast.IdNode;
 import it.ghellimanca.ast.type.VoidTypeNode;
 import it.ghellimanca.semanticanalysis.*;
@@ -10,6 +9,7 @@ import it.ghellimanca.semanticanalysis.errors.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Node of the AST for an assignment statement

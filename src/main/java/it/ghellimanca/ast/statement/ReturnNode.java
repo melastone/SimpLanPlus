@@ -82,15 +82,16 @@ public class ReturnNode extends StatementNode {
     public String codeGeneration() {
         StringBuilder buff = new StringBuilder();
 
-        var funId = this.funId.toUpperCase();
-
         if (exp != null) {
             buff.append(exp.codeGeneration());
         }
 
-        // if there is code written after the return statement, it could affect $a0 status
-        // simply ignore it!
-        buff.append("b ").append(funId).append("_END\n");
+        if (funId != null) {
+            var funId = this.funId.toUpperCase();
+            // if there is code written after the return statement, it could affect $a0 status
+            // simply ignore it by jumping
+            buff.append("b ").append(funId).append("_END\n");
+        }
 
         return buff.toString();
     }

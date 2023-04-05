@@ -4,6 +4,7 @@
     The program fails to compile and should output:
         - "a is used prior to initialization."
     */
+
     int a;
     int b = a;
 }
