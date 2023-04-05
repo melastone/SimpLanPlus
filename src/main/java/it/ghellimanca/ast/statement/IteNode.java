@@ -67,9 +67,8 @@ public class IteNode extends StatementNode {
 
     @Override
     public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
-        ArrayList<SemanticWarning> err = new ArrayList<>();
 
-        err.addAll(exp.checkSemantics(env));
+        ArrayList<SemanticWarning> err = new ArrayList<>(exp.checkSemantics(env));
 
 
         if(this.stm2 == null) {     // else branch empty
@@ -114,7 +113,7 @@ public class IteNode extends StatementNode {
     @Override
     public String codeGeneration() {
         StringBuilder buff = new StringBuilder();
-        Boolean hasElse = !(stm2 == null);
+        boolean hasElse = !(stm2 == null);
 
         String falseBranch = "FALSE_BRANCH";
         String endIf = "END_IF";

@@ -3,7 +3,6 @@ package it.ghellimanca;
 import org.antlr.v4.runtime.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -11,7 +10,7 @@ import java.util.List;
  * Handles the error management.
  *
  *
- * @todo: diversify syntactic error - must change the grammar. now the parser only outputs "no viable alternative etc.." errors
+ * todo: diversify syntactic error - must change the grammar. now the parser only outputs "no viable alternative etc.." errors
  */
 public class SimpLanPlusErrorListener extends BaseErrorListener {
 
@@ -38,26 +37,26 @@ public class SimpLanPlusErrorListener extends BaseErrorListener {
     }
     protected String underlineError(Recognizer recognizer, Token offendingToken, int line, int charPositionInLine) {
 
-        String res = "";
+        StringBuilder res = new StringBuilder();
         CommonTokenStream tokens = (CommonTokenStream) recognizer.getInputStream();
         String input = tokens.getTokenSource().getInputStream().toString();
         String[] lines = input.split("\n");
         String errorLine = lines[line - 1];
 
-        res += errorLine + "\n";
+        res.append(errorLine).append("\n");
 
         for (int i=0; i<charPositionInLine; i++)
-            res += " ";
+            res.append(" ");
 
         int start = offendingToken.getStartIndex();
         int stop = offendingToken.getStopIndex();
         if ( start>=0 && stop>=0 ) {
             for (int i=start; i<=stop; i++)
-                res += "^";
+                res.append("^");
         }
 
-        res += "\n";
+        res.append("\n");
 
-        return res;
+        return res.toString();
     }
 }

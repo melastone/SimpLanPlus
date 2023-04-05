@@ -1,6 +1,6 @@
 package it.ghellimanca.ast.type;
 
-import it.ghellimanca.ast.Node;;
+import it.ghellimanca.ast.Node;
 
 /**
  * A generic type node of the AST.

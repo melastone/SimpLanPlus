@@ -46,19 +46,19 @@ public class DecFunNode extends DeclarationNode {
     @Override
     public String toPrint(String indent) {
 
-        String res = "\n" + indent + "DECFUN";
+        StringBuilder res = new StringBuilder("\n" + indent + "DECFUN");
 
         if (type != null) {
-                res += type.toPrint(indent + "\t") + id.toPrint(indent + "\t");
+                res.append(type.toPrint(indent + "\t")).append(id.toPrint(indent + "\t"));
         }
 
         if (this.arguments != null) {
             for (ArgNode a : arguments) {
-                res += a.toPrint(indent + "\t");
+                res.append(a.toPrint(indent + "\t"));
             }
         }
-        res += body.toPrint(indent + "\t");
-        return res;
+        res.append(body.toPrint(indent + "\t"));
+        return res.toString();
     }
 
 
@@ -142,9 +142,9 @@ public class DecFunNode extends DeclarationNode {
         // check that variables outside fun scope are not used
         var varIdInsideFunBody = body.getVarDeclarations();
         var vars = body.variables();
-        for (int i=0; i < vars.size(); i++){
-            if (!found(vars.get(i), varIdInsideFunBody, argIds)) {
-                throw new MissingDeclarationException("Function " + id.getIdentifier() + " cannot access variable " + vars.get(i).getIdentifier() + " because it was declared outside function scope.\n");
+        for (IdNode var : vars) {
+            if (!found(var, varIdInsideFunBody, argIds)) {
+                throw new MissingDeclarationException("Function " + id.getIdentifier() + " cannot access variable " + var.getIdentifier() + " because it was declared outside function scope.\n");
             }
         }
 

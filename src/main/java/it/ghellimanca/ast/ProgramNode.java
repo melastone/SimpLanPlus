@@ -34,21 +34,21 @@ public class ProgramNode implements Node {
 
     @Override
     public String toPrint(String indent) {
-        String res = "\n" + indent + "PROGRAM";
+        StringBuilder res = new StringBuilder("\n" + indent + "PROGRAM");
 
         if (this.declarations != null) {
             for (DeclarationNode dec : declarations) {
-                res += dec.toPrint(indent + "\t");
+                res.append(dec.toPrint(indent + "\t"));
             }
         }
 
         if (this.statements != null) {
             for (StatementNode stat : statements) {
-                res += stat.toPrint(indent + "\t");
+                res.append(stat.toPrint(indent + "\t"));
             }
         }
 
-        return res;
+        return res.toString();
     }
 
 
@@ -95,10 +95,6 @@ public class ProgramNode implements Node {
                 err.add(new SemanticWarning("Variable " + id + " was declared but never used."));
             }
         }
-
-        // qui potremmo prendere l'offset dello scope attuale, che corrisponde a n
-        // ci serve conoscere n per la codegeneration
-        // in realtà non c'è bisogno; potrei delegare la sottrazione di 1 ad ogni code generation dei DEcVarNode
 
         // returning just sigma_0'
         env.exitScope();
@@ -153,7 +149,7 @@ public class ProgramNode implements Node {
     public String codeGeneration() {
         StringBuilder buff = new StringBuilder();
 
-        // suppongo $sp e $fp già inizializzati a memsize (lo si fa nella vera e propria SVM)
+        // $sp e $fp are initialized to memsize (done by SVMInterpreter)
 
         if (this.declarations != null) {
             buff.append("subi $sp $sp ").append(declarations.size()).append("\n");

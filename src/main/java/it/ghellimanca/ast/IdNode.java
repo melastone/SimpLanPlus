@@ -34,10 +34,6 @@ public class IdNode implements Node {
         return currNestingLevel;
     }
 
-    public void setCurrNestingLevel(int currNestingLevel) {
-        this.currNestingLevel = currNestingLevel;
-    }
-
     public STEntry getStEntry() {
         return stEntry;
     }

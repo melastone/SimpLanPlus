@@ -14,8 +14,8 @@ import java.util.List;
  */
 public class ArrowTypeNode extends TypeNode{
 
-    private List<TypeNode> args;
-    private TypeNode ret;
+    private final List<TypeNode> args;
+    private final TypeNode ret;
 
 
 

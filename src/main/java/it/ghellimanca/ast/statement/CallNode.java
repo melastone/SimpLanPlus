@@ -39,13 +39,13 @@ public class CallNode extends StatementNode {
 
     @Override
     public String toPrint(String indent) {
-        String res = '\n' + indent + "CALL" + id.toPrint(indent + "\t");
+        StringBuilder res = new StringBuilder('\n' + indent + "CALL" + id.toPrint(indent + "\t"));
         if (this.params != null) {
             for (ExpNode e : params){
-                res += e.toPrint(indent + "\t");
+                res.append(e.toPrint(indent + "\t"));
             }
         }
-        return res;
+        return res.toString();
     }
 
 
@@ -55,9 +55,8 @@ public class CallNode extends StatementNode {
 
     @Override
     public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
-        ArrayList<SemanticWarning> err = new ArrayList<>();
 
-        err.addAll(id.checkSemantics(env));
+        ArrayList<SemanticWarning> err = new ArrayList<>(id.checkSemantics(env));
 
         // retrieve function STEntry from the Environment; we use safeLookup because checks have already been done by id.checkSemantics()
         STEntry funEntry = env.safeLookup(id.getIdentifier());
@@ -129,7 +128,7 @@ public class CallNode extends StatementNode {
             List<IdNode> varsInExpressions = IntStream
                     .range(0, params.size())
                     .filter(indexOfPassedByValue::contains)
-                    .mapToObj(j -> params.get(j))
+                    .mapToObj(params::get)
                     .flatMap(par -> par.variables().stream())
                     .collect(Collectors.toList());
 
@@ -219,7 +218,7 @@ public class CallNode extends StatementNode {
         // push actual params in reverse order
         if (this.params != null && this.params.size() > 0){
             for (int i = (this.params.size() - 1); i >= 0; i--){
-                ExpNode par = (ExpNode) this.params.get(i);
+                ExpNode par = this.params.get(i);
 
                 // check if it's var; if so push var address
                 boolean isVar = (argsType.get(i) instanceof VarTypeNode);

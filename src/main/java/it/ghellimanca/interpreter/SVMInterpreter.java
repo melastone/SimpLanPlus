@@ -18,7 +18,6 @@ public class SVMInterpreter {
     private final List<InstructionNode> code;
     private final int[] memory;
 
-    //private final Map<String, Integer> registers;
     private int $ip;
 
     private int $sp;
@@ -47,7 +46,6 @@ public class SVMInterpreter {
         // initializing registers
         this.$sp = MEMSIZE;
         this.$fp = MEMSIZE;
-        //this.$ra, this.$al, this.$a0, this.$t0, this.$t1 = 0;
     }
 
 

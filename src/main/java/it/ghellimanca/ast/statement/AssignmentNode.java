@@ -103,9 +103,8 @@ public class AssignmentNode extends StatementNode {
 
     @Override
     public List<IdNode> variables() {
-        List<IdNode> tmp = new ArrayList<>();
 
-        tmp.addAll(exp.variables());
+        List<IdNode> tmp = new ArrayList<>(exp.variables());
         tmp.add(id);
 
         return tmp;

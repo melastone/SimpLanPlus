@@ -85,7 +85,7 @@ public class DecVarNode extends DeclarationNode {
         return type;
     }
 
-    
+
     @Override
     public String codeGeneration() {
         StringBuilder buff = new StringBuilder();
