@@ -12,7 +12,7 @@ import java.util.List;
 
 
 /**
- * Node of the AST for an iteration statement
+ * Node of the AST for an iteration statement.
  *
  * An ite statement has the form:
  * 'if' '(' exp ')' statement ('else' statement)?
@@ -31,6 +31,7 @@ public class IteNode extends StatementNode {
         this.stm1 = stm1;
         this.stm2 = stm2;
     }
+
 
     public IteNode(ExpNode exp, StatementNode stm1) {
         this.exp = exp;
@@ -53,6 +54,7 @@ public class IteNode extends StatementNode {
 
     @Override
     public String toString() { return toPrint("");}
+
 
     @Override
     public void setFunId(String funId){
@@ -108,6 +110,7 @@ public class IteNode extends StatementNode {
         return stm1Type;
     }
 
+
     @Override
     public String codeGeneration() {
         StringBuilder buff = new StringBuilder();
@@ -134,6 +137,7 @@ public class IteNode extends StatementNode {
         return buff.toString();
     }
 
+
     @Override
     public List<IdNode> variables() {
         List<IdNode> tmp = new ArrayList<>();
@@ -144,6 +148,7 @@ public class IteNode extends StatementNode {
 
         return tmp;
     }
+
 
     @Override
     public List<IdNode> getVarDeclarations() {

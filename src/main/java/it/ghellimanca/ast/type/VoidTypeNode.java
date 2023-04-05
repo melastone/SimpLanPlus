@@ -22,8 +22,10 @@ public class VoidTypeNode extends TypeNode {
         return new ArrayList<>();
     }
 
+
     @Override
     public TypeNode typeCheck() { return null; }
+
 
     @Override
     public String codeGeneration() {

@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Represents a base expression '(' exp ')' node  in the AST.
+ *
  */
 public class BaseExpNode extends ExpNode {
 
@@ -37,6 +38,7 @@ public class BaseExpNode extends ExpNode {
     public TypeNode typeCheck() throws TypeCheckingException {
         return exp.typeCheck();
     }
+
 
     @Override
     public String codeGeneration() {

@@ -12,10 +12,12 @@ import java.util.List;
 
 /**
  * Represents a boolean negated expression '!' exp node in the AST.
+ *
  */
 public class NotExpNode extends ExpNode {
 
     final ExpNode exp;
+
 
     public NotExpNode(ExpNode exp) {
         this.exp = exp;
@@ -44,6 +46,7 @@ public class NotExpNode extends ExpNode {
 
         return new BoolTypeNode();
     }
+
 
     @Override
     public String codeGeneration() {

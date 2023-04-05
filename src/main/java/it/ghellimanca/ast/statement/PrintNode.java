@@ -12,7 +12,7 @@ import java.util.List;
 
 
 /**
- * Node of the AST for a print statement
+ * Node of the AST for a print statement.
  *
  * A print statement has the form:
  * 'print' exp
@@ -53,15 +53,18 @@ public class PrintNode extends StatementNode {
         return new VoidTypeNode();
     }
 
+
     @Override
     public String codeGeneration() {
         return exp.codeGeneration() + "print $a0\n";
     }
 
+
     @Override
     public List<IdNode> variables() {
         return exp.variables();
     }
+
 
     @Override
     public List<IdNode> getVarDeclarations() {

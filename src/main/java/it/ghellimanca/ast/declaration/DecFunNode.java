@@ -42,9 +42,6 @@ public class DecFunNode extends DeclarationNode {
     }
 
 
-    public ArgNode getArgument(int index) {
-        return arguments.get(index);
-    }
 
     @Override
     public String toPrint(String indent) {
@@ -212,6 +209,7 @@ public class DecFunNode extends DeclarationNode {
         return type;
     }
 
+
     @Override
     public String codeGeneration() {
         StringBuilder buff = new StringBuilder();
@@ -276,6 +274,15 @@ public class DecFunNode extends DeclarationNode {
         return buff.toString();
     }
 
+
+    /**
+     * Searches for an id inside two given lists.
+     *
+     * @param id    IdNode to look for
+     * @param l1    first list where to look
+     * @param l2    second list where to look
+     * @return  true if id has been found; false otherwise
+     */
     public boolean found(IdNode id, List<IdNode> l1, List<IdNode> l2) {
         var tmp = false;
 
@@ -296,6 +303,15 @@ public class DecFunNode extends DeclarationNode {
         return tmp;
     }
 
+
+    /**
+     * Performs effect analysis checks before exiting the function body.
+     *
+     * @param env   current Environment
+     * @return  list of warning, if they occur
+     * @throws MissingInitializationException   is thrown in case any variables inside the function body is in an error
+     *                                          status, i.e. used before initialization
+     */
     List<SemanticWarning> checkEffectsBeforePop(Environment env) throws MissingInitializationException {
         List<SemanticWarning> tmp = new ArrayList<>();
 

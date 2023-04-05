@@ -15,7 +15,7 @@ import java.util.Map;
 
 
 /**
- * Node of the AST for a program
+ * Node of the AST for a program.
  *
  */
 public class ProgramNode implements Node {

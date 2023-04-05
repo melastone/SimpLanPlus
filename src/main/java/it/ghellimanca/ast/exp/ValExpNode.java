@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * Represents a integer expression node in the AST.
+ *
  */
 public class ValExpNode extends ExpNode {
 
@@ -21,24 +22,30 @@ public class ValExpNode extends ExpNode {
         this.number = number;
     }
 
+
+
     public String toPrint(String indent) {
         return "\n" + indent + "VAL_EXP: " + number;
     }
+
 
     @Override
     public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
         return new ArrayList<>();
     }
 
+
     @Override
     public TypeNode typeCheck() {
         return new IntTypeNode();
     }
 
+
     @Override
     public String codeGeneration() {
         return "li $a0 " + number + "\n";
     }
+
 
     @Override
     public List<IdNode> variables() {

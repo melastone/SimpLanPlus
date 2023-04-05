@@ -33,15 +33,18 @@ public class CallExpNode extends ExpNode {
         return call.checkSemantics(env);
     }
 
+
     @Override
     public TypeNode typeCheck() throws TypeCheckingException {
         return call.typeCheck();
     }
 
+
     @Override
     public String codeGeneration() {
         return call.codeGeneration();
     }
+
 
     @Override
     public List<IdNode> variables() {

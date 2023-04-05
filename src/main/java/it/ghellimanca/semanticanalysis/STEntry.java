@@ -5,6 +5,7 @@ import it.ghellimanca.ast.type.TypeNode;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Represents an entry of the symbol table.
  *
@@ -21,7 +22,7 @@ public class STEntry {
 
     private boolean initAfterDec;
 
-    private List<List<Effect>> funStatus;
+    private final List<List<Effect>> funStatus;
 
     private List<Boolean> initPars;
 

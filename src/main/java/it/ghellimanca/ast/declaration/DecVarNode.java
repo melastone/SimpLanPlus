@@ -31,6 +31,7 @@ public class DecVarNode extends DeclarationNode {
         this.exp = exp;
     }
 
+
     public IdNode getId() {
         return id;
     }
@@ -38,6 +39,7 @@ public class DecVarNode extends DeclarationNode {
     public TypeNode getType() {
         return type;
     }
+
 
     @Override
     public String toPrint(String indent) {
@@ -83,6 +85,7 @@ public class DecVarNode extends DeclarationNode {
         return type;
     }
 
+    
     @Override
     public String codeGeneration() {
         StringBuilder buff = new StringBuilder();

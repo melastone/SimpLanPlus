@@ -101,6 +101,7 @@ public class BinExpNode extends ExpNode {
         }
     }
 
+
     @Override
     public String codeGeneration() {
         StringBuilder res = new StringBuilder();

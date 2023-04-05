@@ -22,15 +22,18 @@ public class BoolTypeNode extends TypeNode {
         return "bool";
     }
 
+
     @Override
     public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
         return new ArrayList<>();
     }
 
+
     @Override
     public TypeNode typeCheck() throws TypeCheckingException {
         return null;
     }
+
 
     @Override
     public String codeGeneration() {

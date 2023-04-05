@@ -1,12 +1,11 @@
 package it.ghellimanca.interpreter;
 
+
 /**
  * This class represents an Instruction Node.
  *
- * Instruction Nodes are the products of code generation. Each node
- * corresponds to a single assembly instruction.
- * Instruction Nodes will be the basic builing blocks for code after
- * the Parse Tree visit.
+ * Instruction Nodes are the products of code generation. Each node corresponds to a single assembly instruction.
+ * Instruction Nodes will be the basic builing blocks for code after the Parse Tree visit.
  *
  */
 public class InstructionNode {

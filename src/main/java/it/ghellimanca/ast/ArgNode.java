@@ -6,8 +6,9 @@ import it.ghellimanca.semanticanalysis.errors.*;
 
 import java.util.ArrayList;
 
+
 /**
- * Represents an argument of a function node in the AST.
+ * Node of the AST for a function argument.
  *
  * type ID | var type ID
  *

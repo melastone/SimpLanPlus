@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Represents a function type in the form of
+ *
  * T1 x.. x Tn -> T
  *
  */
@@ -17,10 +18,13 @@ public class ArrowTypeNode extends TypeNode{
     private TypeNode ret;
 
 
+
     public ArrowTypeNode(List<TypeNode> args, TypeNode ret) {
         this.args = args;
         this.ret = ret;
     }
+
+
 
     public List<TypeNode> getArgs() {
         return this.args;
@@ -30,6 +34,7 @@ public class ArrowTypeNode extends TypeNode{
         return this.ret;
     }
 
+
     @Override
     public String toPrint(String indent) {
         return "\n" + indent + "TYPE: " +
@@ -38,15 +43,18 @@ public class ArrowTypeNode extends TypeNode{
                 + " -> " + ret;
     }
 
+
     @Override
     public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
         return new ArrayList<>();
     }
 
+
     @Override
     public TypeNode typeCheck() throws TypeCheckingException {
         return null;
     }
+
 
     @Override
     public String codeGeneration() {

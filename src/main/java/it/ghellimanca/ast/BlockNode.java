@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 
 /**
- * Node of the AST for a block
+ * Node of the AST for a block.
  *
  */
 public class BlockNode extends StatementNode {

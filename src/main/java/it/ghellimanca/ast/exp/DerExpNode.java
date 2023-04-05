@@ -14,13 +14,14 @@ import java.util.List;
  */
 public class DerExpNode extends ExpNode {
 
-
-
     final IdNode id;
+
 
     public DerExpNode(IdNode id) {
         this.id = id;
     }
+
+
 
     public IdNode getId() {
         return id;
@@ -58,6 +59,7 @@ public class DerExpNode extends ExpNode {
     public TypeNode typeCheck() {
         return id.typeCheck();
     }
+
 
     @Override
     public String codeGeneration() {

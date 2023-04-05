@@ -14,5 +14,10 @@ public abstract class ExpNode implements Node {
         return toPrint("");
     }
 
+    /**
+     * Gets all the variables used inside the expression.
+     *
+     * @return  list of IdNodes, each for one variable
+     */
     public abstract List<IdNode> variables();
 }

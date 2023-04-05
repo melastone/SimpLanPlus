@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * Represents an negated expression '-' exp node in the AST.
+ *
  */
 public class NegExpNode extends ExpNode {
 
@@ -20,6 +21,7 @@ public class NegExpNode extends ExpNode {
     public NegExpNode(ExpNode exp) {
         this.exp = exp;
     }
+
 
 
     @Override
@@ -43,6 +45,7 @@ public class NegExpNode extends ExpNode {
 
         return new IntTypeNode();
     }
+
 
     @Override
     public String codeGeneration() {

@@ -17,7 +17,7 @@ import java.util.stream.IntStream;
 
 
 /**
- * Node of the AST for a call statement
+ * Node of the AST for a call statement.
  *
  * A call statement has the form:
  * ID '(' (exp(',' exp)*)? ')'
@@ -29,10 +29,12 @@ public class CallNode extends StatementNode {
     final private List<ExpNode> params;
 
 
+
     public CallNode(IdNode id, List<ExpNode> params) {
         this.id = id;
         this.params = params;
     }
+
 
 
     @Override
@@ -46,8 +48,10 @@ public class CallNode extends StatementNode {
         return res;
     }
 
+
     @Override
     public String toString() { return toPrint("");}
+
 
     @Override
     public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
@@ -204,6 +208,7 @@ public class CallNode extends StatementNode {
         return ((ArrowTypeNode) funType).getRet();
     }
 
+
     @Override
     public String codeGeneration() {
         StringBuilder buffer = new StringBuilder();
@@ -240,15 +245,10 @@ public class CallNode extends StatementNode {
     }
 
 
-
-    /**
-     * Gets all the variables used as parameters or inside them.
-     *
-     * @return  list of IdNodes, each for one variable
-     */
     public List<IdNode> variables() {
         return params.stream().flatMap(exp -> exp.variables().stream()).collect(Collectors.toList());
     }
+
 
     @Override
     public List<IdNode> getVarDeclarations() {

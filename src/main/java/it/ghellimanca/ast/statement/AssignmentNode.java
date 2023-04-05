@@ -12,7 +12,7 @@ import java.util.List;
 
 
 /**
- * Node of the AST for an assignment statement
+ * Node of the AST for an assignment statement.
  *
  * An assignment has the form:
  * id '=' exp
@@ -24,18 +24,18 @@ public class AssignmentNode extends StatementNode {
     final private ExpNode exp;
 
 
+
     public AssignmentNode(IdNode id, ExpNode exp) {
         this.id = id;
         this.exp = exp;
     }
 
 
+
     @Override
     public String toPrint(String indent) {
         return "\n" + indent + "ASSIGNMENT" + id.toPrint(indent + "\t") + exp.toPrint(indent + "\t");
     }
-
-
 
 
     @Override
@@ -69,6 +69,7 @@ public class AssignmentNode extends StatementNode {
         return err;
     }
 
+
     @Override
     public TypeNode typeCheck() throws TypeCheckingException {
 
@@ -81,6 +82,7 @@ public class AssignmentNode extends StatementNode {
 
         return new VoidTypeNode();
     }
+
 
     @Override
     public String codeGeneration() {
@@ -98,6 +100,7 @@ public class AssignmentNode extends StatementNode {
         return buffer.toString();
     }
 
+
     @Override
     public List<IdNode> variables() {
         List<IdNode> tmp = new ArrayList<>();
@@ -107,6 +110,7 @@ public class AssignmentNode extends StatementNode {
 
         return tmp;
     }
+
 
     @Override
     public List<IdNode> getVarDeclarations() {

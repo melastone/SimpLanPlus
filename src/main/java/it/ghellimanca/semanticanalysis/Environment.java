@@ -72,10 +72,6 @@ public class Environment {
 
 
 
-    public List<Map<String, STEntry>> getSymbolTable() {
-        return symbolTable;
-    }
-
     public int getNestingLevel() {
         return nestingLevel;
     }
@@ -87,6 +83,7 @@ public class Environment {
     public void setOffset(int offset) {
         this.offset = offset;
     }
+
 
     /**
      * @return the current active scope.
@@ -200,6 +197,7 @@ public class Environment {
         throw new MissingDeclarationException("Missing declaration for ID: " + id + ".");
      }
 
+
     /**
      * Looks for the type of id in ST, if any.
      * Used when it is certain that [id] exists inside the Environment.
@@ -301,11 +299,12 @@ public class Environment {
 
 
     /**
+     * Performs a given operation between two environments.
      *
-     * @param env1
-     * @param env2
-     * @param operator
-     * @return
+     * @param env1      first operator, has to be an Environment instance
+     * @param env2      second operator, has to be an Environment instance
+     * @param operator  operation to be performed between the previous two
+     * @return  the evironemtn that results from the operation
      */
     public static Environment operationsOnEnvironments(final Environment env1, final Environment env2, BiFunction<Effect, Effect, Effect> operator) {
         Environment resEnv = new Environment(new ArrayList<>(), env1.nestingLevel, env1.offset);

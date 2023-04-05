@@ -15,6 +15,7 @@ public class VarTypeNode extends TypeNode{
     final TypeNode type;
 
 
+
     public VarTypeNode(TypeNode type) {
         this.type = type;
     }

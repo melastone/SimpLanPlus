@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 
 /**
- * Node of the AST for an identifier
+ * Node of the AST for an identifier.
  *
  */
 public class IdNode implements Node {

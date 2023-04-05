@@ -8,8 +8,10 @@ import java.util.ArrayList;
 
 /**
  * A generic node of the AST
+ *
  */
 public interface Node {
+
 
     /**
      * Returns a text representation of the AST node.
@@ -18,6 +20,7 @@ public interface Node {
      * @return the current node string representation
      */
     String toPrint(String indent);
+
 
     /**
      * Check for semantic and effect analysis errors in the node.
@@ -30,6 +33,7 @@ public interface Node {
      * Type checking.
      * */
     TypeNode typeCheck() throws TypeCheckingException;
+
 
     /**
      * Generates the intermediate code for the corresponding node.

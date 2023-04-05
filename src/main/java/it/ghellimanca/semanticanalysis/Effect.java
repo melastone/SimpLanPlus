@@ -4,6 +4,7 @@ package it.ghellimanca.semanticanalysis;
 /**
  * Represents an effect for a variable.
  * It is used for Effect Analysis.
+ *
  */
 public class Effect {
 
@@ -28,12 +29,8 @@ public class Effect {
         return status;
     }
 
-    @Override
-    public String toString() {
-        return "Effect{" +
-                "status=" + status +
-                '}';
-    }
+
+
 
     /**
      * Implements the max binary operator
@@ -46,6 +43,7 @@ public class Effect {
         return new Effect(Math.max(e1.status, e2.status));
     }
 
+
     /**
      * Implements the sequential binary operator
      *
@@ -55,9 +53,9 @@ public class Effect {
      *   2 | 2 | 2 | 2 | ⊤
      *   ⊤ | ⊤ | ⊤ | ⊤ | ⊤
      *
-     * @param e1 previous effect
-     * @param e2 new effect to assign
-     * @return the result effect of the update
+     * @param e1    current effect
+     * @param e2    new effect to assign
+     * @return  the effect which results from the update
      */
     public static Effect seq(final Effect e1, final Effect e2) {
         Effect max = max(e1, e2);
@@ -67,6 +65,7 @@ public class Effect {
         else
             return new Effect(ERROR);
     }
+
 
     /**
      * Implements a binary operator that propagates the most critical effect.
@@ -78,9 +77,9 @@ public class Effect {
      *   2 | ⊥ | 2 | 2 | ⊤
      *   ⊤ | ⊤ | ⊤ | ⊤ | ⊤
      *
-     * @param e1 first effect
-     * @param e2 second effect
-     * @return the effect that is most critical, following the truth table
+     * @param e1    first effect
+     * @param e2    second effect
+     * @return  the effect which results from the operation, following the truth tale
      */
     public static Effect bin(final Effect e1, final Effect e2) {
         if (e1.status == ERROR || e2.status == ERROR) {
@@ -92,6 +91,7 @@ public class Effect {
         }
     }
 
+
     /**
      * Implements the par operator. It performs the following operation
      *
@@ -101,15 +101,14 @@ public class Effect {
      *   2 | 2 | 2 | 2 | ⊤
      *   ⊤ | ⊤ | ⊤ | ⊤ | ⊤
      *
-     * @param e1
-     * @param e2
-     * @return
+     * @param e1    first effect
+     * @param e2    second effect
+     * @return  the effect which results from the operation, following the truth tale
      */
     public static Effect par(final Effect e1, final Effect e2) {
         return max(e1, e2);
     }
 
-    /* OTHER UTILS */
 
     @Override
     public boolean equals(Object o) {
@@ -121,4 +120,11 @@ public class Effect {
         return status == effect.status;
     }
 
+
+    @Override
+    public String toString() {
+        return "Effect{" +
+                "status=" + status +
+                '}';
+    }
 }

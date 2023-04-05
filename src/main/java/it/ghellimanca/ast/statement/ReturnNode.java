@@ -12,7 +12,7 @@ import java.util.List;
 
 
 /**
- * Node of the AST for a return statement
+ * Node of the AST for a return statement.
  *
  * A return statement has the form:
  * 'return' (exp)?
@@ -24,11 +24,6 @@ public class ReturnNode extends StatementNode {
 
     private String funId;
 
-
-
-    public ReturnNode() {
-        this.exp = null;
-    }
 
 
     public ReturnNode(ExpNode exp) {
@@ -77,6 +72,7 @@ public class ReturnNode extends StatementNode {
         return new VoidTypeNode();
     }
 
+
     @Override
     public String codeGeneration() {
         StringBuilder buff = new StringBuilder();
@@ -95,10 +91,12 @@ public class ReturnNode extends StatementNode {
         return buff.toString();
     }
 
+
     @Override
     public List<IdNode> variables() {
         return exp != null ? exp.variables() : new ArrayList<>();
     }
+
 
     @Override
     public List<IdNode> getVarDeclarations() {
