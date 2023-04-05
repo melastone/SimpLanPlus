@@ -84,7 +84,7 @@ public class BlockNode extends StatementNode {
 
 
     @Override
-    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException, UnreachableStatementException {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
 
         ArrayList<SemanticWarning> err = new ArrayList<>();
         Map<String, STEntry> currentScope;
@@ -105,18 +105,21 @@ public class BlockNode extends StatementNode {
             }
         }
 
-        checkStatementsAfterReturn();
 
+        // returning just sigma_0''
         if (!isFunctionBody) {
 
             // CHECK ERRORS IN BLOCK FOR EFFECT ANALYSIS
+            // getting sigma_1'' from sigma'' = sigma_0'' ⋅ sigma_1''
             currentScope = env.currentScope();
 
+            // for every x_i in dom(sigma_1'')
             for (var id : currentScope.keySet()) {
 
                 var idEntry = currentScope.get(id);
                 var idStatus = idEntry.getVarStatus();
 
+                // sigma_1''(x) has to be <= USED otherwise there was an error
                 if (idStatus.equals(new Effect(Effect.ERROR))) {
                     throw new MissingInitializationException(id + " was used before initialization.");
                 } else if (idStatus.equals(new Effect(Effect.INIT)) || idStatus.equals(new Effect(Effect.DECLARED))) {
@@ -231,52 +234,5 @@ public class BlockNode extends StatementNode {
         }
 
         return tmp;
-    }
-
-    @Override
-    public boolean hasReturnStatements() {
-        return statements.stream().anyMatch(StatementNode::hasReturnStatements);
-    }
-
-    public void checkStatementsAfterReturn() throws UnreachableStatementException {
-
-        if (this.statements != null) {
-            int returnPositionBlock = -1; // -1 if there aren't return statements
-
-            // checking in the block's statements
-            // taking the first return statement found
-            var returnStm = statements.stream().filter(stm -> stm instanceof ReturnNode).findFirst();
-
-            if (returnStm.isPresent()) {
-                returnPositionBlock = statements.indexOf(returnStm.get());
-                //System.out.println("RETURN NEGLI STM DEL BLOCK A LIVELLO "+ returnPositionBlock);
-            }
-
-            // if it wasn't in the block's statements, search in the itenodes, if present
-            if (returnPositionBlock == -1) {
-                var iteStmRet = statements.stream().filter(stm -> stm instanceof IteNode && ((IteNode) stm).getStm2() !=null && stm.hasReturnStatements()).findFirst();
-
-                if (iteStmRet.isPresent()) {
-                    returnPositionBlock = statements.indexOf(iteStmRet.get());
-                    //System.out.println("RETURN A ITE NODE LIVELLO "+ returnPositionBlock);
-                }
-            }
-
-            // if it wasn't in the block's statements or inside itenodes, search inside block's blocknodes
-            if (returnPositionBlock == -1) {
-                var blockStmRet = statements.stream().filter(stm -> stm instanceof BlockNode && stm.hasReturnStatements()).findFirst();
-
-                if (blockStmRet.isPresent()) {
-                    returnPositionBlock = statements.indexOf(blockStmRet.get());
-                    //System.out.println("RETURN A BLOCK NODE DEL BLOCK A LIVELLO "+ returnPositionBlock);
-                }
-            }
-
-            if (returnPositionBlock != -1 && returnPositionBlock + 1 < statements.size()) {
-                throw new UnreachableStatementException("Unreachable statement after return.");
-            }
-
-        }
-
     }
 }

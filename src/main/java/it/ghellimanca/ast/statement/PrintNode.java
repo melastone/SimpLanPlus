@@ -40,7 +40,7 @@ public class PrintNode extends StatementNode {
 
 
     @Override
-    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException, UnreachableStatementException {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
         return exp.checkSemantics(env);
     }
 
@@ -66,10 +66,5 @@ public class PrintNode extends StatementNode {
     @Override
     public List<IdNode> getVarDeclarations() {
         return new ArrayList<>();
-    }
-
-    @Override
-    public boolean hasReturnStatements() {
-        return false;
     }
 }

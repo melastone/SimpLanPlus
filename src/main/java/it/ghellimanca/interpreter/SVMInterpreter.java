@@ -146,8 +146,8 @@ public class SVMInterpreter {
                     setRegister(arg1, getRegister(arg2) - getRegister(arg3));
                     break;
                 case "subi":
-                    //System.out.println("Sub integer:");
-                    //System.out.println("Putting " + getRegister(arg2) + " - " + argInt +" in "+ arg1 + " register\n");
+//                    System.out.println("Load integer:");
+//                    System.out.println("Putting " + getRegister(arg2) + " (from "+arg2+" register) - " + argInt +" in "+ arg1+" register\n");
                     setRegister(arg1, getRegister(arg2) - argInt);
                     break;
                 case "mult":
@@ -202,6 +202,7 @@ public class SVMInterpreter {
 
 //                    System.out.println("Move:");
 //                    System.out.println("Moving in "+ arg1 +" register value in "+arg2+" address which is "+ srcMv + "\n");
+
 
                     setRegister(arg1, srcMv);
                     break;

@@ -182,7 +182,7 @@ public class SimpLanPlus {
                 }
             }
 
-        } catch (MultipleDeclarationException | MissingDeclarationException | UnreachableStatementException e) {
+        } catch (MultipleDeclarationException | MissingDeclarationException e) {
             System.err.println("Semantic analysis error:\n" + e.getMessage());
             System.exit(1);
         } catch (MissingInitializationException | ParametersException e) {

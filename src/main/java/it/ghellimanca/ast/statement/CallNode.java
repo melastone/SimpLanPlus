@@ -254,9 +254,4 @@ public class CallNode extends StatementNode {
     public List<IdNode> getVarDeclarations() {
         return new ArrayList<>();
     }
-
-    @Override
-    public boolean hasReturnStatements() {
-        return false;
-    }
 }

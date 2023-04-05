@@ -23,7 +23,7 @@ public interface Node {
      * Check for semantic and effect analysis errors in the node.
      *
      * */
-    ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException, UnreachableStatementException;
+    ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException;
 
 
     /**

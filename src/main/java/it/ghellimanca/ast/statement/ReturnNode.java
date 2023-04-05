@@ -58,7 +58,7 @@ public class ReturnNode extends StatementNode {
 
 
     @Override
-    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException, UnreachableStatementException {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
         if (this.exp != null) {
             return exp.checkSemantics(env);
         }
@@ -82,22 +82,15 @@ public class ReturnNode extends StatementNode {
     public String codeGeneration() {
         StringBuilder buff = new StringBuilder();
 
+        var funId = this.funId.toUpperCase();
+
         if (exp != null) {
             buff.append(exp.codeGeneration());
         }
 
-        if (this.funId != null) {
-            var funId = this.funId.toUpperCase();
-            buff.append("b ").append(funId).append("_END\n");
-/*        }
-        else { // return in normal block, not function block
-            // restore registers and stack
-            buff.append("lw $fp 0($sp)\n");
-            buff.append("pop\n");   // pop olf $fp
-            buff.append("lw $ra 0($sp)\n");
-            buff.append("pop\n");   // pop RA
-            buff.append("halt\n");*/
-        }
+        // if there is code written after the return statement, it could affect $a0 status
+        // simply ignore it!
+        buff.append("b ").append(funId).append("_END\n");
 
         return buff.toString();
     }
@@ -110,11 +103,5 @@ public class ReturnNode extends StatementNode {
     @Override
     public List<IdNode> getVarDeclarations() {
         return new ArrayList<>();
-    }
-
-
-    @Override
-    public boolean hasReturnStatements() {
-        return true;
     }
 }

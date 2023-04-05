@@ -62,16 +62,9 @@ public class IteNode extends StatementNode {
         }
     }
 
-    public StatementNode getStm1() {
-        return stm1;
-    }
-
-    public StatementNode getStm2() {
-        return stm2;
-    }
 
     @Override
-    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException, UnreachableStatementException {
+    public ArrayList<SemanticWarning> checkSemantics(Environment env) throws MultipleDeclarationException, MissingDeclarationException, MissingInitializationException, ParametersException {
         ArrayList<SemanticWarning> err = new ArrayList<>();
 
         err.addAll(exp.checkSemantics(env));
@@ -160,9 +153,5 @@ public class IteNode extends StatementNode {
         tmp.addAll(stm2 != null ? stm2.getVarDeclarations() : new ArrayList<>());
         
         return tmp;
-    }
-
-    public boolean hasReturnStatements() {
-        return stm1.hasReturnStatements() || (stm2 != null && stm2.hasReturnStatements());
     }
 }

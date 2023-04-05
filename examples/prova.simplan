@@ -1,33 +1,15 @@
 {
-
-
-     {
-        {
-            int x;
-            if (false) {
-                return 1;
-            }
-        }
-        print 4;
-    }
-
     /*
     Questo file possiamo usarlo per testare codice al volo.
     */
 
-    /*
-    This example shows the semantic analysis performing checks on code after the return statements.
-    In a function definition, after a correct return statement cannot be present any other code instruction.
-
-    The program fails to compile for the presence of returnFromBlock method and should output:
-        - "There is code after a return statement."
-
-
-
-    int mult2wrong(int a) {
-        return a*2;
-        print(13);
+    void f(int m, int n){
+	    if (m<n) {
+	        print(1) ;
+	    } else {
+	        print 0 ;
+	    }
     }
+    f(5,5) ;
 
-    print mult2wrong(10);*/
 }
