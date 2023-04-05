@@ -1,4 +1,4 @@
-// Generated from /home/melania/Documents/UNI-BOH/1 ANNO/CI/progetto/SimpLanPlus/src/main/antlr/SVM.g4 by ANTLR 4.9.2
+// Generated from /SimpLanPlus/src/main/antlr/SVM.g4 by ANTLR 4.9.2
 
 package it.ghellimanca.gen.svm;
 import java.util.HashMap;
