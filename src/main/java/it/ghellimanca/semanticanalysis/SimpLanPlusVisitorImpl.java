@@ -1,4 +1,4 @@
-package it.ghellimanca;
+package it.ghellimanca.semanticanalysis;
 
 import it.ghellimanca.ast.declaration.DecFunNode;
 import it.ghellimanca.ast.declaration.DecVarNode;

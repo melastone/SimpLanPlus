@@ -1,6 +1,7 @@
 package it.ghellimanca;
 
 import it.ghellimanca.ast.ProgramNode;
+import it.ghellimanca.ast.SimpLanPlusErrorListener;
 import it.ghellimanca.gen.simplanplus.SimpLanPlusLexer;
 import it.ghellimanca.gen.simplanplus.SimpLanPlusParser;
 import it.ghellimanca.gen.svm.SVMLexer;
@@ -11,6 +12,7 @@ import it.ghellimanca.interpreter.SVMVisitorImpl;
 import it.ghellimanca.interpreter.exception.AssemblyInstructionException;
 import it.ghellimanca.interpreter.exception.SmallCodeSizeException;
 import it.ghellimanca.semanticanalysis.Environment;
+import it.ghellimanca.semanticanalysis.SimpLanPlusVisitorImpl;
 import it.ghellimanca.semanticanalysis.errors.*;
 import it.ghellimanca.semanticanalysis.errors.TypeCheckingException;
 import org.antlr.v4.runtime.CharStreams;

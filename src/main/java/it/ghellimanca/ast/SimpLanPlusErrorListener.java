@@ -1,4 +1,4 @@
-package it.ghellimanca;
+package it.ghellimanca.ast;
 
 import org.antlr.v4.runtime.*;
 
