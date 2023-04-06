@@ -28,7 +28,6 @@ import java.util.ArrayList;
  * This is the main class.
  * Implements both the compiler and interpreter.
  *
- * todo: stampare gli errori lessicali/sintattici presenti nell'assembly
  */
 
 public class SimpLanPlus {
@@ -250,6 +249,12 @@ public class SimpLanPlus {
          // Visiting the tree and generating the AST.
         SVMVisitorImpl svmVisitor = new SVMVisitorImpl();
         svmVisitor.visit(svmParser.assembly());
+
+        // Checking for lexical errors.
+        if (svmErrorListenerParser.getErrors().size() > 0) {
+            System.err.println("There are syntactic errors in the generated Assembly code. It cannot compile.");
+            System.exit(1);
+        }
 
 
         /* VM INTERPRETER */

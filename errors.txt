@@ -1,0 +1,7 @@
+Lexical errors:
+line 6:8 token recognition error at: '#'
+Syntactic errors:
+line 6:10 no viable alternative at input 'int='
+    int # = 1;
+          ^
+
