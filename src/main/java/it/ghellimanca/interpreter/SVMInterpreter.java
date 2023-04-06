@@ -48,11 +48,22 @@ public class SVMInterpreter {
         this.$fp = MEMSIZE;
     }
 
-
+    /**
+     * Getter for the {@code code} attribute.
+     *
+     * @return the assembly code which is a List of Instruction Nodes
+     */
     public List<InstructionNode> getCode() {
         return code;
     }
 
+    /**
+     * Sets the value of a given register.
+     *
+     * @param reg the string representing the register we want to set
+     * @param value the integer value we want to give to the register, could be either an address or a value
+     * @throws AssemblyInstructionException in case an unknown register string is passed
+     */
     private void setRegister(String reg, int value) throws AssemblyInstructionException {
         switch (reg) {
             case "$sp":
@@ -82,6 +93,12 @@ public class SVMInterpreter {
         }
     }
 
+    /**
+     * Gets the value of a given register.
+     *
+     * @param reg the string representing the register we want to get the value of
+     * @throws AssemblyInstructionException in case an unknown register string is passed
+     */
     private int getRegister(String reg) throws AssemblyInstructionException {
         switch (reg) {
             case "$sp":
@@ -103,9 +120,14 @@ public class SVMInterpreter {
 
         }
     }
-    
 
 
+    /**
+     * Executes the list of instructions generated from the code generation.
+     *
+     * @throws MemoryAccessException in case of going over the limit of the memory with some register
+     * @throws AssemblyInstructionException in case an unknown instruction is being executed
+     */
     public void run() throws MemoryAccessException, AssemblyInstructionException {
 
         while ($ip < code.size()) {
@@ -220,7 +242,13 @@ public class SVMInterpreter {
 
     }
 
-
+    /**
+     * Reads the value of a cell in a given address.
+     *
+     * @param address the address of the memory cell we want to read
+     * @return the value inside the cell at the given address
+     * @throws MemoryAccessException in case an address bigger than the size of the memory is given
+     */
     private int readMemory(int address) throws MemoryAccessException {
         try {
             return memory[address];
@@ -230,6 +258,13 @@ public class SVMInterpreter {
     }
 
 
+    /**
+     * Writes a value inside a memory cell of a given address.
+     *
+     * @param address the address of the memory cell we want to write
+     * @param data the value we want to write int the cell at the given address
+     * @throws MemoryAccessException in case an address bigger than the size of the memory is given
+     */
     private void writeMemory(int address, int data) throws MemoryAccessException {
         try {
             memory[address] = data;
