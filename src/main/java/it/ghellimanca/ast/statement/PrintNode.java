@@ -1,6 +1,7 @@
 package it.ghellimanca.ast.statement;
 
 import it.ghellimanca.ast.IdNode;
+import it.ghellimanca.ast.exp.CallExpNode;
 import it.ghellimanca.ast.type.VoidTypeNode;
 import it.ghellimanca.semanticanalysis.*;
 import it.ghellimanca.ast.exp.ExpNode;
@@ -48,7 +49,14 @@ public class PrintNode extends StatementNode {
     @Override
     public TypeNode typeCheck() throws TypeCheckingException {
 
-        exp.typeCheck();
+        var expType = exp.typeCheck();
+
+        // check that exp is not a void function call
+        if (exp instanceof CallExpNode) {
+            if (expType instanceof VoidTypeNode) {
+                throw new TypeCheckingException("Cannot print void-type function invocation result.");
+            }
+        }
 
         return new VoidTypeNode();
     }
