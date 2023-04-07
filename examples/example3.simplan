@@ -1,14 +1,11 @@
 {
-    // ???
     /*
-    This example shows the use of an if-then-else statement.
-    The condition can be changed to output other stuff.
-    With a set to 10, the program should output 10.
+    This example contains a syntactic error. The name of the variable in the variable declaration is missing.
     */
 
-    int a = 10;
-    if (a >= 0)
-        print a;
+    int = 1;
+    if (x >= 0)
+        print x;
     else
-        print 0;
+        return;
 }

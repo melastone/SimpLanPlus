@@ -4,13 +4,14 @@
     Questo file possiamo usarlo per testare codice al volo.
     */
 
-    void f(int m, int n){
-	    if (m<n) {
-	        print(1) ;
+    int a = 3; int b = 4;
+    int equals(int x, int y){
+	    if (x == y) {
+	        return 1 ;
 	    } else {
-	        print 0;
+	        return 0;
 	    }
     }
-    print f(5,5) ;
+    f(a,b) ;
 
 }

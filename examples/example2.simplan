@@ -1,26 +1,21 @@
 {
-    // ANALISI SEMANTICA
     /*
-        This example shows a function that accesses a variable defined in the scope of the caller,
-        but not in the one of the function definition.
-        It would raise an error cause SimpLanPlus does not allow access to variable outside function
-        scope.
+    This example contains a nested function definition.
+    It will raise a lexical error, because the grammar does not recognize function definitions
+    inside function bodies.
     */
 
-    void f(int x) {
-        int a = 20;
-        if (x == 0) {
-            print a;
-            return;
-        } else {
-            print b;
-            f(x - 1);
+    void f() {
+        int b = 20;
+        void g(int x){
+            if (x == 0) {
+                return;
+            }
+            else {
+                g(x - 1);
+            }
         }
+        g(2);
     }
 
-    {
-        int b = 5;
-        f(3);
-    }
 }
-

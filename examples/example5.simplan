@@ -1,16 +1,19 @@
 {
-    // ???
     /*
-    This example shows the correct working of recursion.
-    The program is correct but should not output anything.
+    This example shows the use of mutual recursion, which is not supported by SimpLanPlus.
+    The fact that if it was supported it would display an out of memory error does not mean anything.
+    The program should output:
+      - "Missing declaration for ID: g."
     */
 
-    void f(int a) {
-        if (a == 0)
-            return;
-        else
-            f(a-1);
+    void f() {
+        print 1;
+        g();
+    }
+    void g() {
+        print 2;
+        f();
     }
 
-    f(1);
+    f();
 }

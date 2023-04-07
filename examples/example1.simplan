@@ -1,16 +1,11 @@
-{
-    // ???
+${
     /*
-        This example shows the use of recursive functions.
-        The program uses x, which is declared outside function scope. Hence it should output an error.
+    This example contains a lexical error. The token $ cannot be recognized.
     */
 
     int x = 1;
-    void f(int y) {
-        if (y == 0)
-            print(x);
-        else
-            f(y-1);
-    }
-    f(x) ;
+    if (x >= 0)
+        print x;
+    else
+        return;
 }

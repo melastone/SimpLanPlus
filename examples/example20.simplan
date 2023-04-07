@@ -1,0 +1,15 @@
+{
+    /*
+        This example shows the use of recursive functions.
+        The program uses x, which is declared outside function scope. Hence it should output an error.
+    */
+
+    int x = 1;
+    void f(int y) {
+        if (y == 0)
+            print(x);
+        else
+            f(y-1);
+    }
+    f(x) ;
+}

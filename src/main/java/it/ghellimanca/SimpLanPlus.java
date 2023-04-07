@@ -263,8 +263,6 @@ public class SimpLanPlus {
 
         try {
             SVMInterpreter svmInterpreter = new SVMInterpreter(svmVisitor.getCode());
-            //System.out.println(svmInterpreter.getCode());
-            System.out.println("Program output:");
             svmInterpreter.run();
         } catch (AssemblyInstructionException | SmallCodeSizeException | MemoryAccessException exc) {
             System.err.println("Error: " + exc.getMessage());
