@@ -1,6 +1,6 @@
 {
     /*
-    Il seguente esempio è fornito con le specifiche del progetto.
+    The following example is given together with project specification. It is correct and should output the print of 720.
     */
 
     int u = 1 ;

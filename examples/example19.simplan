@@ -1,7 +1,10 @@
 {
     /*
-    Il seguente esempio è fornito con le specifiche del progetto.
-    */
+    The following example is given together with project specification. It is correct and should output the print of 9.
+    The project specification suggested to change the order of the parameters of the call: doing this generates a loop
+    and it finishes the memory so it outputs the following error: Error: Reached maximum memory, writing.
+*/
+    
 
     void f(int m, int n){
 	    if (m>n) {
@@ -10,9 +13,9 @@
 	        int x = 1 ; f(m+1,n+1) ;
 	    }
     }
-    f(5,4 ;
+    f(5,4) ;
 
-    /*
+    /*    
     void f(int m, int n){
 	    if (m>n) {
 	        print(m+n) ;
